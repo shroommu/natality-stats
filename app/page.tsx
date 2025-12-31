@@ -17,7 +17,9 @@ export default function Home() {
     await fetch("api/get-wonder-data", {
       method: "POST",
       body: JSON.stringify({ xml: xml }),
-    }).then((res: Response): void => setResponse(JSON.stringify(res)));
+    }).then((response) => response.text());
+    //   .then((str) => console.log(str));
+    // .then((data) => console.log(data));
   }
 
   return (
