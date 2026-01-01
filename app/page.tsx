@@ -11,15 +11,15 @@ const testObj = {
 
 export default function Home() {
   const [xml, setXml] = useState("");
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState({});
 
   async function getWonderData(xml: object) {
     await fetch("api/get-wonder-data", {
       method: "POST",
       body: JSON.stringify({ xml: xml }),
-    }).then((response) => response.text());
-    //   .then((str) => console.log(str));
-    // .then((data) => console.log(data));
+    })
+      .then((res) => res.json())
+      .then((data) => setResponse(data));
   }
 
   return (
@@ -32,7 +32,7 @@ export default function Home() {
         className="border-2"
       />
       <Button text="Get Data" onClick={() => getWonderData(testObj)} />
-      {response}
+      {JSON.stringify(response)}
     </div>
   );
 }
