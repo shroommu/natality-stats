@@ -61,4 +61,17 @@ describe("DataTable", () => {
 
     expect(screen.getByText("No matching records")).toBeInTheDocument();
   });
+
+  it("renders safely when columns are empty", () => {
+    render(
+      <DataTable
+        title="No Columns"
+        columns={[]}
+        rows={[{ region: "Any", metric: "Any", value: "Any" }]}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "No Columns" })).toBeInTheDocument();
+    expect(screen.getByRole("table")).toBeInTheDocument();
+  });
 });

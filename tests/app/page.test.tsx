@@ -31,4 +31,14 @@ describe("Home page", () => {
     expect(yearSelect).toHaveValue("2021");
     expect(regionSelect).toHaveValue("all");
   });
+
+  it("updates selected year when year filter changes to 2022", async () => {
+    const user = userEvent.setup();
+    render(<Home />);
+
+    const yearSelect = screen.getByLabelText("Year");
+    await user.selectOptions(yearSelect, "2022");
+
+    expect(yearSelect).toHaveValue("2022");
+  });
 });
