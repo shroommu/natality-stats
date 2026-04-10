@@ -9,6 +9,7 @@ env:
   # Set these to your Fly.io organization and preferred region.
   FLY_REGION: iad
   FLY_ORG: personal  
+  path: ./backend
 
 jobs:
   review_app:
@@ -28,8 +29,6 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
-        with:
-          path: /backend
 
       - name: Deploy PR app to Fly.io
         id: deploy
