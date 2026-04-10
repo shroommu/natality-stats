@@ -7,10 +7,6 @@ app = 'natality-stats'
 primary_region = 'ord'
 
 [build]
-  builder = 'paketobuildpacks/builder:base'
-
-[env]
-  PORT = '8080'
 
 [http_service]
   internal_port = 8080
@@ -24,4 +20,4 @@ primary_region = 'ord'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256
+  memory_mb = 1024

@@ -49,3 +49,6 @@ backend/.venv/
 
 # models
 /backend/models
+
+# cache
+__pycache__
