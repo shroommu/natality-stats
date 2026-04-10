@@ -8,8 +8,7 @@ env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   # Set these to your Fly.io organization and preferred region.
   FLY_REGION: iad
-  FLY_ORG: personal  
-  path: ./backend
+  FLY_ORG: personal
 
 jobs:
   review_app:
@@ -33,3 +32,5 @@ jobs:
       - name: Deploy PR app to Fly.io
         id: deploy
         uses: superfly/fly-pr-review-apps@1.2.1
+        with:
+          path: ./backend
