@@ -9,7 +9,7 @@ env:
   # Set these to your Fly.io organization and preferred region.
   FLY_REGION: iad
   FLY_ORG: personal
-  FLY_PATH: ./backend
+  INPUT_PATH: ./backend
 
 jobs:
   review_app:
