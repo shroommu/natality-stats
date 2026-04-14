@@ -15,7 +15,6 @@
 
 # next.js
 /frontend/.next/
-
 /frontend/out/
 
 # production
@@ -43,12 +42,13 @@ frontend/next-env.d.ts
 
 # python virtual environments
 backend/.venv/
+dev/.venv/
 
 # data
-/backend/data
+/dev/data
 
 # models
-/backend/models
+/dev/models
 
 # cache
 __pycache__

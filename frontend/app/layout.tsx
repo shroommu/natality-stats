@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Box, Button, Link, Typography } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Natality",
@@ -12,7 +13,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <header>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              p: 2,
+              borderBottom: "1px solid",
+              borderColor: "divider",
+            }}
+          >
+            <Link href="/">
+              <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+                Natality
+              </Typography>
+            </Link>
+            <Button variant="outlined" size="small" href="/vbac">
+              VBAC Explorer
+            </Button>
+          </Box>
+        </header>
+        <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6 md:p-10">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

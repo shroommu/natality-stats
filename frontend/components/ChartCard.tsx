@@ -1,11 +1,16 @@
 import type { ReactNode } from "react";
-import { Card } from "./Card";
-import { cx } from "./uiStyles";
+import MuiCard from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+
 
 type ChartPoint = {
   label: string;
   value: number;
 };
+
 
 type ChartCardProps = {
   title: string;
@@ -25,26 +30,59 @@ export function ChartCard({
   const maxValue = Math.max(...data.map((point) => point.value), 1);
 
   return (
-    <Card title={title} description={description}>
-      <div className="flex flex-col gap-3">
-        {data.map((point) => {
-          const widthPercent = Math.max((point.value / maxValue) * 100, 3);
-
-          return (
-            <div key={point.label} className="grid grid-cols-[100px_1fr_auto] items-center gap-3">
-              <span className="truncate text-xs text-foreground/70">{point.label}</span>
-              <div className="h-2.5 overflow-hidden rounded-full bg-foreground/10">
-                <div
-                  className="h-full rounded-full bg-foreground/70 transition-[width] duration-300"
-                  style={{ width: `${widthPercent}%` }}
-                />
-              </div>
-              <span className="text-xs font-medium">{valueFormatter(point.value)}</span>
-            </div>
-          );
-        })}
-      </div>
-      {footer ? <div className={cx("mt-4 text-xs text-foreground/70")}>{footer}</div> : null}
-    </Card>
+    <MuiCard variant="outlined">
+      <CardHeader
+        title={title}
+        subheader={description}
+      />
+      <CardContent>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          {data.map((point) => {
+            const widthPercent = Math.max((point.value / maxValue) * 100, 3);
+            return (
+              <Box
+                key={point.label}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "100px 1fr auto",
+                  alignItems: "center",
+                  gap: 2,
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  noWrap
+                  title={point.label}
+                >
+                  {point.label}
+                </Typography>
+                <Box sx={{ width: "100%", height: 10, bgcolor: "action.disabledBackground", borderRadius: 5, overflow: "hidden" }}>
+                  <Box
+                    sx={{
+                      width: `${widthPercent}%`,
+                      height: "100%",
+                      bgcolor: "primary.main",
+                      borderRadius: 5,
+                      transition: "width 0.3s",
+                    }}
+                  />
+                </Box>
+                <Typography variant="caption" sx={{ fontWeight: 500 }}>
+                  {valueFormatter(point.value)}
+                </Typography>
+              </Box>
+            );
+          })}
+        </Box>
+        {footer ? (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="caption" color="text.secondary">
+              {footer}
+            </Typography>
+          </Box>
+        ) : null}
+      </CardContent>
+    </MuiCard>
   );
 }

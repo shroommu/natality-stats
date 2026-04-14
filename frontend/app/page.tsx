@@ -1,7 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Badge, Button, Card, ChartCard, DataTable, Input, Select } from "@/components";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+
+import { ChartCard } from "@/components/ChartCard";
+import { DataTable } from "@/components/DataTable";
 
 const yearOptions = [
   { label: "2021", value: "2021" },
@@ -71,66 +82,94 @@ export default function Home() {
   }, [region, summary.estimatedRecords, year]);
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6 md:p-10">
-      <header className="flex flex-col gap-2">
-        <Badge variant="default">NATALITY EXPLORER</Badge>
-        <h1 className="text-2xl font-semibold tracking-tight">Interactive Data Explorer</h1>
-        <p className="text-sm text-foreground/70">
+    <div>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Chip label="NATALITY EXPLORER" color="primary" size="small" />
+        <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>Interactive Data Explorer</Typography>
+        <Typography variant="body2" color="text.secondary">
           Starter dashboard using reusable components for filters and summary cards.
-        </p>
-      </header>
+        </Typography>
+      </Box>
 
-      <Card title="Filters" description="Start narrowing the dataset before loading charts or tables.">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Input
-            label="Search"
-            name="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Hospital, county, keyword..."
-          />
-          <Select
-            label="Year"
-            name="year"
-            value={year}
-            onChange={(event) => setYear(event.target.value)}
-            options={yearOptions}
-          />
-          <Select
-            label="Region"
-            name="region"
-            value={region}
-            onChange={(event) => setRegion(event.target.value)}
-            options={regionOptions}
-          />
-        </div>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Button type="button">Apply Filters</Button>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => {
-              setQuery("");
-              setYear("2021");
-              setRegion("all");
-            }}
-          >
-            Reset
-          </Button>
-        </div>
+      <Card variant="outlined">
+        <CardHeader title="Filters" subheader="Start narrowing the dataset before loading charts or tables." />
+        <CardContent>
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: '1fr', md: '1fr 1fr 1fr' }, gap: 2 }}>
+            <TextField
+              label="Search"
+              name="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Hospital, county, keyword..."
+              fullWidth
+              size="small"
+              variant="outlined"
+            />
+            <TextField
+              select
+              label="Year"
+              name="year"
+              value={year}
+              onChange={(event) => setYear(event.target.value)}
+              fullWidth
+              size="small"
+              variant="outlined"
+            >
+              {yearOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              label="Region"
+              name="region"
+              value={region}
+              onChange={(event) => setRegion(event.target.value)}
+              fullWidth
+              size="small"
+              variant="outlined"
+            >
+              {regionOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+              ))}
+            </TextField>
+          </Box>
+          <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
+            <Button variant="contained">Apply Filters</Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setQuery("");
+                setYear("2021");
+                setRegion("all");
+              }}
+            >
+              Reset
+            </Button>
+          </Box>
+        </CardContent>
       </Card>
 
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card title="Estimated Records">
-          <p className="text-2xl font-semibold">{summary.estimatedRecords.toLocaleString()}</p>
+      <Box sx={{ display: "grid", gridTemplateColumns: { xs: '1fr', md: '1fr 1fr 1fr' }, gap: 2 }}>
+        <Card variant="outlined">
+          <CardHeader title="Estimated Records" />
+          <CardContent>
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>{summary.estimatedRecords.toLocaleString()}</Typography>
+          </CardContent>
         </Card>
-        <Card title="Selected Year">
-          <p className="text-2xl font-semibold">{summary.selectedYear}</p>
+        <Card variant="outlined">
+          <CardHeader title="Selected Year" />
+          <CardContent>
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>{summary.selectedYear}</Typography>
+          </CardContent>
         </Card>
-        <Card title="Selected Region">
-          <p className="text-2xl font-semibold capitalize">{summary.selectedRegion}</p>
+        <Card variant="outlined">
+          <CardHeader title="Selected Region" />
+          <CardContent>
+            <Typography variant="h5" sx={{ fontWeight: 600, textTransform: 'capitalize' }}>{summary.selectedRegion}</Typography>
+          </CardContent>
         </Card>
-      </section>
+      </Box>
 
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <ChartCard
@@ -150,6 +189,6 @@ export default function Home() {
           rows={tableRows}
         />
       </section>
-    </main>
+    </div>
   );
 }
