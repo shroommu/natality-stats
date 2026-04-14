@@ -82,7 +82,7 @@ export default function Home() {
   }, [region, summary.estimatedRecords, year]);
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6 md:p-10">
+    <div>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Chip label="NATALITY EXPLORER" color="primary" size="small" />
         <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>Interactive Data Explorer</Typography>
@@ -189,6 +189,6 @@ export default function Home() {
           rows={tableRows}
         />
       </section>
-    </main>
+    </div>
   );
 }
