@@ -34,8 +34,6 @@ export function ChartCard({
       <CardHeader
         title={title}
         subheader={description}
-        titleTypographyProps={{ variant: "h6" }}
-        subheaderTypographyProps={{ variant: "body2" }}
       />
       <CardContent>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
