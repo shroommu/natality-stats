@@ -30,13 +30,16 @@ export default function VBAC() {
   };
 
   const predict = async () => {
-    const response = await fetch(`${process.env.BACKEND_URL}/predict-vbac`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/predict-vbac`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(vbacPredictionParameters),
       },
-      body: JSON.stringify(vbacPredictionParameters),
-    });
+    );
 
     const data = await response.json();
     alert(`Predicted VBAC success probability: ${data.vbac_prediction}`);
