@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 
-import {
-  MenuItem,
-  TextField,
-  Box,
-  Chip,
-  Typography,
-  Button,
-} from "@mui/material";
+import { MenuItem, TextField, Box, Typography, Button } from "@mui/material";
 
 export default function VBAC() {
   const [vbacPredictionParameters, setVbacPredictionParameters] = useState({
@@ -36,8 +29,17 @@ export default function VBAC() {
     }));
   };
 
-  const predict = () => {
-    console.log("Predicting with parameters:", vbacPredictionParameters);
+  const predict = async () => {
+    const response = await fetch(`${process.env.BACKEND_URL}/predict-vbac`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(vbacPredictionParameters),
+    });
+
+    const data = await response.json();
+    alert(`Predicted VBAC success probability: ${data.vbac_prediction}`);
   };
 
   return (

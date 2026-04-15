@@ -1,19 +1,24 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pickle as pkl
 
 app = Flask(__name__)
+CORS(app)
 
 # vbac_model = pkl.load(open("models/vbac/rfc_model.pkl", "rb"))
 
 
-@app.route("/api/health")
+@app.route("/health")
 def health():
-    return {"status": "healthy"}
+    return jsonify({"status": "healthy"})
 
 
-@app.route("/api/predict-vbac")
-def predict_vbac(parameters={}):
-    return {
-        "parameters": parameters,
-        "vbac_prediction": "This is a placeholder prediction.",
-    }
+@app.route("/predict-vbac", methods=["POST"])
+def predict_vbac():
+    print(request.json)
+
+    return jsonify(
+        {
+            "vbac_prediction": "This is a placeholder prediction.",
+        }
+    )
