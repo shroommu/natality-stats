@@ -41,7 +41,7 @@ export default function VBAC() {
     );
 
     const data = await response.json();
-    alert(`Predicted VBAC success probability: ${data.vbac_prediction}`);
+    alert(`Predicted VBAC success probability: ${data.vbac_prediction}%`);
   };
 
   return (
