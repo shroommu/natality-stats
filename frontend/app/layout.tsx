@@ -19,14 +19,17 @@ export default function RootLayout({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
               p: 2,
               borderBottom: "1px solid",
               borderColor: "divider",
             }}
           >
             <Link href="/">
-              <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 600, marginRight: 2 }}
+                gutterBottom
+              >
                 Natality
               </Typography>
             </Link>
