@@ -49,6 +49,17 @@ export default function VBAC() {
       <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
         Predicting VBAC Success
       </Typography>
+      <Typography variant="body1" gutterBottom>
+        Vaginal Birth After Cesarean (VBAC) is a significant consideration for
+        many expectant mothers who have previously undergone a cesarean section.
+        Predicting the likelihood of a successful VBAC can help inform
+        decision-making and improve outcomes for both mother and baby.
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        Use the form below to input the relevant parameters for predicting the
+        success of a VBAC. After filling out the form, click the "Predict"
+        button to see the estimated probability of a successful VBAC.
+      </Typography>
       <Box
         sx={{
           display: "grid",
