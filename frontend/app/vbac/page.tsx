@@ -8,11 +8,10 @@ export default function VBAC() {
   const [vbacPredictionParameters, setVbacPredictionParameters] = useState({
     laborInduced: false,
     laborAugmented: false,
-    doctorPresentAtBirth: true,
+    attendantAtBirth: 1,
     timeOfBirth: "1200",
     priorBirthsNowLiving: 1,
     numberOfPreviousCSections: 1,
-    trialOfLaborAttempted: true,
     bmi: 15,
     birthWeightInGrams: 3400,
     weightGain: 30,
@@ -89,18 +88,21 @@ export default function VBAC() {
         </TextField>
         <TextField
           select
-          label="Was a doctor present at birth?"
-          name="doctorPresentAtBirth"
+          label="Attendant at birth"
+          name="attendantAtBirth"
           fullWidth
           size="small"
           variant="outlined"
-          value={vbacPredictionParameters.doctorPresentAtBirth}
+          value={vbacPredictionParameters.attendantAtBirth}
           onChange={(event) =>
-            updateParameter("doctorPresentAtBirth", event.target.value)
+            updateParameter("attendantAtBirth", event.target.value)
           }
         >
-          <MenuItem value={true as any}>Yes</MenuItem>
-          <MenuItem value={false as any}>No</MenuItem>
+          <MenuItem value={1}>Doctor (MD)</MenuItem>
+          <MenuItem value={2}>Doctor (DO)</MenuItem>
+          <MenuItem value={3}>Midwife (Certified)</MenuItem>
+          <MenuItem value={4}>Midwife (Other)</MenuItem>
+          <MenuItem value={5}>Other</MenuItem>
         </TextField>
         <TextField
           label="Time of birth"
@@ -148,21 +150,6 @@ export default function VBAC() {
               {option}
             </MenuItem>
           ))}
-        </TextField>
-        <TextField
-          select
-          label="Was a trial of labor attempted?"
-          name="trialOfLaborAttempted"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.trialOfLaborAttempted}
-          onChange={(event) =>
-            updateParameter("trialOfLaborAttempted", event.target.value)
-          }
-        >
-          <MenuItem value={true as any}>Yes</MenuItem>
-          <MenuItem value={false as any}>No</MenuItem>
         </TextField>
         <TextField
           label="Mother's BMI"
