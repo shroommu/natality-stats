@@ -45,4 +45,4 @@ def predict_vbac():
 
     processed_data = preprocessing.transform(raw)
     prediction = vbac_model.predict_proba(processed_data)
-    return jsonify({"vbac_prediction": float(prediction[0][1])})
+    return jsonify({"vbac_prediction": round(float(prediction[0][1]) * 100, 1)})
