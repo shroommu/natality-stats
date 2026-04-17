@@ -20,6 +20,7 @@ export default function VBAC() {
     mothersAge: 25,
     gestationalAgeInWeeks: 40,
   });
+  const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
 
   const updateParameter = (name: string, value: string) => {
     setVbacPredictionParameters((prev) => ({
@@ -41,7 +42,7 @@ export default function VBAC() {
     );
 
     const data = await response.json();
-    alert(`Predicted VBAC success probability: ${data.vbac_prediction}%`);
+    setVbacPrediction(data.vbac_prediction);
   };
 
   return (
@@ -59,6 +60,12 @@ export default function VBAC() {
         Use the form below to input the relevant parameters for predicting the
         success of a VBAC. After filling out the form, click the "Predict"
         button to see the estimated probability of a successful VBAC.
+      </Typography>
+      <Typography variant="h5" sx={{ fontWeight: 600 }} gutterBottom>
+        {`VBAC Success Probability: ${vbacPrediction !== null ? `${vbacPrediction}%` : "N/A"}`}
+      </Typography>
+      <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+        Parameters
       </Typography>
       <Box
         sx={{
@@ -241,6 +248,54 @@ export default function VBAC() {
       <Button variant="contained" onClick={() => predict()}>
         Predict
       </Button>
+      <Box>
+        <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+          Notes
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          The prediction provided by this tool is based on a machine learning
+          model trained on historical data. It takes into account various
+          factors that have been shown to influence VBAC success rates, such as
+          maternal age, previous birth history, and labor characteristics.
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          While this tool provides an estimate of VBAC success probability based
+          on various parameters, it's important to remember that it is not a
+          definitive predictor. Other factors not listed can influence the
+          outcome of a VBAC, and individual circumstances may vary.
+        </Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+          Technical Details
+        </Typography>
+        <Typography variant="h6" sx={{ fontWeight: 300 }} gutterBottom>
+          Dataset
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          This model was trained on the 2021 CDC Natality dataset, which can be
+          located{" "}
+          <a
+            href="https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm#Births"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            here
+          </a>
+          . The dataset includes detailed information on births in the United
+          States occurring in the 2021 calendar year, including maternal
+          characteristics, pregnancy history, and birth outcomes.
+        </Typography>
+        <Typography variant="h6" sx={{ fontWeight: 300 }} gutterBottom>
+          Model Details
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          The model used for predicting VBAC success is a Random Forest
+          Classifier implemented in Python using the scikit-learn library. The
+          model was trained on a subset of features from the CDC Natality
+          dataset that were found to be most predictive of VBAC success. The
+          model's performance was evaluated using cross-validation, and it
+          achieved an F1 score of 0.61, indicating moderate predictive ability.
+        </Typography>
+      </Box>
     </Box>
   );
 }
