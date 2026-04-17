@@ -3,13 +3,16 @@
 import { useState } from "react";
 
 import { MenuItem, TextField, Box, Typography, Button } from "@mui/material";
+import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment";
 
 export default function VBAC() {
   const [vbacPredictionParameters, setVbacPredictionParameters] = useState({
     laborInduced: false,
     laborAugmented: false,
     attendantAtBirth: 1,
-    timeOfBirth: "1200",
+    timeOfBirth: moment().startOf("day").add(12, "hours"),
     priorBirthsNowLiving: 1,
     numberOfPreviousCSections: 1,
     bmi: 15,
@@ -22,7 +25,7 @@ export default function VBAC() {
   });
   const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
 
-  const updateParameter = (name: string, value: string) => {
+  const updateParameter = (name: string, value: any) => {
     setVbacPredictionParameters((prev) => ({
       ...prev,
       [name]: value,
@@ -37,7 +40,10 @@ export default function VBAC() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(vbacPredictionParameters),
+        body: JSON.stringify({
+          ...vbacPredictionParameters,
+          timeOfBirth: vbacPredictionParameters.timeOfBirth.format("HHmm"),
+        }),
       },
     );
 
@@ -122,17 +128,17 @@ export default function VBAC() {
           <MenuItem value={4}>Midwife (Other)</MenuItem>
           <MenuItem value={5}>Other</MenuItem>
         </TextField>
-        <TextField
-          label="Time of birth"
-          name="timeOfBirth"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.timeOfBirth}
-          onChange={(event) =>
-            updateParameter("timeOfBirth", event.target.value)
-          }
-        />
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <TimePicker
+            label="Time of birth"
+            name="timeOfBirth"
+            value={vbacPredictionParameters.timeOfBirth}
+            ampmInClock={true}
+            onChange={(value) => updateParameter("timeOfBirth", value)}
+            format="hh:mm a"
+            slotProps={{ textField: { size: "small", fullWidth: true } }}
+          />
+        </LocalizationProvider>
         <TextField
           select
           label="Number of previous live births"
