@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Suspense } from "react";
 
 import { Card } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -89,12 +90,16 @@ export default function Home() {
       <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
         Demographics
       </Typography>
-      <Tabs
-        tabs={tabItems}
-        value={activeTab}
-        onChange={setActiveTab}
-        ariaLabel="Natality dashboard sections"
-      />
+      <Suspense
+        fallback={<Typography variant="body2">Loading sections...</Typography>}
+      >
+        <Tabs
+          tabs={tabItems}
+          value={activeTab}
+          onChange={setActiveTab}
+          ariaLabel="Natality dashboard sections"
+        />
+      </Suspense>
     </Box>
   );
 }

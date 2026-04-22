@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -27,9 +27,11 @@ describe("Home page", () => {
     expect(
       screen.getByRole("heading", { name: "2021 Natality Data Overview" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Overview" })).toBeInTheDocument();
     expect(
-      screen.getByRole("tab", { name: "Methodology" }),
+      screen.getByRole("tab", { name: "Maternal Characteristics" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Parental Characteristics" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Key Statistics")).toBeInTheDocument();
   });
@@ -38,22 +40,23 @@ describe("Home page", () => {
     const user = userEvent.setup();
     render(<Home />);
 
-    await user.click(screen.getByRole("tab", { name: "Methodology" }));
+    await user.click(
+      screen.getByRole("tab", { name: "Parental Characteristics" }),
+    );
 
-    expect(
-      screen.getByText(/This project uses CDC natality records/i),
-    ).toBeInTheDocument();
-    expect(replaceMock).toHaveBeenCalledWith("/?tab=methodology", {
+    expect(replaceMock).toHaveBeenCalledWith("/?tab=parental-characteristics", {
       scroll: false,
     });
   });
 
   it("honors valid tab query on initial render", async () => {
-    searchQuery = "tab=methodology";
+    searchQuery = "tab=parental-characteristics";
     render(<Home />);
 
-    expect(
-      await screen.findByText(/This project uses CDC natality records/i),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("tab", { name: "Parental Characteristics" }),
+      ).toHaveAttribute("aria-selected", "true");
+    });
   });
 });
