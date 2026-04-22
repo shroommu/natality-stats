@@ -18,7 +18,7 @@ export default function VBAC() {
     bmi: 15,
     birthWeightInGrams: 3400,
     weightGain: 30,
-    intervalSinceLastLiveBirth: 52,
+    intervalSinceLastLiveBirth: 24,
     numberOfPrenatalVisits: 10,
     mothersAge: 25,
     gestationalAgeInWeeks: 40,
@@ -207,8 +207,8 @@ export default function VBAC() {
           }
         />
         <TextField
-          label="Weeks since last live birth"
-          name="weeksSinceLastLiveBirth"
+          label="Months since last live birth"
+          name="monthsSinceLastLiveBirth"
           fullWidth
           size="small"
           variant="outlined"

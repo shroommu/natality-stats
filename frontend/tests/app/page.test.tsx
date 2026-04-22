@@ -1,44 +1,88 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
 
+vi.mock("@/charts/MothersAge", () => ({
+  default: () => <div>MothersAgeChart</div>,
+}));
+
+vi.mock("@/charts/MothersRace", () => ({
+  default: () => <div>MothersRaceChart</div>,
+}));
+
+vi.mock("@/charts/FathersAge", () => ({
+  default: () => <div>FathersAgeChart</div>,
+}));
+
+vi.mock("@/charts/FathersRace", () => ({
+  default: () => <div>FathersRaceChart</div>,
+}));
+
+const replaceMock = vi.fn();
+let searchQuery = "";
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+  useRouter: () => ({
+    replace: replaceMock,
+  }),
+  useSearchParams: () => new URLSearchParams(searchQuery),
+}));
+
 describe("Home page", () => {
-  it("renders key dashboard sections", () => {
-    render(<Home />);
-
-    expect(screen.getByRole("heading", { name: "Interactive Data Explorer" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Filters" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Births Trend (Sample)" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Records Preview (Sample)" })).toBeInTheDocument();
+  beforeEach(() => {
+    replaceMock.mockClear();
+    searchQuery = "";
   });
 
-  it("resets filter controls to defaults", async () => {
+  it("renders heading and tab controls", () => {
+    render(<Home />);
+
+    expect(
+      screen.getByRole("heading", { name: "2021 Natality Data Overview" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Maternal Characteristics" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Parental Characteristics" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Key Statistics")).toBeInTheDocument();
+    expect(screen.getByText("MothersAgeChart")).toBeInTheDocument();
+    expect(screen.getByText("MothersRaceChart")).toBeInTheDocument();
+    expect(screen.queryByText("FathersAgeChart")).not.toBeInTheDocument();
+    expect(screen.queryByText("FathersRaceChart")).not.toBeInTheDocument();
+  });
+
+  it("switches tab panels and updates URL query", async () => {
     const user = userEvent.setup();
     render(<Home />);
 
-    const searchInput = screen.getByLabelText("Search");
-    const yearSelect = screen.getByLabelText("Year");
-    const regionSelect = screen.getByLabelText("Region");
+    await user.click(
+      screen.getByRole("tab", { name: "Parental Characteristics" }),
+    );
 
-    await user.type(searchInput, "county");
-    await user.selectOptions(yearSelect, "2023");
-    await user.selectOptions(regionSelect, "west");
-    await user.click(screen.getByRole("button", { name: "Reset" }));
-
-    expect(searchInput).toHaveValue("");
-    expect(yearSelect).toHaveValue("2021");
-    expect(regionSelect).toHaveValue("all");
+    expect(replaceMock).toHaveBeenCalledWith("/?tab=parental-characteristics", {
+      scroll: false,
+    });
+    expect(screen.getByText("FathersAgeChart")).toBeInTheDocument();
+    expect(screen.getByText("FathersRaceChart")).toBeInTheDocument();
+    expect(screen.queryByText("MothersAgeChart")).not.toBeInTheDocument();
+    expect(screen.queryByText("MothersRaceChart")).not.toBeInTheDocument();
   });
 
-  it("updates selected year when year filter changes to 2022", async () => {
-    const user = userEvent.setup();
+  it("honors valid tab query on initial render", async () => {
+    searchQuery = "tab=parental-characteristics";
     render(<Home />);
 
-    const yearSelect = screen.getByLabelText("Year");
-    await user.selectOptions(yearSelect, "2022");
-
-    expect(yearSelect).toHaveValue("2022");
+    await waitFor(() => {
+      expect(
+        screen.getByRole("tab", { name: "Parental Characteristics" }),
+      ).toHaveAttribute("aria-selected", "true");
+    });
+    expect(screen.getByText("FathersAgeChart")).toBeInTheDocument();
+    expect(screen.getByText("FathersRaceChart")).toBeInTheDocument();
   });
 });

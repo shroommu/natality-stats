@@ -1,19 +1,66 @@
 "use client";
 
+import { useState } from "react";
+import { Suspense } from "react";
+
 import { Card } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
+import { Tabs, type TabsItem } from "@/components";
+
+import MothersRace from "@/charts/MothersRace";
+import MothersAge from "@/charts/MothersAge";
+import FathersRace from "@/charts/FathersRace";
+import FathersAge from "@/charts/FathersAge";
+
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("maternal-characteristics");
+
+  const tabItems: TabsItem[] = [
+    {
+      label: "Maternal Characteristics",
+      value: "maternal-characteristics",
+      content: (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          <MothersAge />
+          <MothersRace />
+        </Box>
+      ),
+    },
+    {
+      label: "Parental Characteristics",
+      value: "parental-characteristics",
+      content: (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          <FathersAge />
+          <FathersRace />
+        </Box>
+      ),
+    },
+  ];
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
         2021 Natality Data Overview
       </Typography>
       <Typography variant="body1" gutterBottom>
-        This dashboard provides an overview of the CDC's 2021 natality data,
-        including key statistics and visualizations. Explore the charts and
-        tables to gain insights into birth trends, demographics, and other
+        This dashboard provides an overview of the CDC&apos;s 2021 natality
+        data, including key statistics and visualizations. Explore the charts
+        and tables to gain insights into birth trends, demographics, and other
         relevant information.
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -24,7 +71,7 @@ export default function Home() {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: { xs: "column", md: "row" },
             gap: 2,
             justifyContent: "space-between",
           }}
@@ -67,6 +114,19 @@ export default function Home() {
           </Card>
         </Box>
       </Box>
+      <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+        Demographics
+      </Typography>
+      <Suspense
+        fallback={<Typography variant="body2">Loading sections...</Typography>}
+      >
+        <Tabs
+          tabs={tabItems}
+          value={activeTab}
+          onChange={setActiveTab}
+          ariaLabel="Natality dashboard sections"
+        />
+      </Suspense>
     </Box>
   );
 }
