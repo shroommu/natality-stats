@@ -1,44 +1,59 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
 
+const replaceMock = vi.fn();
+let searchQuery = "";
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+  useRouter: () => ({
+    replace: replaceMock,
+  }),
+  useSearchParams: () => new URLSearchParams(searchQuery),
+}));
+
 describe("Home page", () => {
-  it("renders key dashboard sections", () => {
-    render(<Home />);
-
-    expect(screen.getByRole("heading", { name: "Interactive Data Explorer" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Filters" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Births Trend (Sample)" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Records Preview (Sample)" })).toBeInTheDocument();
+  beforeEach(() => {
+    replaceMock.mockClear();
+    searchQuery = "";
   });
 
-  it("resets filter controls to defaults", async () => {
+  it("renders heading and tab controls", () => {
+    render(<Home />);
+
+    expect(
+      screen.getByRole("heading", { name: "2021 Natality Data Overview" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Overview" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Methodology" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Key Statistics")).toBeInTheDocument();
+  });
+
+  it("switches tab panels and updates URL query", async () => {
     const user = userEvent.setup();
     render(<Home />);
 
-    const searchInput = screen.getByLabelText("Search");
-    const yearSelect = screen.getByLabelText("Year");
-    const regionSelect = screen.getByLabelText("Region");
+    await user.click(screen.getByRole("tab", { name: "Methodology" }));
 
-    await user.type(searchInput, "county");
-    await user.selectOptions(yearSelect, "2023");
-    await user.selectOptions(regionSelect, "west");
-    await user.click(screen.getByRole("button", { name: "Reset" }));
-
-    expect(searchInput).toHaveValue("");
-    expect(yearSelect).toHaveValue("2021");
-    expect(regionSelect).toHaveValue("all");
+    expect(
+      screen.getByText(/This project uses CDC natality records/i),
+    ).toBeInTheDocument();
+    expect(replaceMock).toHaveBeenCalledWith("/?tab=methodology", {
+      scroll: false,
+    });
   });
 
-  it("updates selected year when year filter changes to 2022", async () => {
-    const user = userEvent.setup();
+  it("honors valid tab query on initial render", async () => {
+    searchQuery = "tab=methodology";
     render(<Home />);
 
-    const yearSelect = screen.getByLabelText("Year");
-    await user.selectOptions(yearSelect, "2022");
-
-    expect(yearSelect).toHaveValue("2022");
+    expect(
+      await screen.findByText(/This project uses CDC natality records/i),
+    ).toBeInTheDocument();
   });
 });
