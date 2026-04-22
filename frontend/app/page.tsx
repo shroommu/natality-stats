@@ -9,6 +9,11 @@ import Typography from "@mui/material/Typography";
 
 import { Tabs, type TabsItem } from "@/components";
 
+import MothersRace from "@/charts/MothersRace";
+import MothersAge from "@/charts/MothersAge";
+import FathersRace from "@/charts/FathersRace";
+import FathersAge from "@/charts/FathersAge";
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("maternal-characteristics");
 
@@ -16,12 +21,34 @@ export default function Home() {
     {
       label: "Maternal Characteristics",
       value: "maternal-characteristics",
-      content: <></>,
+      content: (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          <MothersAge />
+          <MothersRace />
+        </Box>
+      ),
     },
     {
       label: "Parental Characteristics",
       value: "parental-characteristics",
-      content: <></>,
+      content: (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          <FathersAge />
+          <FathersRace />
+        </Box>
+      ),
     },
   ];
 

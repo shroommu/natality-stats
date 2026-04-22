@@ -4,6 +4,22 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
 
+vi.mock("@/charts/MothersAge", () => ({
+  default: () => <div>MothersAgeChart</div>,
+}));
+
+vi.mock("@/charts/MothersRace", () => ({
+  default: () => <div>MothersRaceChart</div>,
+}));
+
+vi.mock("@/charts/FathersAge", () => ({
+  default: () => <div>FathersAgeChart</div>,
+}));
+
+vi.mock("@/charts/FathersRace", () => ({
+  default: () => <div>FathersRaceChart</div>,
+}));
+
 const replaceMock = vi.fn();
 let searchQuery = "";
 
@@ -34,6 +50,10 @@ describe("Home page", () => {
       screen.getByRole("tab", { name: "Parental Characteristics" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Key Statistics")).toBeInTheDocument();
+    expect(screen.getByText("MothersAgeChart")).toBeInTheDocument();
+    expect(screen.getByText("MothersRaceChart")).toBeInTheDocument();
+    expect(screen.queryByText("FathersAgeChart")).not.toBeInTheDocument();
+    expect(screen.queryByText("FathersRaceChart")).not.toBeInTheDocument();
   });
 
   it("switches tab panels and updates URL query", async () => {
@@ -47,6 +67,10 @@ describe("Home page", () => {
     expect(replaceMock).toHaveBeenCalledWith("/?tab=parental-characteristics", {
       scroll: false,
     });
+    expect(screen.getByText("FathersAgeChart")).toBeInTheDocument();
+    expect(screen.getByText("FathersRaceChart")).toBeInTheDocument();
+    expect(screen.queryByText("MothersAgeChart")).not.toBeInTheDocument();
+    expect(screen.queryByText("MothersRaceChart")).not.toBeInTheDocument();
   });
 
   it("honors valid tab query on initial render", async () => {
@@ -58,5 +82,7 @@ describe("Home page", () => {
         screen.getByRole("tab", { name: "Parental Characteristics" }),
       ).toHaveAttribute("aria-selected", "true");
     });
+    expect(screen.getByText("FathersAgeChart")).toBeInTheDocument();
+    expect(screen.getByText("FathersRaceChart")).toBeInTheDocument();
   });
 });
