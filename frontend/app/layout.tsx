@@ -36,7 +36,7 @@ export default function RootLayout({
                 </Typography>
               </Link>
               <Button variant="outlined" size="small" href="/vbac">
-                VBAC Explorer
+                VBAC Predictor
               </Button>
             </Box>
           </header>
