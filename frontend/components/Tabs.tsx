@@ -55,7 +55,7 @@ export function Tabs({
       const params = new URLSearchParams(searchParamsString);
       params.set(queryParam, nextValue);
       const query = params.toString();
-      router.replace(query ? `${pathname}?${query}` : pathname, {
+      router.replace(`${pathname}?${query}`, {
         scroll: false,
       });
     },
@@ -151,7 +151,7 @@ export function Tabs({
             hidden={!isActive}
             sx={{ pt: 2 }}
           >
-            {keepMounted || isActive ? tab.content : null}
+            {tab.content}
             {!tab.content ? (
               <Typography variant="body2" color="text.secondary">
                 No content available.

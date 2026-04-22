@@ -78,4 +78,41 @@ describe("Tabs", () => {
       });
     });
   });
+
+  it("renders nothing when tabs are empty", () => {
+    render(<Tabs tabs={[]} value="overview" onChange={vi.fn()} />);
+
+    expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+    expect(replaceMock).not.toHaveBeenCalled();
+  });
+
+  it("falls back to first tab when controlled value is invalid", async () => {
+    render(<Tabs tabs={tabs} value="unknown" onChange={vi.fn()} />);
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/?tab=overview", {
+        scroll: false,
+      });
+    });
+  });
+
+  it("shows empty state text for inactive mounted panel without content", () => {
+    render(
+      <Tabs
+        tabs={[
+          {
+            label: "Overview",
+            value: "overview",
+            content: <div>Overview</div>,
+          },
+          { label: "Details", value: "details", content: null },
+        ]}
+        value="overview"
+        onChange={vi.fn()}
+        keepMounted
+      />,
+    );
+
+    expect(screen.getByText("No content available.")).toBeInTheDocument();
+  });
 });
