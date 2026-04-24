@@ -29,6 +29,9 @@ export default function FathersAge() {
           title: {
             display: true,
             text: "Distribution of Father's Age",
+            font: {
+              size: 18,
+            },
           },
         },
       }}

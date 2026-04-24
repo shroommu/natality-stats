@@ -29,6 +29,9 @@ export default function FathersRace() {
           title: {
             display: true,
             text: "Distribution of Father's Race",
+            font: {
+              size: 18,
+            },
           },
         },
       }}
