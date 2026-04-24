@@ -18,7 +18,7 @@ export type TabsItem = {
 type TabsProps = {
   tabs: TabsItem[];
   value: string;
-  onChange: (nextValue: string) => void;
+  onChange?: (nextValue: string) => void;
   ariaLabel?: string;
   keepMounted?: boolean;
   sx?: SxProps<Theme>;
@@ -66,7 +66,7 @@ export function Tabs({
 
   const handleChange = (_event: SyntheticEvent, nextValue: string) => {
     setSelectedValue(nextValue);
-    onChange(nextValue);
+    onChange?.(nextValue);
   };
 
   if (!tabs.length || !selectedValue) {
