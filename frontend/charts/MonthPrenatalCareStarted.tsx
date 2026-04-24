@@ -9,7 +9,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-import fathersAgeData from "../data/json/fathers_combined_age.json";
+import monthPrenatalCareStarted from "../data/json/month_prenatal_care_started.json";
 
 ChartJS.register(
   CategoryScale,
@@ -20,7 +20,7 @@ ChartJS.register(
   Legend,
 );
 
-export default function FathersAge() {
+export default function MonthPrenatalCareStarted() {
   return (
     <Bar
       options={{
@@ -28,7 +28,7 @@ export default function FathersAge() {
         plugins: {
           title: {
             display: true,
-            text: "Distribution of Father's Age",
+            text: "Distribution of Month Prenatal Care Started",
             font: {
               size: 18,
             },
@@ -36,12 +36,23 @@ export default function FathersAge() {
         },
       }}
       data={{
-        labels: Object.keys(fathersAgeData),
+        labels: [
+          "No prenatal care",
+          "1st month",
+          "2nd month",
+          "3rd month",
+          "4th month",
+          "5th month",
+          "6th month",
+          "7th month",
+          "8th month",
+          "9th month",
+        ],
         datasets: [
           {
             label: "Number of Births",
-            data: Object.values(fathersAgeData),
-            backgroundColor: "rgba(75, 124, 192, 0.5)",
+            data: Object.values(monthPrenatalCareStarted),
+            backgroundColor: "rgba(136, 75, 215, 0.5)",
           },
         ],
       }}

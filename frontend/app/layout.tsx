@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Box, Button, Link, Typography } from "@mui/material";
+import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
 import { AppThemeProvider } from "@/components/AppThemeProvider";
+import { APP_BACKGROUND_GRADIENT } from "@/theme/colorTokens";
 
 export const metadata: Metadata = {
   title: "Natality",
@@ -14,35 +15,67 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body
+        style={{
+          background: APP_BACKGROUND_GRADIENT,
+          backgroundAttachment: "fixed",
+        }}
+      >
         <AppThemeProvider>
-          <header>
-            <Box
+          <AppBar position="static">
+            <Toolbar
               sx={{
+                gap: 2,
                 display: "flex",
-                alignItems: "center",
-                p: 2,
+                px: 4,
+                py: 2,
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
                 borderBottom: "1px solid",
                 borderColor: "divider",
               }}
             >
-              <Link href="/">
+              <Link
+                href="/"
+                sx={{
+                  mr: 2,
+                  color: "black",
+                  textDecoration: "none",
+                }}
+              >
                 <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 600, marginRight: 2 }}
-                  gutterBottom
+                  variant="h5"
+                  sx={{ fontWeight: 600 }}
+                  color="inherit"
                 >
-                  Natality
+                  Natality Stats
                 </Typography>
               </Link>
-              <Button variant="outlined" size="small" href="/vbac">
+              <Button variant="contained" size="small" href="/">
+                Overview
+              </Button>
+              <Button variant="contained" size="small" href="/vbac">
                 VBAC Predictor
               </Button>
-            </Box>
-          </header>
-          <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6 md:p-10">
+            </Toolbar>
+          </AppBar>
+          <Box
+            component="main"
+            sx={{
+              mx: "auto",
+              maxWidth: "1200px",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              my: 4,
+              py: 4,
+              px: 3,
+              borderRadius: 2,
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+            }}
+          >
             {children}
-          </main>
+          </Box>
         </AppThemeProvider>
       </body>
     </html>

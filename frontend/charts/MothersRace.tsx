@@ -29,6 +29,9 @@ export default function MothersRace() {
           title: {
             display: true,
             text: "Distribution of Mother's Race",
+            font: {
+              size: 18,
+            },
           },
         },
       }}

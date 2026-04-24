@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { Suspense } from "react";
 
-import { Card } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Accordion, AccordionDetails, Card } from "@mui/material";
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+  accordionSummaryClasses,
+} from "@mui/material/AccordionSummary";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -13,11 +18,32 @@ import MothersRace from "@/charts/MothersRace";
 import MothersAge from "@/charts/MothersAge";
 import FathersRace from "@/charts/FathersRace";
 import FathersAge from "@/charts/FathersAge";
+import MonthPrenatalCareStarted from "@/charts/MonthPrenatalCareStarted";
+import NumberOfPrenatalVisits from "@/charts/NumberOfPrenatalVisits";
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  flexDirection: "row-reverse",
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
+    {
+      transform: "rotate(90deg)",
+    },
+  [`& .${accordionSummaryClasses.content}`]: {
+    marginLeft: theme.spacing(2),
+  },
+  ...theme.applyStyles("dark", {
+    backgroundColor: "rgba(255, 255, 255, .05)",
+  }),
+}));
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("maternal-characteristics");
+  const initialDemographicsTab = "maternal-characteristics";
 
-  const tabItems: TabsItem[] = [
+  const demographicsTabItems: TabsItem[] = [
     {
       label: "Maternal Characteristics",
       value: "maternal-characteristics",
@@ -35,8 +61,8 @@ export default function Home() {
       ),
     },
     {
-      label: "Parental Characteristics",
-      value: "parental-characteristics",
+      label: "Paternal Characteristics",
+      value: "paternal-characteristics",
       content: (
         <Box
           sx={{
@@ -58,9 +84,9 @@ export default function Home() {
         2021 Natality Data Overview
       </Typography>
       <Typography variant="body1" gutterBottom>
-        This dashboard provides an overview of the CDC&apos;s 2021 natality
-        data, including key statistics and visualizations. Explore the charts
-        and tables to gain insights into birth trends, demographics, and other
+        This page provides an overview of the CDC&apos;s 2021 natality data,
+        including key statistics and visualizations. Explore the charts and
+        tables to gain insights into birth trends, demographics, and other
         relevant information.
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -76,7 +102,7 @@ export default function Home() {
             justifyContent: "space-between",
           }}
         >
-          <Card variant="outlined" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography variant="h5" gutterBottom>
                 Total Births
@@ -86,7 +112,7 @@ export default function Home() {
               </Typography>
             </Box>
           </Card>
-          <Card variant="outlined" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography variant="h5" gutterBottom>
                 Birth Rate
@@ -99,7 +125,7 @@ export default function Home() {
               </Typography>
             </Box>
           </Card>
-          <Card variant="outlined" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography variant="h5" gutterBottom>
                 Fertility Rate
@@ -115,18 +141,35 @@ export default function Home() {
         </Box>
       </Box>
       <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-        Demographics
+        Detailed Statistics
       </Typography>
-      <Suspense
-        fallback={<Typography variant="body2">Loading sections...</Typography>}
-      >
-        <Tabs
-          tabs={tabItems}
-          value={activeTab}
-          onChange={setActiveTab}
-          ariaLabel="Natality dashboard sections"
-        />
-      </Suspense>
+      <Accordion>
+        <AccordionSummary>
+          <Typography component="span">Parental Demographics</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Suspense
+            fallback={
+              <Typography variant="body2">Loading sections...</Typography>
+            }
+          >
+            <Tabs
+              tabs={demographicsTabItems}
+              value={initialDemographicsTab}
+              ariaLabel="Natality demographics dashboard sections"
+            />
+          </Suspense>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary>
+          <Typography component="span">Prenatal Care Details</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <MonthPrenatalCareStarted />
+          <NumberOfPrenatalVisits />
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 }

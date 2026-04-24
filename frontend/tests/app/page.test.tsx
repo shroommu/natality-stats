@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
 
@@ -20,69 +20,61 @@ vi.mock("@/charts/FathersRace", () => ({
   default: () => <div>FathersRaceChart</div>,
 }));
 
-const replaceMock = vi.fn();
-let searchQuery = "";
-
-vi.mock("next/navigation", () => ({
-  usePathname: () => "/",
-  useRouter: () => ({
-    replace: replaceMock,
-  }),
-  useSearchParams: () => new URLSearchParams(searchQuery),
-}));
-
 describe("Home page", () => {
-  beforeEach(() => {
-    replaceMock.mockClear();
-    searchQuery = "";
-  });
-
   it("renders heading and tab controls", () => {
     render(<Home />);
+    const demographicsRegion = screen.getAllByRole("region")[0];
 
     expect(
       screen.getByRole("heading", { name: "2021 Natality Data Overview" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("tab", { name: "Maternal Characteristics" }),
+      within(demographicsRegion).getByRole("tab", {
+        name: "Maternal Characteristics",
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("tab", { name: "Parental Characteristics" }),
+      within(demographicsRegion).getByRole("tab", {
+        name: "Paternal Characteristics",
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText("Key Statistics")).toBeInTheDocument();
-    expect(screen.getByText("MothersAgeChart")).toBeInTheDocument();
-    expect(screen.getByText("MothersRaceChart")).toBeInTheDocument();
-    expect(screen.queryByText("FathersAgeChart")).not.toBeInTheDocument();
-    expect(screen.queryByText("FathersRaceChart")).not.toBeInTheDocument();
+    expect(
+      within(demographicsRegion).getByText("MothersAgeChart"),
+    ).toBeInTheDocument();
+    expect(
+      within(demographicsRegion).getByText("MothersRaceChart"),
+    ).toBeInTheDocument();
+    expect(
+      within(demographicsRegion).queryByText("FathersAgeChart"),
+    ).not.toBeInTheDocument();
+    expect(
+      within(demographicsRegion).queryByText("FathersRaceChart"),
+    ).not.toBeInTheDocument();
   });
 
-  it("switches tab panels and updates URL query", async () => {
+  it("switches tab panels", async () => {
     const user = userEvent.setup();
     render(<Home />);
+    const demographicsRegion = screen.getAllByRole("region")[0];
 
     await user.click(
-      screen.getByRole("tab", { name: "Parental Characteristics" }),
+      within(demographicsRegion).getByRole("tab", {
+        name: "Paternal Characteristics",
+      }),
     );
 
-    expect(replaceMock).toHaveBeenCalledWith("/?tab=parental-characteristics", {
-      scroll: false,
-    });
-    expect(screen.getByText("FathersAgeChart")).toBeInTheDocument();
-    expect(screen.getByText("FathersRaceChart")).toBeInTheDocument();
-    expect(screen.queryByText("MothersAgeChart")).not.toBeInTheDocument();
-    expect(screen.queryByText("MothersRaceChart")).not.toBeInTheDocument();
-  });
-
-  it("honors valid tab query on initial render", async () => {
-    searchQuery = "tab=parental-characteristics";
-    render(<Home />);
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("tab", { name: "Parental Characteristics" }),
-      ).toHaveAttribute("aria-selected", "true");
-    });
-    expect(screen.getByText("FathersAgeChart")).toBeInTheDocument();
-    expect(screen.getByText("FathersRaceChart")).toBeInTheDocument();
+    expect(
+      within(demographicsRegion).getByText("FathersAgeChart"),
+    ).toBeInTheDocument();
+    expect(
+      within(demographicsRegion).getByText("FathersRaceChart"),
+    ).toBeInTheDocument();
+    expect(
+      within(demographicsRegion).queryByText("MothersAgeChart"),
+    ).not.toBeInTheDocument();
+    expect(
+      within(demographicsRegion).queryByText("MothersRaceChart"),
+    ).not.toBeInTheDocument();
   });
 });

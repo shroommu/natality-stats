@@ -29,6 +29,9 @@ export default function MothersAge() {
           title: {
             display: true,
             text: "Distribution of Mother's Age",
+            font: {
+              size: 18,
+            },
           },
         },
       }}

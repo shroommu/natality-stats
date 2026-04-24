@@ -1,8 +1,7 @@
 "use client";
 
 import type { ReactNode, SyntheticEvent } from "react";
-import { useCallback, useEffect, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import MuiTab from "@mui/material/Tab";
 import MuiTabs from "@mui/material/Tabs";
@@ -19,8 +18,7 @@ export type TabsItem = {
 type TabsProps = {
   tabs: TabsItem[];
   value: string;
-  onChange: (nextValue: string) => void;
-  queryParam?: string;
+  onChange?: (nextValue: string) => void;
   ariaLabel?: string;
   keepMounted?: boolean;
   sx?: SxProps<Theme>;
@@ -33,66 +31,42 @@ export function Tabs({
   tabs,
   value,
   onChange,
-  queryParam = "tab",
   ariaLabel = "Content sections",
   keepMounted = false,
   sx,
 }: TabsProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const searchParamsString = searchParams.toString();
-
   const tabValueSet = useMemo(() => {
     return new Set(tabs.map((tab) => tab.value));
   }, [tabs]);
 
   const firstTabValue = tabs[0]?.value;
-  const selectedValue = tabValueSet.has(value) ? value : firstTabValue;
-
-  const updateUrl = useCallback(
-    (nextValue: string) => {
-      const params = new URLSearchParams(searchParamsString);
-      params.set(queryParam, nextValue);
-      const query = params.toString();
-      router.replace(`${pathname}?${query}`, {
-        scroll: false,
-      });
-    },
-    [pathname, queryParam, router, searchParamsString],
-  );
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(() => {
+    return tabValueSet.has(value) ? value : firstTabValue;
+  });
 
   useEffect(() => {
     if (!tabs.length) {
+      setSelectedValue(undefined);
       return;
     }
 
-    const queryValue = searchParams.get(queryParam);
-    if (queryValue && tabValueSet.has(queryValue)) {
-      if (queryValue !== value) {
-        onChange(queryValue);
+    if (tabValueSet.has(value)) {
+      setSelectedValue(value);
+      return;
+    }
+
+    setSelectedValue((prev) => {
+      if (prev && tabValueSet.has(prev)) {
+        return prev;
       }
-      return;
-    }
 
-    const fallbackValue = tabValueSet.has(value) ? value : firstTabValue;
-    if (fallbackValue && queryValue !== fallbackValue) {
-      updateUrl(fallbackValue);
-    }
-  }, [
-    firstTabValue,
-    onChange,
-    queryParam,
-    searchParams,
-    tabValueSet,
-    tabs.length,
-    updateUrl,
-    value,
-  ]);
+      return firstTabValue;
+    });
+  }, [firstTabValue, tabValueSet, tabs.length, value]);
 
   const handleChange = (_event: SyntheticEvent, nextValue: string) => {
-    onChange(nextValue);
-    updateUrl(nextValue);
+    setSelectedValue(nextValue);
+    onChange?.(nextValue);
   };
 
   if (!tabs.length || !selectedValue) {
