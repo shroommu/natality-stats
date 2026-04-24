@@ -2,12 +2,13 @@
 
 import { Suspense } from "react";
 
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Card,
-} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Accordion, AccordionDetails, Card } from "@mui/material";
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+  accordionSummaryClasses,
+} from "@mui/material/AccordionSummary";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -20,10 +21,29 @@ import FathersAge from "@/charts/FathersAge";
 import MonthPrenatalCareStarted from "@/charts/MonthPrenatalCareStarted";
 import NumberOfPrenatalVisits from "@/charts/NumberOfPrenatalVisits";
 
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  flexDirection: "row-reverse",
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
+    {
+      transform: "rotate(90deg)",
+    },
+  [`& .${accordionSummaryClasses.content}`]: {
+    marginLeft: theme.spacing(1),
+  },
+  ...theme.applyStyles("dark", {
+    backgroundColor: "rgba(255, 255, 255, .05)",
+  }),
+}));
+
 export default function Home() {
   const initialDemographicsTab = "maternal-characteristics";
 
-  const tabItems: TabsItem[] = [
+  const demographicsTabItems: TabsItem[] = [
     {
       label: "Maternal Characteristics",
       value: "maternal-characteristics",
@@ -120,9 +140,12 @@ export default function Home() {
           </Card>
         </Box>
       </Box>
-      <Accordion defaultExpanded>
-        <AccordionSummary sx={{ fontWeight: 600 }}>
-          Demographics
+      <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+        Detailed Statistics
+      </Typography>
+      <Accordion>
+        <AccordionSummary>
+          <Typography component="span">Demographics</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Suspense
@@ -131,16 +154,16 @@ export default function Home() {
             }
           >
             <Tabs
-              tabs={tabItems}
+              tabs={demographicsTabItems}
               value={initialDemographicsTab}
               ariaLabel="Natality demographics dashboard sections"
             />
           </Suspense>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary sx={{ fontWeight: 600 }}>
-          Prenatal Care Details
+      <Accordion>
+        <AccordionSummary>
+          <Typography component="span">Prenatal Care Details</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <MonthPrenatalCareStarted />
