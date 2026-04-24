@@ -5,7 +5,7 @@ import { AppThemeProvider } from "@/components/AppThemeProvider";
 import { APP_BACKGROUND_GRADIENT } from "@/theme/colorTokens";
 
 export const metadata: Metadata = {
-  title: "Natality",
+  title: "Natality Stats",
 };
 
 export default function RootLayout({
