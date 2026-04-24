@@ -33,7 +33,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
       transform: "rotate(90deg)",
     },
   [`& .${accordionSummaryClasses.content}`]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
   },
   ...theme.applyStyles("dark", {
     backgroundColor: "rgba(255, 255, 255, .05)",
@@ -84,9 +84,9 @@ export default function Home() {
         2021 Natality Data Overview
       </Typography>
       <Typography variant="body1" gutterBottom>
-        This dashboard provides an overview of the CDC&apos;s 2021 natality
-        data, including key statistics and visualizations. Explore the charts
-        and tables to gain insights into birth trends, demographics, and other
+        This page provides an overview of the CDC&apos;s 2021 natality data,
+        including key statistics and visualizations. Explore the charts and
+        tables to gain insights into birth trends, demographics, and other
         relevant information.
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -102,7 +102,7 @@ export default function Home() {
             justifyContent: "space-between",
           }}
         >
-          <Card variant="outlined" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography variant="h5" gutterBottom>
                 Total Births
@@ -112,7 +112,7 @@ export default function Home() {
               </Typography>
             </Box>
           </Card>
-          <Card variant="outlined" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography variant="h5" gutterBottom>
                 Birth Rate
@@ -125,7 +125,7 @@ export default function Home() {
               </Typography>
             </Box>
           </Card>
-          <Card variant="outlined" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography variant="h5" gutterBottom>
                 Fertility Rate
@@ -145,7 +145,7 @@ export default function Home() {
       </Typography>
       <Accordion>
         <AccordionSummary>
-          <Typography component="span">Demographics</Typography>
+          <Typography component="span">Parental Demographics</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Suspense

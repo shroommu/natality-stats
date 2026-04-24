@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 
-import { MenuItem, TextField, Box, Typography, Button } from "@mui/material";
+import {
+  MenuItem,
+  TextField,
+  Box,
+  Typography,
+  Button,
+  Card,
+  Link,
+} from "@mui/material";
 import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
@@ -67,193 +75,212 @@ export default function VBAC() {
         success of a VBAC. After filling out the form, click the "Predict"
         button to see the estimated probability of a successful VBAC.
       </Typography>
-      <Typography variant="h5" sx={{ fontWeight: 600 }} gutterBottom>
-        {`VBAC Success Probability: ${vbacPrediction !== null ? `${vbacPrediction}%` : "N/A"}`}
-      </Typography>
-      <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-        Parameters
-      </Typography>
-      <Box
+      <Card
+        variant="elevation"
         sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
           gap: 2,
+          alignItems: "center",
         }}
       >
-        <TextField
-          select
-          label="Was labor induced?"
-          name="laborInduced"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.laborInduced}
-          onChange={(event) =>
-            updateParameter("laborInduced", event.target.value)
-          }
+        <Typography variant="h5" gutterBottom>
+          {`VBAC Success Probability`}
+        </Typography>
+        <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
+          {vbacPrediction !== null ? `${vbacPrediction}%` : "--%"}
+        </Typography>
+      </Card>
+      <Card
+        variant="elevation"
+        sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
+          Parameters
+        </Typography>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            gap: 2,
+          }}
         >
-          <MenuItem value={true as any}>Yes</MenuItem>
-          <MenuItem value={false as any}>No</MenuItem>
-        </TextField>
-        <TextField
-          select
-          label="Was labor augmented?"
-          name="laborAugmented"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.laborAugmented}
-          onChange={(event) =>
-            updateParameter("laborAugmented", event.target.value)
-          }
-        >
-          <MenuItem value={true as any}>Yes</MenuItem>
-          <MenuItem value={false as any}>No</MenuItem>
-        </TextField>
-        <TextField
-          select
-          label="Attendant at birth"
-          name="attendantAtBirth"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.attendantAtBirth}
-          onChange={(event) =>
-            updateParameter("attendantAtBirth", event.target.value)
-          }
-        >
-          <MenuItem value={1}>Doctor (MD)</MenuItem>
-          <MenuItem value={2}>Doctor (DO)</MenuItem>
-          <MenuItem value={3}>Midwife (Certified)</MenuItem>
-          <MenuItem value={4}>Midwife (Other)</MenuItem>
-          <MenuItem value={5}>Other</MenuItem>
-        </TextField>
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <TimePicker
-            label="Time of birth"
-            name="timeOfBirth"
-            value={vbacPredictionParameters.timeOfBirth}
-            ampmInClock={true}
-            onChange={(value) => updateParameter("timeOfBirth", value)}
-            format="hh:mm a"
-            slotProps={{ textField: { size: "small", fullWidth: true } }}
+          <TextField
+            select
+            label="Was labor induced?"
+            name="laborInduced"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.laborInduced}
+            onChange={(event) =>
+              updateParameter("laborInduced", event.target.value)
+            }
+          >
+            <MenuItem value={true as any}>Yes</MenuItem>
+            <MenuItem value={false as any}>No</MenuItem>
+          </TextField>
+          <TextField
+            select
+            label="Was labor augmented?"
+            name="laborAugmented"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.laborAugmented}
+            onChange={(event) =>
+              updateParameter("laborAugmented", event.target.value)
+            }
+          >
+            <MenuItem value={true as any}>Yes</MenuItem>
+            <MenuItem value={false as any}>No</MenuItem>
+          </TextField>
+          <TextField
+            select
+            label="Attendant at birth"
+            name="attendantAtBirth"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.attendantAtBirth}
+            onChange={(event) =>
+              updateParameter("attendantAtBirth", event.target.value)
+            }
+          >
+            <MenuItem value={1}>Doctor (MD)</MenuItem>
+            <MenuItem value={2}>Doctor (DO)</MenuItem>
+            <MenuItem value={3}>Midwife (Certified)</MenuItem>
+            <MenuItem value={4}>Midwife (Other)</MenuItem>
+            <MenuItem value={5}>Other</MenuItem>
+          </TextField>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <TimePicker
+              label="Time of birth"
+              name="timeOfBirth"
+              value={vbacPredictionParameters.timeOfBirth}
+              ampmInClock={true}
+              onChange={(value) => updateParameter("timeOfBirth", value)}
+              format="hh:mm a"
+              slotProps={{ textField: { size: "small", fullWidth: true } }}
+            />
+          </LocalizationProvider>
+          <TextField
+            select
+            label="Number of previous live births"
+            name="priorBirthsNowLiving"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.priorBirthsNowLiving}
+            onChange={(event) =>
+              updateParameter("priorBirthsNowLiving", event.target.value)
+            }
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
+            label="Number of previous C-sections"
+            name="numberOfPreviousCSections"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.numberOfPreviousCSections}
+            onChange={(event) =>
+              updateParameter("numberOfPreviousCSections", event.target.value)
+            }
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Mother's BMI"
+            name="mothersBMI"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.bmi}
+            onChange={(event) => updateParameter("bmi", event.target.value)}
           />
-        </LocalizationProvider>
-        <TextField
-          select
-          label="Number of previous live births"
-          name="priorBirthsNowLiving"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.priorBirthsNowLiving}
-          onChange={(event) =>
-            updateParameter("priorBirthsNowLiving", event.target.value)
-          }
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          select
-          label="Number of previous C-sections"
-          name="numberOfPreviousCSections"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.numberOfPreviousCSections}
-          onChange={(event) =>
-            updateParameter("numberOfPreviousCSections", event.target.value)
-          }
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          label="Mother's BMI"
-          name="mothersBMI"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.bmi}
-          onChange={(event) => updateParameter("bmi", event.target.value)}
-        />
-        <TextField
-          label="Baby's birth weight in grams"
-          name="birthWeight"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.birthWeightInGrams}
-          onChange={(event) =>
-            updateParameter("birthWeightInGrams", event.target.value)
-          }
-        />
-        <TextField
-          label="Mother's weight gain during pregnancy"
-          name="weightGainDuringPregnancy"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.weightGain}
-          onChange={(event) =>
-            updateParameter("weightGain", event.target.value)
-          }
-        />
-        <TextField
-          label="Months since last live birth"
-          name="monthsSinceLastLiveBirth"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.intervalSinceLastLiveBirth}
-          onChange={(event) =>
-            updateParameter("intervalSinceLastLiveBirth", event.target.value)
-          }
-        />
-        <TextField
-          label="Number of prenatal visits"
-          name="numberOfPrenatalVisits"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.numberOfPrenatalVisits}
-          onChange={(event) =>
-            updateParameter("numberOfPrenatalVisits", event.target.value)
-          }
-        />
-        <TextField
-          label="Mother's age at delivery"
-          name="mothersAgeAtDelivery"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.mothersAge}
-          onChange={(event) =>
-            updateParameter("mothersAge", event.target.value)
-          }
-        />
-        <TextField
-          label="Gestational age in weeks"
-          name="gestationalAgeInWeeks"
-          fullWidth
-          size="small"
-          variant="outlined"
-          value={vbacPredictionParameters.gestationalAgeInWeeks}
-          onChange={(event) =>
-            updateParameter("gestationalAgeInWeeks", event.target.value)
-          }
-        />
-      </Box>
-      <Button variant="contained" onClick={() => predict()}>
-        Predict
-      </Button>
+          <TextField
+            label="Baby's birth weight in grams"
+            name="birthWeight"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.birthWeightInGrams}
+            onChange={(event) =>
+              updateParameter("birthWeightInGrams", event.target.value)
+            }
+          />
+          <TextField
+            label="Mother's weight gain during pregnancy"
+            name="weightGainDuringPregnancy"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.weightGain}
+            onChange={(event) =>
+              updateParameter("weightGain", event.target.value)
+            }
+          />
+          <TextField
+            label="Months since last live birth"
+            name="monthsSinceLastLiveBirth"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.intervalSinceLastLiveBirth}
+            onChange={(event) =>
+              updateParameter("intervalSinceLastLiveBirth", event.target.value)
+            }
+          />
+          <TextField
+            label="Number of prenatal visits"
+            name="numberOfPrenatalVisits"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.numberOfPrenatalVisits}
+            onChange={(event) =>
+              updateParameter("numberOfPrenatalVisits", event.target.value)
+            }
+          />
+          <TextField
+            label="Mother's age at delivery"
+            name="mothersAgeAtDelivery"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.mothersAge}
+            onChange={(event) =>
+              updateParameter("mothersAge", event.target.value)
+            }
+          />
+          <TextField
+            label="Gestational age in weeks"
+            name="gestationalAgeInWeeks"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.gestationalAgeInWeeks}
+            onChange={(event) =>
+              updateParameter("gestationalAgeInWeeks", event.target.value)
+            }
+          />
+        </Box>
+        <Button variant="contained" onClick={() => predict()}>
+          Predict
+        </Button>
+      </Card>
       <Box>
         <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
           Notes
@@ -279,13 +306,13 @@ export default function VBAC() {
         <Typography variant="body1" gutterBottom>
           This model was trained on the 2021 CDC Natality dataset, which can be
           located{" "}
-          <a
+          <Link
             href="https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm#Births"
             target="_blank"
             rel="noopener noreferrer"
           >
             here
-          </a>
+          </Link>
           . The dataset includes detailed information on births in the United
           States occurring in the 2021 calendar year, including maternal
           characteristics, pregnancy history, and birth outcomes.
@@ -293,7 +320,7 @@ export default function VBAC() {
         <Typography variant="h6" sx={{ fontWeight: 300 }} gutterBottom>
           Model Details
         </Typography>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1">
           The model used for predicting VBAC success is a Random Forest
           Classifier implemented in Python using the scikit-learn library. The
           model was trained on a subset of features from the CDC Natality
