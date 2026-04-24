@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { Suspense } from "react";
 
-import { Card } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Card,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -13,9 +17,11 @@ import MothersRace from "@/charts/MothersRace";
 import MothersAge from "@/charts/MothersAge";
 import FathersRace from "@/charts/FathersRace";
 import FathersAge from "@/charts/FathersAge";
+import MonthPrenatalCareStarted from "@/charts/MonthPrenatalCareStarted";
+import NumberOfPrenatalVisits from "@/charts/NumberOfPrenatalVisits";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("maternal-characteristics");
+  const initialDemographicsTab = "maternal-characteristics";
 
   const tabItems: TabsItem[] = [
     {
@@ -35,8 +41,8 @@ export default function Home() {
       ),
     },
     {
-      label: "Parental Characteristics",
-      value: "parental-characteristics",
+      label: "Paternal Characteristics",
+      value: "paternal-characteristics",
       content: (
         <Box
           sx={{
@@ -114,19 +120,33 @@ export default function Home() {
           </Card>
         </Box>
       </Box>
-      <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-        Demographics
-      </Typography>
-      <Suspense
-        fallback={<Typography variant="body2">Loading sections...</Typography>}
-      >
-        <Tabs
-          tabs={tabItems}
-          value={activeTab}
-          onChange={setActiveTab}
-          ariaLabel="Natality dashboard sections"
-        />
-      </Suspense>
+      <Accordion defaultExpanded>
+        <AccordionSummary sx={{ fontWeight: 600 }}>
+          Demographics
+        </AccordionSummary>
+        <AccordionDetails>
+          <Suspense
+            fallback={
+              <Typography variant="body2">Loading sections...</Typography>
+            }
+          >
+            <Tabs
+              tabs={tabItems}
+              value={initialDemographicsTab}
+              ariaLabel="Natality demographics dashboard sections"
+            />
+          </Suspense>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary sx={{ fontWeight: 600 }}>
+          Prenatal Care Details
+        </AccordionSummary>
+        <AccordionDetails>
+          <MonthPrenatalCareStarted />
+          <NumberOfPrenatalVisits />
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 }
