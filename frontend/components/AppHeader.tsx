@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { ThemeContext } from "@emotion/react";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -38,22 +39,33 @@ export function AppHeader() {
         sx={{
           gap: { xs: 1.25, sm: 2 },
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: { xs: "space-between", sm: "flex-start" },
           px: { xs: 1.5, sm: 4 },
           py: { xs: 1.25, sm: 2 },
-          backgroundColor: "rgba(255, 255, 255, 0.92)",
+          backgroundColor: {
+            xs: (theme) => theme.palette.primary.main,
+            sm: "rgba(255, 255, 255, 0.92)",
+          },
           borderBottom: "1px solid",
           borderColor: "divider",
           backdropFilter: "blur(6px)",
         }}
       >
+        <IconButton
+          aria-label="Open navigation menu"
+          onClick={drawerOpen ? closeDrawer : openDrawer}
+          sx={{ display: { xs: "inline-flex", sm: "none" } }}
+        >
+          {drawerOpen ? <CloseIcon /> : <MenuIcon />}
+        </IconButton>
+
         <Link
           href="/"
           sx={{
             color: "black",
             textDecoration: "none",
             minWidth: 0,
-            flexGrow: 1,
+            flexGrow: { xs: 1, sm: 0 },
           }}
         >
           <Typography
@@ -61,12 +73,12 @@ export function AppHeader() {
             sx={{
               fontWeight: 600,
               fontSize: { xs: "1rem", sm: "1.5rem" },
+              color: { xs: "white", sm: "black" },
               letterSpacing: { xs: "0.01em", sm: 0 },
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
             }}
-            color="inherit"
           >
             Natality Stats
           </Typography>
@@ -90,17 +102,9 @@ export function AppHeader() {
             </Button>
           ))}
         </Box>
-
-        <IconButton
-          aria-label="Open navigation menu"
-          onClick={openDrawer}
-          sx={{ display: { xs: "inline-flex", sm: "none" } }}
-        >
-          <MenuIcon />
-        </IconButton>
       </Toolbar>
 
-      <Drawer anchor="right" open={drawerOpen} onClose={closeDrawer}>
+      <Drawer anchor="left" open={drawerOpen} onClose={closeDrawer}>
         <Box
           sx={{
             width: 280,
