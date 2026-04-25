@@ -16,8 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        style={{
+      <Box
+        component="body"
+        sx={{
           background: APP_BACKGROUND_GRADIENT,
           backgroundAttachment: "fixed",
         }}
@@ -33,17 +34,17 @@ export default function RootLayout({
               display: "flex",
               flexDirection: "column",
               gap: 6,
-              my: 4,
+              my: { sm: 0, md: 4 },
               py: 4,
               px: 3,
-              borderRadius: 2,
+              borderRadius: { sm: 0, md: 2 },
               backgroundColor: "rgba(255, 255, 255, 0.8)",
             }}
           >
             {children}
           </Box>
         </AppThemeProvider>
-      </body>
+      </Box>
     </html>
   );
 }
