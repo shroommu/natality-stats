@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { AppThemeProvider } from "@/components/AppThemeProvider";
+import { AppHeader } from "@/components/AppHeader";
 import { APP_BACKGROUND_GRADIENT } from "@/theme/colorTokens";
 
 export const metadata: Metadata = {
@@ -22,42 +23,7 @@ export default function RootLayout({
         }}
       >
         <AppThemeProvider>
-          <AppBar position="static">
-            <Toolbar
-              sx={{
-                gap: 2,
-                display: "flex",
-                px: 4,
-                py: 2,
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
-                borderBottom: "1px solid",
-                borderColor: "divider",
-              }}
-            >
-              <Link
-                href="/"
-                sx={{
-                  mr: 2,
-                  color: "black",
-                  textDecoration: "none",
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: 600 }}
-                  color="inherit"
-                >
-                  Natality Stats
-                </Typography>
-              </Link>
-              <Button variant="contained" size="small" href="/">
-                Overview
-              </Button>
-              <Button variant="contained" size="small" href="/vbac">
-                VBAC Predictor
-              </Button>
-            </Toolbar>
-          </AppBar>
+          <AppHeader />
           <Box
             component="main"
             sx={{
