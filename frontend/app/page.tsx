@@ -28,11 +28,20 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   />
 ))(({ theme }) => ({
   flexDirection: "row-reverse",
+  minHeight: 48,
+  [`&.${accordionSummaryClasses.expanded}`]: {
+    minHeight: 48,
+  },
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
     {
       transform: "rotate(90deg)",
     },
   [`& .${accordionSummaryClasses.content}`]: {
+    margin: theme.spacing(1.5, 0),
+    marginLeft: theme.spacing(2),
+  },
+  [`& .${accordionSummaryClasses.content}.${accordionSummaryClasses.expanded}`]: {
+    margin: theme.spacing(1.5, 0),
     marginLeft: theme.spacing(2),
   },
   ...theme.applyStyles("dark", {
