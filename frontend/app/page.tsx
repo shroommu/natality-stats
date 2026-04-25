@@ -28,11 +28,20 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   />
 ))(({ theme }) => ({
   flexDirection: "row-reverse",
+  minHeight: 48,
+  [`&.${accordionSummaryClasses.expanded}`]: {
+    minHeight: 48,
+  },
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
     {
       transform: "rotate(90deg)",
     },
   [`& .${accordionSummaryClasses.content}`]: {
+    margin: theme.spacing(1.5, 0),
+    marginLeft: theme.spacing(2),
+  },
+  [`& .${accordionSummaryClasses.content}.${accordionSummaryClasses.expanded}`]: {
+    margin: theme.spacing(1.5, 0),
     marginLeft: theme.spacing(2),
   },
   ...theme.applyStyles("dark", {
@@ -79,8 +88,19 @@ export default function Home() {
   ];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: { xs: 2, md: 3 },
+        width: "100%",
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{ fontWeight: 600, fontSize: { xs: "1.8rem", sm: "2rem" } }}
+        gutterBottom
+      >
         2021 Natality Data Overview
       </Typography>
       <Typography variant="body1" gutterBottom>
@@ -102,22 +122,29 @@ export default function Home() {
             justifyContent: "space-between",
           }}
         >
-          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 Total Births
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 600, fontSize: { xs: "1.65rem", sm: "2rem" } }}
+                gutterBottom
+              >
                 3,659,289
               </Typography>
             </Box>
           </Card>
-          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 Birth Rate
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 600, fontSize: { xs: "1.65rem", sm: "2rem" } }}
+              >
                 11 births
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -125,12 +152,15 @@ export default function Home() {
               </Typography>
             </Box>
           </Card>
-          <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
+          <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 Fertility Rate
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 600, fontSize: { xs: "1.65rem", sm: "2rem" } }}
+              >
                 56.6 births
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -143,11 +173,11 @@ export default function Home() {
       <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
         Detailed Statistics
       </Typography>
-      <Accordion>
+      <Accordion defaultExpanded>
         <AccordionSummary>
           <Typography component="span">Parental Demographics</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1.5, sm: 2 } }}>
           <Suspense
             fallback={
               <Typography variant="body2">Loading sections...</Typography>
@@ -161,11 +191,19 @@ export default function Home() {
           </Suspense>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion defaultExpanded>
         <AccordionSummary>
           <Typography component="span">Prenatal Care Details</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{
+            px: { xs: 1, sm: 2 },
+            py: { xs: 1.5, sm: 2 },
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
           <MonthPrenatalCareStarted />
           <NumberOfPrenatalVisits />
         </AccordionDetails>
