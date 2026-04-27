@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pickle as pkl
+import cloudpickle as cpkl
 from pandas import DataFrame
 
 app = Flask(__name__)
 CORS(app)
 
-preprocessing = pkl.load(open("models/vbac/preprocessing_pipeline.pkl", "rb"))
-vbac_model = pkl.load(open("models/vbac/rfc_model.pkl", "rb"))
+preprocessing = cpkl.load(open("models/vbac/preprocessing_pipeline.pkl", "rb"))
+vbac_model = cpkl.load(open("models/vbac/rfc_model.pkl", "rb"))
 
 
 @app.route("/health")
@@ -28,17 +28,12 @@ def predict_vbac():
                 "combined_gestation_detail_in_weeks": float(
                     body["gestationalAgeInWeeks"]
                 ),
-                "time_of_birth": float(body["timeOfBirth"]),
                 "prior_births_now_living": float(body["priorBirthsNowLiving"]),
                 "number_of_previous_cesarean": float(body["numberOfPreviousCSections"]),
                 "BMI": float(body["bmi"]),
-                "birth_weight_in_grams": float(body["birthWeightInGrams"]),
-                "weight_gain": float(body["weightGain"]),
                 "interval_since_last_live_birth": float(
                     body["intervalSinceLastLiveBirth"]
                 ),
-                "number_of_prenatal_visits": float(body["numberOfPrenatalVisits"]),
-                "mothers_single_year_age": float(body["mothersAge"]),
             }
         ]
     )

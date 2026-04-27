@@ -11,24 +11,16 @@ import {
   Card,
   Link,
 } from "@mui/material";
-import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import moment from "moment";
 
 export default function VBAC() {
   const [vbacPredictionParameters, setVbacPredictionParameters] = useState({
     laborInduced: false,
     laborAugmented: false,
     attendantAtBirth: 1,
-    timeOfBirth: moment().startOf("day").add(12, "hours"),
     priorBirthsNowLiving: 1,
     numberOfPreviousCSections: 1,
     bmi: 15,
-    birthWeightInGrams: 3400,
-    weightGain: 30,
     intervalSinceLastLiveBirth: 24,
-    numberOfPrenatalVisits: 10,
-    mothersAge: 25,
     gestationalAgeInWeeks: 40,
   });
   const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
@@ -48,10 +40,7 @@ export default function VBAC() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...vbacPredictionParameters,
-          timeOfBirth: vbacPredictionParameters.timeOfBirth.format("HHmm"),
-        }),
+        body: JSON.stringify(vbacPredictionParameters),
       },
     );
 
@@ -154,17 +143,6 @@ export default function VBAC() {
             <MenuItem value={4}>Midwife (Other)</MenuItem>
             <MenuItem value={5}>Other</MenuItem>
           </TextField>
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-            <TimePicker
-              label="Time of birth"
-              name="timeOfBirth"
-              value={vbacPredictionParameters.timeOfBirth}
-              ampmInClock={true}
-              onChange={(value) => updateParameter("timeOfBirth", value)}
-              format="hh:mm a"
-              slotProps={{ textField: { size: "small", fullWidth: true } }}
-            />
-          </LocalizationProvider>
           <TextField
             select
             label="Number of previous live births"
@@ -211,28 +189,6 @@ export default function VBAC() {
             onChange={(event) => updateParameter("bmi", event.target.value)}
           />
           <TextField
-            label="Baby's birth weight in grams"
-            name="birthWeight"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.birthWeightInGrams}
-            onChange={(event) =>
-              updateParameter("birthWeightInGrams", event.target.value)
-            }
-          />
-          <TextField
-            label="Mother's weight gain during pregnancy"
-            name="weightGainDuringPregnancy"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.weightGain}
-            onChange={(event) =>
-              updateParameter("weightGain", event.target.value)
-            }
-          />
-          <TextField
             label="Months since last live birth"
             name="monthsSinceLastLiveBirth"
             fullWidth
@@ -244,28 +200,7 @@ export default function VBAC() {
             }
           />
           <TextField
-            label="Number of prenatal visits"
-            name="numberOfPrenatalVisits"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.numberOfPrenatalVisits}
-            onChange={(event) =>
-              updateParameter("numberOfPrenatalVisits", event.target.value)
-            }
-          />
-          <TextField
-            label="Mother's age at delivery"
-            name="mothersAgeAtDelivery"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.mothersAge}
-            onChange={(event) =>
-              updateParameter("mothersAge", event.target.value)
-            }
-          />
-          <TextField
+            select
             label="Gestational age in weeks"
             name="gestationalAgeInWeeks"
             fullWidth
@@ -275,7 +210,15 @@ export default function VBAC() {
             onChange={(event) =>
               updateParameter("gestationalAgeInWeeks", event.target.value)
             }
-          />
+          >
+            {[28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42].map(
+              (option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ),
+            )}
+          </TextField>
         </Box>
         <Button variant="contained" onClick={() => predict()}>
           Predict
@@ -326,7 +269,7 @@ export default function VBAC() {
           model was trained on a subset of features from the CDC Natality
           dataset that were found to be most predictive of VBAC success. The
           model's performance was evaluated using the F1 metric, and it achieved
-          an F1 score of 0.61, indicating moderate predictive ability.
+          an F1 score of 0.57, indicating moderate predictive ability.
         </Typography>
       </Box>
     </Box>
