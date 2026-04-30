@@ -51,6 +51,20 @@ describe("MothersBMI", () => {
       },
     });
 
+    expect(barProps.data.labels).toEqual([
+      "0",
+      "5",
+      "10",
+      "15",
+      "20",
+      "25",
+      "30",
+      "35",
+      "40",
+      "45",
+      "50",
+      "55",
+    ]);
     expect(barProps.data.labels).toEqual(Object.keys(mothersBMIData));
     expect(barProps.data.datasets).toEqual([
       {

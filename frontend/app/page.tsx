@@ -239,7 +239,7 @@ export default function Home() {
           }}
         >
           <PrePregnancyWeight />
-          {/* <MothersBMI /> */}
+          <MothersBMI />
           <PresenceOfPregnancyRiskFactors />
         </AccordionDetails>
       </Accordion>
