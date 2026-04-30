@@ -56,7 +56,7 @@ describe("WeightGain", () => {
       {
         label: "Number of Births",
         data: Object.values(weightGainData),
-        backgroundColor: "rgba(192, 75, 135, 0.5)",
+        backgroundColor: "rgba(136, 75, 215, 0.5)",
       },
     ]);
   });

@@ -51,14 +51,20 @@ describe("PresenceOfPregnancyRiskFactors", () => {
       },
     });
 
-    expect(barProps.data.labels).toEqual(
-      Object.keys(presenceOfPregnancyRiskFactorsData),
-    );
+    expect(barProps.data.labels).toEqual([
+      "Pre-Pregnancy Diabetes",
+      "Gestational Diabetes",
+      "Pre-Pregnancy Hypertension",
+      "Gestational Hypertension",
+      "Previous Preterm Birth",
+      "Infertility Treatment Used",
+      "Previous Cesarean",
+    ]);
     expect(barProps.data.datasets).toEqual([
       {
         label: "Number of Births",
         data: Object.values(presenceOfPregnancyRiskFactorsData),
-        backgroundColor: "rgba(192, 75, 135, 0.5)",
+        backgroundColor: "rgba(136, 75, 215, 0.5)",
       },
     ]);
   });

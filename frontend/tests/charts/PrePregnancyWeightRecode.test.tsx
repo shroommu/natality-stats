@@ -58,7 +58,7 @@ describe("PrePregnancyWeightRecode", () => {
       {
         label: "Number of Births",
         data: Object.values(prePregnancyWeightRecodeData),
-        backgroundColor: "rgba(192, 75, 135, 0.5)",
+        backgroundColor: "rgba(136, 75, 215, 0.5)",
       },
     ]);
   });
