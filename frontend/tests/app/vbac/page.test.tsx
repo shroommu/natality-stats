@@ -6,6 +6,7 @@ import VBAC from "@/app/vbac/page";
 
 describe("VBAC page", () => {
   afterEach(() => {
+    delete process.env.NEXT_PUBLIC_BACKEND_URL;
     vi.unstubAllGlobals();
   });
 
@@ -15,9 +16,8 @@ describe("VBAC page", () => {
     expect(
       screen.getByRole("heading", { name: "Predicting VBAC Success" }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("VBAC Success Probability: N/A"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("VBAC Success Probability")).toBeInTheDocument();
+    expect(screen.getByText("--%")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Parameters" }),
     ).toBeInTheDocument();
@@ -29,6 +29,8 @@ describe("VBAC page", () => {
 
   it("submits payload and renders prediction result", async () => {
     const user = userEvent.setup();
+    process.env.NEXT_PUBLIC_BACKEND_URL = "http://localhost:8000";
+
     const fetchMock = vi.fn().mockResolvedValue({
       json: vi.fn().mockResolvedValue({ vbac_prediction: 77 }),
     });
@@ -40,22 +42,29 @@ describe("VBAC page", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, options] = fetchMock.mock.calls[0];
-    expect(url).toBe("undefined/predict-vbac");
+    expect(url).toBe("http://localhost:8000/predict-vbac");
     expect(options.method).toBe("POST");
     expect(options.headers).toEqual({ "Content-Type": "application/json" });
 
     const payload = JSON.parse(options.body as string);
-    expect(payload.timeOfBirth).toBe("1200");
-    expect(payload.laborInduced).toBe(false);
-    expect(payload.attendantAtBirth).toBe(1);
+    expect(payload).toEqual({
+      laborInduced: false,
+      laborAugmented: false,
+      attendantAtBirth: 1,
+      priorBirthsNowLiving: 1,
+      numberOfPreviousCSections: 1,
+      bmi: 15,
+      intervalSinceLastLiveBirth: 24,
+      gestationalAgeInWeeks: 40,
+    });
 
-    expect(
-      await screen.findByText("VBAC Success Probability: 77%"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("77%")).toBeInTheDocument();
   });
 
   it("updates editable form fields before predicting", async () => {
     const user = userEvent.setup();
+    process.env.NEXT_PUBLIC_BACKEND_URL = "http://localhost:8000";
+
     const fetchMock = vi.fn().mockResolvedValue({
       json: vi.fn().mockResolvedValue({ vbac_prediction: 55 }),
     });
@@ -77,13 +86,6 @@ describe("VBAC page", () => {
         name: "Doctor (DO)",
       }),
     );
-    const timeInput = document.querySelector(
-      'input[name="timeOfBirth"]',
-    ) as HTMLInputElement;
-    fireEvent.change(timeInput, {
-      target: { value: "01:30 PM" },
-    });
-
     await user.click(screen.getByLabelText("Number of previous live births"));
     await user.click(
       within(screen.getByRole("listbox")).getByRole("option", { name: "2" }),
@@ -95,27 +97,13 @@ describe("VBAC page", () => {
     fireEvent.change(screen.getByLabelText("Mother's BMI"), {
       target: { value: "22" },
     });
-    fireEvent.change(screen.getByLabelText("Baby's birth weight in grams"), {
-      target: { value: "3500" },
-    });
-    fireEvent.change(
-      screen.getByLabelText("Mother's weight gain during pregnancy"),
-      {
-        target: { value: "35" },
-      },
-    );
     fireEvent.change(screen.getByLabelText("Months since last live birth"), {
       target: { value: "30" },
     });
-    fireEvent.change(screen.getByLabelText("Number of prenatal visits"), {
-      target: { value: "12" },
-    });
-    fireEvent.change(screen.getByLabelText("Mother's age at delivery"), {
-      target: { value: "28" },
-    });
-    fireEvent.change(screen.getByLabelText("Gestational age in weeks"), {
-      target: { value: "39" },
-    });
+    await user.click(screen.getByLabelText("Gestational age in weeks"));
+    await user.click(
+      within(screen.getByRole("listbox")).getByRole("option", { name: "39" }),
+    );
 
     await user.click(screen.getByRole("button", { name: "Predict" }));
 
@@ -127,11 +115,9 @@ describe("VBAC page", () => {
     expect(payload.priorBirthsNowLiving).toBe(2);
     expect(payload.numberOfPreviousCSections).toBe(3);
     expect(payload.bmi).toBe("22");
-    expect(payload.birthWeightInGrams).toBe("3500");
-    expect(payload.weightGain).toBe("35");
     expect(payload.intervalSinceLastLiveBirth).toBe("30");
-    expect(payload.numberOfPrenatalVisits).toBe("12");
-    expect(payload.mothersAge).toBe("28");
-    expect(payload.gestationalAgeInWeeks).toBe("39");
+    expect(payload.gestationalAgeInWeeks).toBe(39);
+
+    expect(await screen.findByText("55%")).toBeInTheDocument();
   }, 20000);
 });
