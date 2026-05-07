@@ -54,15 +54,10 @@ class AppRoutesTestCase(unittest.TestCase):
             "laborInduced": False,
             "attendantAtBirth": 1,
             "gestationalAgeInWeeks": 39,
-            "timeOfBirth": "1200",
             "priorBirthsNowLiving": 2,
             "numberOfPreviousCSections": 1,
             "bmi": 31,
-            "birthWeightInGrams": 3500,
-            "weightGain": 20,
             "intervalSinceLastLiveBirth": 24,
-            "numberOfPrenatalVisits": 12,
-            "mothersAge": 30,
         }
 
         response = self.client.post("/predict-vbac", json=payload)
@@ -77,15 +72,10 @@ class AppRoutesTestCase(unittest.TestCase):
                     "induction_of_labor": 0.0,
                     "attendant_at_birth": 1.0,
                     "combined_gestation_detail_in_weeks": 39.0,
-                    "time_of_birth": 1200.0,
                     "prior_births_now_living": 2.0,
                     "number_of_previous_cesarean": 1.0,
                     "BMI": 31.0,
-                    "birth_weight_in_grams": 3500.0,
-                    "weight_gain": 20.0,
                     "interval_since_last_live_birth": 24.0,
-                    "number_of_prenatal_visits": 12.0,
-                    "mothers_single_year_age": 30.0,
                 }
             ]
         )

@@ -20,6 +20,34 @@ vi.mock("@/charts/FathersRace", () => ({
   default: () => <div>FathersRaceChart</div>,
 }));
 
+vi.mock("@/charts/MothersBMI", () => ({
+  default: () => <div>MothersBMIChart</div>,
+}));
+
+vi.mock("@/charts/MonthPrenatalCareStarted", () => ({
+  default: () => <div>MonthPrenatalCareStartedChart</div>,
+}));
+
+vi.mock("@/charts/NumberOfPrenatalVisits", () => ({
+  default: () => <div>NumberOfPrenatalVisitsChart</div>,
+}));
+
+vi.mock("@/charts/PrePregnancyWeight", () => ({
+  default: () => <div>PrePregnancyWeightChart</div>,
+}));
+
+vi.mock("@/charts/PresenceOfPregnancyRiskFactors", () => ({
+  default: () => <div>PresenceOfPregnancyRiskFactorsChart</div>,
+}));
+
+vi.mock("@/charts/WeightGain", () => ({
+  default: () => <div>WeightGainChart</div>,
+}));
+
+vi.mock("@/charts/DeliveryWeight", () => ({
+  default: () => <div>DeliveryWeightChart</div>,
+}));
+
 describe("Home page", () => {
   it("renders heading and tab controls", () => {
     render(<Home />);
@@ -51,6 +79,7 @@ describe("Home page", () => {
     expect(
       within(demographicsRegion).queryByText("FathersRaceChart"),
     ).not.toBeInTheDocument();
+    expect(screen.getByText("MothersBMIChart")).toBeInTheDocument();
   });
 
   it("switches tab panels", async () => {

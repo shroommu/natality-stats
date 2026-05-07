@@ -20,6 +20,11 @@ import FathersRace from "@/charts/FathersRace";
 import FathersAge from "@/charts/FathersAge";
 import MonthPrenatalCareStarted from "@/charts/MonthPrenatalCareStarted";
 import NumberOfPrenatalVisits from "@/charts/NumberOfPrenatalVisits";
+import PrePregnancyWeight from "@/charts/PrePregnancyWeight";
+import PresenceOfPregnancyRiskFactors from "@/charts/PresenceOfPregnancyRiskFactors";
+import WeightGain from "@/charts/WeightGain";
+import MothersBMI from "@/charts/MothersBMI";
+import DeliveryWeight from "@/charts/DeliveryWeight";
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
@@ -40,10 +45,11 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     margin: theme.spacing(1.5, 0),
     marginLeft: theme.spacing(2),
   },
-  [`& .${accordionSummaryClasses.content}.${accordionSummaryClasses.expanded}`]: {
-    margin: theme.spacing(1.5, 0),
-    marginLeft: theme.spacing(2),
-  },
+  [`& .${accordionSummaryClasses.content}.${accordionSummaryClasses.expanded}`]:
+    {
+      margin: theme.spacing(1.5, 0),
+      marginLeft: theme.spacing(2),
+    },
   ...theme.applyStyles("dark", {
     backgroundColor: "rgba(255, 255, 255, .05)",
   }),
@@ -129,7 +135,10 @@ export default function Home() {
               </Typography>
               <Typography
                 variant="h4"
-                sx={{ fontWeight: 600, fontSize: { xs: "1.65rem", sm: "2rem" } }}
+                sx={{
+                  fontWeight: 600,
+                  fontSize: { xs: "1.65rem", sm: "2rem" },
+                }}
                 gutterBottom
               >
                 3,659,289
@@ -143,7 +152,10 @@ export default function Home() {
               </Typography>
               <Typography
                 variant="h4"
-                sx={{ fontWeight: 600, fontSize: { xs: "1.65rem", sm: "2rem" } }}
+                sx={{
+                  fontWeight: 600,
+                  fontSize: { xs: "1.65rem", sm: "2rem" },
+                }}
               >
                 11 births
               </Typography>
@@ -159,7 +171,10 @@ export default function Home() {
               </Typography>
               <Typography
                 variant="h4"
-                sx={{ fontWeight: 600, fontSize: { xs: "1.65rem", sm: "2rem" } }}
+                sx={{
+                  fontWeight: 600,
+                  fontSize: { xs: "1.65rem", sm: "2rem" },
+                }}
               >
                 56.6 births
               </Typography>
@@ -208,6 +223,59 @@ export default function Home() {
           <NumberOfPrenatalVisits />
         </AccordionDetails>
       </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography component="span">
+            Pre-Pregnancy Vital Statistics
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails
+          sx={{
+            px: { xs: 1, sm: 2 },
+            py: { xs: 1.5, sm: 2 },
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
+          <PrePregnancyWeight />
+          <MothersBMI />
+          <PresenceOfPregnancyRiskFactors />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography component="span">
+            Post-Pregnancy Vital Statistics
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails
+          sx={{
+            px: { xs: 1, sm: 2 },
+            py: { xs: 1.5, sm: 2 },
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
+          <DeliveryWeight />
+          <WeightGain />
+        </AccordionDetails>
+      </Accordion>
+      {/* <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography component="span">Newborn Vital Statistics</Typography>
+        </AccordionSummary>
+        <AccordionDetails
+          sx={{
+            px: { xs: 1, sm: 2 },
+            py: { xs: 1.5, sm: 2 },
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        ></AccordionDetails>
+      </Accordion> */}
     </Box>
   );
 }

@@ -1,5 +1,6 @@
 tensorflow==2.21.0
 scikit-learn==1.8.0
+imbalanced-learn==0.14.1
 pandas==3.0.2
 ipykernel==7.2.0
 matplotlib==3.10.8
