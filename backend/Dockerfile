@@ -6,6 +6,7 @@ WORKDIR /app
 
 
 RUN python -m venv .venv
+RUN python -m pip install --upgrade pip
 COPY requirements.txt ./
 RUN .venv/bin/pip install -r requirements.txt
 FROM python:3.12.3-slim
