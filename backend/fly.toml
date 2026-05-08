@@ -33,7 +33,7 @@ auto_rollback = true
   port = 443
 
 [[vm]]
-  memory = '3gb'
+  memory = '1024'
   cpu_kind = 'shared'
   cpus = 2
-  memory_mb = 2048
+  memory_mb = 1024
