@@ -15,7 +15,9 @@ def generate_chart_json_files(open_path: str, save_path: str):
     )
 
     fathers_combined_age_value_counts = (
-        df["fathers_combined_age"].value_counts(sort=False).sort_index()
+        df["fathers_combined_age"][df["fathers_combined_age"] != 99]
+        .value_counts(sort=False)
+        .sort_index()
     )
     fathers_combined_age_value_counts.to_json(f"{save_path}/fathers_combined_age.json")
 
