@@ -11,11 +11,13 @@ vbac_model = cpkl.load(open("models/vbac/rfc_model.pkl", "rb"))
 
 
 @app.route("/api/health")
+@app.route("/health")
 def health():
     return jsonify({"status": "healthy"})
 
 
 @app.route("/api/predict-vbac", methods=["POST"])
+@app.route("/predict-vbac", methods=["POST"])
 def predict_vbac():
     body = request.json
 
