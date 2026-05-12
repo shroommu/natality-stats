@@ -1,8 +1,11 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import PriorBirthsNowLiving from "@/charts/PriorBirthsNowLiving";
-import priorBirthsNowLivingData from "@/data/json/prior_births_now_living.json";
+import { YearProvider } from "@/lib/yearContext";
+import priorBirthsNowLivingData from "../../public/data/2021/prior_births_now_living.json";
+
+import { setupChartJsonFetch } from "./chartTestSetup";
 
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
@@ -23,11 +26,21 @@ vi.mock("chart.js", () => {
 });
 
 describe("PriorBirthsNowLiving", () => {
+  setupChartJsonFetch(priorBirthsNowLivingData);
+
   it("renders a bar chart with expected options and data", async () => {
     const { Bar } = await import("react-chartjs-2");
     const { Chart } = await import("chart.js");
 
-    render(<PriorBirthsNowLiving />);
+    render(
+      <YearProvider initialYear={2021}>
+        <PriorBirthsNowLiving />
+      </YearProvider>,
+    );
+
+    await waitFor(() => {
+      expect(Bar).toHaveBeenCalled();
+    });
 
     expect(Chart.register).toHaveBeenCalledWith(
       "CategoryScale",

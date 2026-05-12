@@ -1,8 +1,11 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import MothersRace from "@/charts/MothersRace";
-import mothersRaceData from "@/data/json/mothers_race.json";
+import { YearProvider } from "@/lib/yearContext";
+import mothersRaceData from "../../public/data/2021/mothers_race.json";
+
+import { setupChartJsonFetch } from "./chartTestSetup";
 
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
@@ -23,11 +26,21 @@ vi.mock("chart.js", () => {
 });
 
 describe("MothersRace", () => {
+  setupChartJsonFetch(mothersRaceData);
+
   it("renders a bar chart with expected options and data", async () => {
     const { Bar } = await import("react-chartjs-2");
     const { Chart } = await import("chart.js");
 
-    render(<MothersRace />);
+    render(
+      <YearProvider initialYear={2021}>
+        <MothersRace />
+      </YearProvider>,
+    );
+
+    await waitFor(() => {
+      expect(Bar).toHaveBeenCalled();
+    });
 
     expect(Chart.register).toHaveBeenCalledWith(
       "CategoryScale",
@@ -51,14 +64,7 @@ describe("MothersRace", () => {
       },
     });
 
-    expect(barProps.data.labels).toEqual([
-      "White",
-      "Black",
-      "Native American",
-      "Asian",
-      "Native Hawaiian",
-      "More than one race",
-    ]);
+    expect(barProps.data.labels).toEqual(Object.keys(mothersRaceData));
     expect(barProps.data.datasets).toEqual([
       {
         label: "Number of Births",
