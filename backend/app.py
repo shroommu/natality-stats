@@ -10,12 +10,12 @@ preprocessing = cpkl.load(open("models/vbac/preprocessing_pipeline.pkl", "rb"))
 vbac_model = cpkl.load(open("models/vbac/rfc_model.pkl", "rb"))
 
 
-@app.route("/health")
+@app.route("/api/health")
 def health():
     return jsonify({"status": "healthy"})
 
 
-@app.route("/predict-vbac", methods=["POST"])
+@app.route("/api/predict-vbac", methods=["POST"])
 def predict_vbac():
     body = request.json
 
