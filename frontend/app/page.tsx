@@ -118,10 +118,6 @@ function HomeContent() {
 
   const totalBirthsDisplay =
     summaryLoading || !summary ? null : summary.totalBirths.toLocaleString();
-  const birthRateDisplay =
-    summary != null && summary.birthRatePer1000 != null
-      ? `${summary.birthRatePer1000} births`
-      : "—";
   const fertilityDisplay =
     summary != null && summary.fertilityRatePer1000 != null
       ? `${summary.fertilityRatePer1000} births`
