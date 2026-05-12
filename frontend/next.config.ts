@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
+import { withRelatedProject } from "@vercel/related-projects";
 
+const backendHost = withRelatedProject({
+  projectName: "natality-stats-backend",
+  defaultHost: "https://natality-stats-backend.vercel.app",
+});
 
 const nextConfig: NextConfig = {
   async rewrites() {
-    // Only proxy to local backend in development
-    // In production, Vercel's vercel.json rewrites handle routing
     if (process.env.NODE_ENV === "development") {
       return [
         {
@@ -13,7 +16,12 @@ const nextConfig: NextConfig = {
         },
       ];
     }
-    return [];
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${backendHost}/api/:path*`,
+      },
+    ];
   },
 };
 

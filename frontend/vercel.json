@@ -1,10 +1,4 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://natality-stats-backend.vercel.app/api/:path*"
-    }
-  ],
   "relatedProjects": [
     "prj_YonHgbRHvAHbSupdS2cOidQj7WzR"
   ]
