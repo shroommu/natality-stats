@@ -6,7 +6,6 @@ import VBAC from "@/app/vbac/page";
 
 describe("VBAC page", () => {
   afterEach(() => {
-    delete process.env.NEXT_PUBLIC_BACKEND_URL;
     vi.unstubAllGlobals();
   });
 
@@ -29,7 +28,6 @@ describe("VBAC page", () => {
 
   it("submits payload and renders prediction result", async () => {
     const user = userEvent.setup();
-    process.env.NEXT_PUBLIC_BACKEND_URL = "http://localhost:8000";
 
     const fetchMock = vi.fn().mockResolvedValue({
       json: vi.fn().mockResolvedValue({ vbac_prediction: 77 }),
@@ -42,7 +40,7 @@ describe("VBAC page", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, options] = fetchMock.mock.calls[0];
-    expect(url).toBe("http://localhost:8000/predict-vbac");
+    expect(url).toBe("/api/predict-vbac");
     expect(options.method).toBe("POST");
     expect(options.headers).toEqual({ "Content-Type": "application/json" });
 
@@ -63,7 +61,6 @@ describe("VBAC page", () => {
 
   it("updates editable form fields before predicting", async () => {
     const user = userEvent.setup();
-    process.env.NEXT_PUBLIC_BACKEND_URL = "http://localhost:8000";
 
     const fetchMock = vi.fn().mockResolvedValue({
       json: vi.fn().mockResolvedValue({ vbac_prediction: 55 }),
