@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
-const backendBase =
-  process.env.BACKEND_PROXY_URL?.replace(/\/$/, "") ??
-  "https://natality-stats-backend.vercel.app";
+/** Backend origin for /api/* proxy. Must be available at build time on Vercel. */
+function backendProxyBase(): string {
+  const raw = process.env.BACKEND_PROXY_URL?.trim() ?? "";
+  const base = raw.replace(/\/$/, "");
+  return base || "https://natality-stats-backend.vercel.app";
+}
 
 const nextConfig: NextConfig = {
   async rewrites() {
@@ -10,7 +13,7 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         {
           source: "/api/:path*",
-          destination: `${backendBase}/api/:path*`,
+          destination: `${backendProxyBase()}/api/:path*`,
         },
       ],
     };
