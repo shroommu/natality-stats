@@ -3,14 +3,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   async rewrites() {
-    return {
-      beforeFiles: [
+    // Only proxy to local backend in development
+    // In production, Vercel's vercel.json rewrites handle routing
+    if (process.env.NODE_ENV === "development") {
+      return [
         {
           source: "/api/:path*",
-          destination: "https://natality-stats-backend.vercel.app/api/:path*",
+          destination: "http://127.0.0.1:5000/api/:path*",
         },
-      ],
-    };
+      ];
+    }
+    return [];
   },
 };
 
