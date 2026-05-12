@@ -31,4 +31,3 @@ The dashboard lets users toggle across four years of data and explore distributi
 ### Offline Data Pipeline (`/dev`)
 
 Python scripts for transforming raw CDC fixed-width natality `.txt` files into Parquet, then aggregating into the per-year JSON files committed under `frontend/public/data/`. Key tools: pandas, scikit-learn, imbalanced-learn, TensorFlow (training only), cloudpickle.
-This is an ongoing project to learn and demonstrate data science concepts using the CDC's 2021 - 2024 public natality datasets.
