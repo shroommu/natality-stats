@@ -7,6 +7,16 @@ import fathersRaceData from "../../public/data/2021/fathers_race.json";
 
 import { setupChartJsonFetch } from "./chartTestSetup";
 
+/** Matches label order in `FathersRace` (NCHS race recode 1–6). */
+const RACE_CHART_LABELS = [
+  "White",
+  "Black",
+  "Native American",
+  "Asian",
+  "Native Hawaiian",
+  "More than one race",
+];
+
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
 }));
@@ -64,7 +74,7 @@ describe("FathersRace", () => {
       },
     });
 
-    expect(barProps.data.labels).toEqual(Object.keys(fathersRaceData));
+    expect(barProps.data.labels).toEqual(RACE_CHART_LABELS);
     expect(barProps.data.datasets).toEqual([
       {
         label: "Number of Births",
