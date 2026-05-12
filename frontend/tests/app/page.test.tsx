@@ -1,8 +1,37 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
+
+beforeEach(() => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn((input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("summary.json")) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              totalBirths: 3_638_436,
+              birthRatePer1000: null,
+              fertilityRatePer1000: null,
+            }),
+        });
+      }
+      return Promise.resolve({
+        ok: false,
+        status: 404,
+        json: () => Promise.resolve({}),
+      });
+    }) as typeof fetch,
+  );
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 vi.mock("@/charts/MothersAge", () => ({
   default: () => <div>MothersAgeChart</div>,
@@ -54,7 +83,7 @@ describe("Home page", () => {
     const demographicsRegion = screen.getAllByRole("region")[0];
 
     expect(
-      screen.getByRole("heading", { name: "2021 Natality Data Overview" }),
+      screen.getByRole("heading", { name: "2024 Natality Data Overview" }),
     ).toBeInTheDocument();
     expect(
       within(demographicsRegion).getByRole("tab", {
