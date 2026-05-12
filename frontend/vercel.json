@@ -4,5 +4,8 @@
       "source": "/api/:path*",
       "destination": "https://natality-stats-backend.vercel.app/api/:path*"
     }
+  ],
+  "relatedProjects": [
+    "natality-stats-backend"
   ]
 }
