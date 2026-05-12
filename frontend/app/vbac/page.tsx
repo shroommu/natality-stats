@@ -33,16 +33,13 @@ export default function VBAC() {
   };
 
   const predict = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/predict-vbac`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(vbacPredictionParameters),
+    const response = await fetch("/api/predict-vbac", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(vbacPredictionParameters),
+    });
 
     const data = await response.json();
     setVbacPrediction(data.vbac_prediction);

@@ -1,8 +1,21 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import FathersRace from "@/charts/FathersRace";
-import fathersRaceData from "@/data/json/fathers_race.json";
+import { YearProvider } from "@/lib/yearContext";
+import fathersRaceData from "../../public/data/2021/fathers_race.json";
+
+import { setupChartJsonFetch } from "./chartTestSetup";
+
+/** Matches label order in `FathersRace` (NCHS race recode 1–6). */
+const RACE_CHART_LABELS = [
+  "White",
+  "Black",
+  "Native American",
+  "Asian",
+  "Native Hawaiian",
+  "More than one race",
+];
 
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
@@ -23,11 +36,21 @@ vi.mock("chart.js", () => {
 });
 
 describe("FathersRace", () => {
+  setupChartJsonFetch(fathersRaceData);
+
   it("renders a bar chart with expected options and data", async () => {
     const { Bar } = await import("react-chartjs-2");
     const { Chart } = await import("chart.js");
 
-    render(<FathersRace />);
+    render(
+      <YearProvider initialYear={2021}>
+        <FathersRace />
+      </YearProvider>,
+    );
+
+    await waitFor(() => {
+      expect(Bar).toHaveBeenCalled();
+    });
 
     expect(Chart.register).toHaveBeenCalledWith(
       "CategoryScale",
@@ -51,14 +74,7 @@ describe("FathersRace", () => {
       },
     });
 
-    expect(barProps.data.labels).toEqual([
-      "White",
-      "Black",
-      "Native American",
-      "Asian",
-      "Native Hawaiian",
-      "More than one race",
-    ]);
+    expect(barProps.data.labels).toEqual(RACE_CHART_LABELS);
     expect(barProps.data.datasets).toEqual([
       {
         label: "Number of Births",

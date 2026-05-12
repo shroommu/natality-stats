@@ -1,8 +1,11 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import DeliveryWeightRecode from "@/charts/DeliveryWeight";
-import deliveryWeightRecodeData from "@/data/json/delivery_weight_recode.json";
+import { YearProvider } from "@/lib/yearContext";
+import deliveryWeightRecodeData from "../../public/data/2021/delivery_weight_recode.json";
+
+import { setupChartJsonFetch } from "./chartTestSetup";
 
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
@@ -23,11 +26,21 @@ vi.mock("chart.js", () => {
 });
 
 describe("DeliveryWeightRecode", () => {
+  setupChartJsonFetch(deliveryWeightRecodeData);
+
   it("renders a bar chart with expected options and data", async () => {
     const { Bar } = await import("react-chartjs-2");
     const { Chart } = await import("chart.js");
 
-    render(<DeliveryWeightRecode />);
+    render(
+      <YearProvider initialYear={2021}>
+        <DeliveryWeightRecode />
+      </YearProvider>,
+    );
+
+    await waitFor(() => {
+      expect(Bar).toHaveBeenCalled();
+    });
 
     expect(Chart.register).toHaveBeenCalledWith(
       "CategoryScale",

@@ -3,7 +3,12 @@
 import { Suspense } from "react";
 
 import { styled } from "@mui/material/styles";
-import { Accordion, AccordionDetails, Card } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  Card,
+  CircularProgress,
+} from "@mui/material";
 import MuiAccordionSummary, {
   AccordionSummaryProps,
   accordionSummaryClasses,
@@ -13,6 +18,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import { Tabs, type TabsItem } from "@/components";
+import { YearToggle } from "@/components/YearToggle";
+import { useSummaryStats } from "@/hooks/useSummaryStats";
+import { YearProvider, useSelectedYear } from "@/lib/yearContext";
 
 import MothersRace from "@/charts/MothersRace";
 import MothersAge from "@/charts/MothersAge";
@@ -56,6 +64,21 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 }));
 
 export default function Home() {
+  return (
+    <YearProvider>
+      <HomeContent />
+    </YearProvider>
+  );
+}
+
+function HomeContent() {
+  const { year } = useSelectedYear();
+  const {
+    summary,
+    loading: summaryLoading,
+    error: summaryError,
+  } = useSummaryStats();
+
   const initialDemographicsTab = "maternal-characteristics";
 
   const demographicsTabItems: TabsItem[] = [
@@ -93,6 +116,13 @@ export default function Home() {
     },
   ];
 
+  const totalBirthsDisplay =
+    summaryLoading || !summary ? null : summary.totalBirths.toLocaleString();
+  const fertilityDisplay =
+    summary != null && summary.fertilityRatePer1000 != null
+      ? `${summary.fertilityRatePer1000} births`
+      : "—";
+
   return (
     <Box
       sx={{
@@ -102,24 +132,39 @@ export default function Home() {
         width: "100%",
       }}
     >
-      <Typography
-        variant="h4"
-        sx={{ fontWeight: 600, fontSize: { xs: "1.8rem", sm: "2rem" } }}
-        gutterBottom
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "stretch", sm: "flex-start" },
+          justifyContent: "space-between",
+          gap: 2,
+        }}
       >
-        2021 Natality Data Overview
-      </Typography>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 600, fontSize: { xs: "1.8rem", sm: "2rem" } }}
+          gutterBottom
+        >
+          {year} Natality Data Overview
+        </Typography>
+        <YearToggle />
+      </Box>
       <Typography variant="body1" gutterBottom>
-        This page provides an overview of the CDC&apos;s 2021 natality data,
+        This page provides an overview of the CDC&apos;s {year} natality data,
         including key statistics and visualizations. Explore the charts and
         tables to gain insights into birth trends, demographics, and other
         relevant information.
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {/* TODO: Fill in with actual stats from the data */}
         <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
           Key Statistics
         </Typography>
+        {summaryError ? (
+          <Typography color="error" role="alert">
+            {summaryError}
+          </Typography>
+        ) : null}
         <Box
           sx={{
             display: "flex",
@@ -133,35 +178,24 @@ export default function Home() {
               <Typography variant="h6" gutterBottom>
                 Total Births
               </Typography>
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 600,
-                  fontSize: { xs: "1.65rem", sm: "2rem" },
-                }}
-                gutterBottom
+              <Box
+                sx={{ minHeight: 40, display: "flex", alignItems: "center" }}
               >
-                3,659,289
-              </Typography>
-            </Box>
-          </Card>
-          <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="h6" gutterBottom>
-                Birth Rate
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 600,
-                  fontSize: { xs: "1.65rem", sm: "2rem" },
-                }}
-              >
-                11 births
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                per 1,000 people
-              </Typography>
+                {summaryLoading ? (
+                  <CircularProgress size={28} aria-label="Loading summary" />
+                ) : (
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: { xs: "1.65rem", sm: "2rem" },
+                    }}
+                    gutterBottom
+                  >
+                    {totalBirthsDisplay}
+                  </Typography>
+                )}
+              </Box>
             </Box>
           </Card>
           <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
@@ -176,10 +210,10 @@ export default function Home() {
                   fontSize: { xs: "1.65rem", sm: "2rem" },
                 }}
               >
-                56.6 births
+                {summaryLoading ? "…" : fertilityDisplay}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                per 1,000 women
+                per 1,000 women ages 15–44
               </Typography>
             </Box>
           </Card>
@@ -240,7 +274,7 @@ export default function Home() {
         >
           <PrePregnancyWeight />
           <MothersBMI />
-          <PresenceOfPregnancyRiskFactors />
+          {/* <PresenceOfPregnancyRiskFactors /> */}
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>

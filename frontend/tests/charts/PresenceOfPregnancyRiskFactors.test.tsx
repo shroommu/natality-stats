@@ -1,8 +1,21 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import PresenceOfPregnancyRiskFactors from "@/charts/PresenceOfPregnancyRiskFactors";
-import presenceOfPregnancyRiskFactorsData from "@/data/json/presence_of_pregnancy_risk_factors.json";
+import { YearProvider } from "@/lib/yearContext";
+
+import { setupChartJsonFetch } from "./chartTestSetup";
+
+/** Seven risk-factor buckets (values are arbitrary; chart matches by order). */
+const presenceOfPregnancyRiskFactorsData: Record<string, number> = {
+  r1: 100,
+  r2: 200,
+  r3: 300,
+  r4: 400,
+  r5: 500,
+  r6: 600,
+  r7: 700,
+};
 
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
@@ -23,11 +36,21 @@ vi.mock("chart.js", () => {
 });
 
 describe("PresenceOfPregnancyRiskFactors", () => {
+  setupChartJsonFetch(presenceOfPregnancyRiskFactorsData);
+
   it("renders a bar chart with expected options and data", async () => {
     const { Bar } = await import("react-chartjs-2");
     const { Chart } = await import("chart.js");
 
-    render(<PresenceOfPregnancyRiskFactors />);
+    render(
+      <YearProvider initialYear={2021}>
+        <PresenceOfPregnancyRiskFactors />
+      </YearProvider>,
+    );
+
+    await waitFor(() => {
+      expect(Bar).toHaveBeenCalled();
+    });
 
     expect(Chart.register).toHaveBeenCalledWith(
       "CategoryScale",

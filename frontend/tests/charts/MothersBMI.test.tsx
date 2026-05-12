@@ -1,8 +1,11 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import MothersBMI from "@/charts/MothersBMI";
-import mothersBMIData from "@/data/json/mothers_BMI.json";
+import { YearProvider } from "@/lib/yearContext";
+import mothersBMIData from "../../public/data/2021/mothers_BMI.json";
+
+import { setupChartJsonFetch } from "./chartTestSetup";
 
 vi.mock("react-chartjs-2", () => ({
   Bar: vi.fn(() => <div data-testid="bar-chart" />),
@@ -23,11 +26,21 @@ vi.mock("chart.js", () => {
 });
 
 describe("MothersBMI", () => {
+  setupChartJsonFetch(mothersBMIData);
+
   it("renders a bar chart with expected options and data", async () => {
     const { Bar } = await import("react-chartjs-2");
     const { Chart } = await import("chart.js");
 
-    render(<MothersBMI />);
+    render(
+      <YearProvider initialYear={2021}>
+        <MothersBMI />
+      </YearProvider>,
+    );
+
+    await waitFor(() => {
+      expect(Bar).toHaveBeenCalled();
+    });
 
     expect(Chart.register).toHaveBeenCalledWith(
       "CategoryScale",
@@ -51,20 +64,6 @@ describe("MothersBMI", () => {
       },
     });
 
-    expect(barProps.data.labels).toEqual([
-      "0",
-      "5",
-      "10",
-      "15",
-      "20",
-      "25",
-      "30",
-      "35",
-      "40",
-      "45",
-      "50",
-      "55",
-    ]);
     expect(barProps.data.labels).toEqual(Object.keys(mothersBMIData));
     expect(barProps.data.datasets).toEqual([
       {
