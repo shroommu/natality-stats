@@ -26,21 +26,34 @@ import PriorBirthsPreviousCesareanCrossTabHeatmap from "@/charts/vbac/PriorBirth
 
 export function VBACCharts() {
   const features = [
-    { id: 1, name: "Augmentation of Labor" },
-    { id: 2, name: "Induction of Labor" },
-    { id: 3, name: "Attendant at Birth" },
-    { id: 4, name: "Time of Birth" },
-    { id: 5, name: "Prior Births Now Living" },
-    { id: 6, name: "Number of Previous Cesarean" },
-    { id: 7, name: "BMI" },
-    { id: 8, name: "Birth Weight in Grams" },
-    { id: 9, name: "Gestation Age in Weeks" },
-    { id: 10, name: "Weight Gain" },
-    { id: 11, name: "Interval Since Last Live Birth" },
-    { id: 12, name: "Number of Prenatal Visits" },
-    { id: 13, name: "Mother's Height in Inches" },
-    { id: 14, name: "Mother's Age" },
-    { id: 15, name: "Father's Age" },
+    "Augmentation of Labor",
+    "Induction of Labor",
+    "Attendant at Birth",
+    "Time of Birth",
+    "Prior Births Now Living",
+    "Number of Previous Cesarean",
+    "BMI",
+    "Birth Weight in Grams",
+    "Gestational Age in Weeks",
+    "Weight Gain",
+    "Interval Since Last Live Birth",
+    "Number of Prenatal Visits",
+    "Mother's Height in Inches",
+    "Mother's Age",
+    "Father's Age",
+  ];
+
+  const selectedFeatures = [
+    "Augmentation of Labor",
+    "Induction of Labor",
+    "Prior Births Now Living * Number of Previous Cesarean",
+    "BMI",
+    "Birth Weight in Grams",
+    "Gestational Age in Weeks",
+    "Weight Gain",
+    "Interval Since Last Live Birth",
+    "Mother's Age",
+    "Father's Age",
   ];
 
   return (
@@ -156,8 +169,8 @@ export function VBACCharts() {
           }}
         >
           <Grid container spacing={0.5}>
-            {features.map((feature) => (
-              <Grid size={{ xs: 12, sm: 6 }} key={feature.id}>
+            {features.map((index, feature) => (
+              <Grid size={{ xs: 12, sm: 6 }} key={index}>
                 <List
                   dense
                   disablePadding
@@ -173,7 +186,7 @@ export function VBACCharts() {
                     }}
                     component="div"
                   >
-                    {feature.name}
+                    {feature}
                   </ListItem>
                 </List>
               </Grid>
@@ -368,6 +381,53 @@ export function VBACCharts() {
           The more prior births and c-sections that have occurred, the less
           likely a successful VBAC becomes.
         </Typography>
+      </Card>
+      <Card
+        variant="elevation"
+        sx={{ p: 2, flex: 1, display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <Typography variant="h5" align="center">
+          Conclusion
+        </Typography>
+        <Typography variant="body1">
+          As a result of our analysis, we selected the following features for
+          our model:
+        </Typography>
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
+            boxShadow: 1,
+            p: { xs: 1.5, sm: 2 },
+          }}
+        >
+          <Grid container spacing={0.5}>
+            {selectedFeatures.map((index, feature) => (
+              <Grid size={{ xs: 12, sm: 6 }} key={index}>
+                <List
+                  dense
+                  disablePadding
+                  sx={{ listStyleType: "disc", pl: 4, py: 0 }}
+                  component="div"
+                >
+                  <ListItem
+                    disablePadding
+                    sx={{
+                      display: "list-item",
+                      py: 0.25,
+                      minHeight: 0,
+                    }}
+                    component="div"
+                  >
+                    {feature}
+                  </ListItem>
+                </List>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Card>
     </Box>
   );
