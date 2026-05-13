@@ -17,7 +17,7 @@ export function formatVbacCrossTabAnnotation(
   columnKey: string,
 ): string {
   if (columnKey === "proportion") {
-    return `${(value * 100).toFixed(1)}%`;
+    return `${value.toFixed(1)}%`;
   }
   return Math.round(value).toLocaleString();
 }
@@ -27,7 +27,7 @@ export function formatVbacCrossTabTooltipBody(
   columnKey: string,
 ): string {
   if (columnKey === "proportion") {
-    return `VBAC success rate: ${(value * 100).toFixed(2)}%`;
+    return `VBAC success rate: ${value.toFixed(2)}%`;
   }
   return `Birth count: ${Math.round(value).toLocaleString()}`;
 }
