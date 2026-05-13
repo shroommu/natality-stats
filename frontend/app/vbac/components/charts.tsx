@@ -22,6 +22,7 @@ import IntervalSinceLastLiveBirthCrossTabHeatmap from "@/charts/vbac/IntervalSin
 import NumberOfPrenatalVisitsCrossTabHeatmap from "@/charts/vbac/NumberOfPrenatalVisitsCrossTabHeatmap";
 import MothersSingleYearAgeCrossTabHeatmap from "@/charts/vbac/MothersSingleYearAgeCrossTabHeatmap";
 import FathersCombinedAgeCrossTabHeatmap from "@/charts/vbac/FathersCombinedAgeCrossTabHeatmap";
+import PriorBirthsPreviousCesareanCrossTabHeatmap from "@/charts/vbac/PriorBirthsPreviousCesareanCrossTabHeatmap";
 
 export function VBACCharts() {
   const features = [
@@ -356,6 +357,16 @@ export function VBACCharts() {
         >
           Fathers around the age of 32 are most likely to have a successful
           VBAC, with the rate decreasing at higher and lower ages.
+        </Typography>
+        <PriorBirthsPreviousCesareanCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          A successful VBAC is most likely to occur after 1 previous c-section.
+          The more prior births and c-sections that have occurred, the less
+          likely a successful VBAC becomes.
         </Typography>
       </Card>
     </Box>
