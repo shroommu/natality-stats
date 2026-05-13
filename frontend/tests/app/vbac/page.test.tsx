@@ -4,11 +4,16 @@ import { describe, expect, it, vi } from "vitest";
 
 import VBAC from "@/app/vbac/page";
 
+import attendantAtBirthCrossTab from "../../../public/data/2021/vbac/attendant_at_birth_cross_tab.json";
+import { setupChartJsonFetch } from "../../charts/chartTestSetup";
+
 vi.mock("@/app/vbac/components/model", () => ({
   VBACModel: () => <div>VBACModelStub</div>,
 }));
 
 describe("VBAC page", () => {
+  setupChartJsonFetch(attendantAtBirthCrossTab);
+
   it("renders heading and intro text", () => {
     render(<VBAC />);
 
@@ -56,12 +61,17 @@ describe("VBAC page", () => {
     );
   });
 
-  it("switching to Data Analysis shows placeholder text", async () => {
+  it("switching to Data Analysis shows crosstab heatmap", async () => {
     const user = userEvent.setup();
     render(<VBAC />);
 
     await user.click(screen.getByRole("tab", { name: "Data Analysis" }));
 
-    expect(screen.getByText("Visualizations coming soon.")).toBeInTheDocument();
+    expect(screen.getByText("Crosstabs")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("region", {
+        name: /Successful VBAC by attendant at birth/i,
+      }),
+    ).toBeInTheDocument();
   });
 });

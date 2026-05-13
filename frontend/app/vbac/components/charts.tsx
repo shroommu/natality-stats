@@ -5,8 +5,9 @@ import {
   Grid,
   List,
   ListItem,
-  ListItemText,
 } from "@mui/material";
+
+import AttendantAtBirthCrossTabHeatmap from "@/charts/vbac/AttendantAtBirthCrossTabHeatmap";
 
 export function VBACCharts() {
   const features = [
@@ -109,6 +110,17 @@ export function VBACCharts() {
             </Grid>
           ))}
         </Grid>
+      </Card>
+      <Card variant="elevation" sx={{ p: 2, flex: 1 }}>
+        <Typography variant="h5" gutterBottom>
+          Crosstabs
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          The following heatmaps summarize counts and VBAC success proportion by
+          category, using the same structure as our exploratory notebooks (rows:
+          feature category, columns: no VBAC, yes VBAC, and overall proportion).
+        </Typography>
+        <AttendantAtBirthCrossTabHeatmap />
       </Card>
     </Box>
   );
