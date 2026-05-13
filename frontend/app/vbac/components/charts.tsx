@@ -10,6 +10,11 @@ import {
 
 import AttendantAtBirthCrossTabHeatmap from "@/charts/vbac/AttendantAtBirthCrossTabHeatmap";
 import AugmentationOfLaborCrossTabHeatmap from "@/charts/vbac/AugmentationOfLaborCrossTabHeatmap";
+import InductionOfLaborCrossTabHeatmap from "@/charts/vbac/InductionOfLaborCrossTabHeatmap";
+import TimeOfBirthCrossTabHeatmap from "@/charts/vbac/TimeOfBirthCrossTabHeatmap";
+import PriorBirthsNowLivingCrossTabHeatmap from "@/charts/vbac/PriorBirthsNowLivingCrossTabHeatmap";
+import NumberOfPreviousCesareanCrossTabHeatmap from "@/charts/vbac/NumberOfPreviousCesareanCrossTabHeatmap";
+import BMICrossTabHeatmap from "@/charts/vbac/BMICrossTabHeatmap";
 
 export function VBACCharts() {
   const features = [
@@ -114,8 +119,19 @@ export function VBACCharts() {
         <Typography variant="body1">
           To further refine our feature selection, we trained a Random Forest
           classifier using our filtered dataset, then used the{" "}
-          feature_importances_ attribute to obtain a list of features that would
-          be worth exploring further.
+          <Box
+            sx={{
+              fontFamily: "monospace",
+              background: "grey",
+              color: "white",
+              px: 0.5,
+            }}
+            component="span"
+          >
+            feature_importances_
+          </Box>{" "}
+          attribute to obtain a list of features that would be worth exploring
+          further.
         </Typography>
         <Typography variant="body1">
           That provided us with the following list of features, in order of
@@ -177,7 +193,9 @@ export function VBACCharts() {
         </Typography>
         <Typography variant="body1">
           To investigate the relationships between these features and the
-          target, we created a cross-tabulation chart for each.
+          target, we created a cross-tabulation chart for each. Using the
+          Proportion column, we were able to determine the rate at which VBACs
+          were successful for each value of the feature.
         </Typography>
         <AugmentationOfLaborCrossTabHeatmap />
         <Typography
@@ -189,6 +207,72 @@ export function VBACCharts() {
             Labor Augmentation
           </Link>{" "}
           results in a significant increase in VBAC success.
+        </Typography>
+        <InductionOfLaborCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          <Link href="https://my.clevelandclinic.org/health/treatments/17698-labor-induction">
+            Labor Induction
+          </Link>{" "}
+          also results in a significant increase in VBAC success, though not as
+          significant as labor augmentation.
+        </Typography>
+        <AttendantAtBirthCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          At first glance, it appears that when a midwife is the birth
+          attendant, the expectant mother is more likely to have a successful
+          VBAC. However, it's important to note that most midwives are unable to
+          perform c-sections, so it may be the case that the birthing mother may
+          attempt a vaginal delivery for longer than she might under the
+          supervision of an attendant who can perform surgery. Midwives are also
+          less likely to oversee the care of high-risk pregnancies, which are
+          more likely to require a c-section for the safety of mother and baby.
+        </Typography>
+        <TimeOfBirthCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          There is no particular time of day that is more likely to result in a
+          successful VBAC. However, a c-section is more likely to occur during
+          business hours. This is likely the result of pre-scheduled c-sections.
+        </Typography>
+        <PriorBirthsNowLivingCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The more children a mother has borne, the more likely she is to have a
+          successful VBAC. This is counterintuitive, but our suspicion is that
+          this may be better explored in conjunction with number of previous
+          c-sections.
+        </Typography>
+        <NumberOfPreviousCesareanCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The more c-sections a mother has had, the less likely she is to have a
+          successful VBAC.
+        </Typography>
+        <BMICrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The higher a mother's BMI, the less likely she is to have a successful
+          VBAC.
         </Typography>
       </Card>
     </Box>

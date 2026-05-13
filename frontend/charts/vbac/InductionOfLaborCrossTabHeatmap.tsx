@@ -7,6 +7,7 @@ import { ChartDataBoundary } from "@/components/ChartDataBoundary";
 import { useChartJsonCrossTab } from "@/hooks/useChartJson";
 
 import {
+  LABOR_BINARY_ROW_LABELS,
   VBAC_OUTCOME_COLUMN_KEYS,
   VBAC_OUTCOME_COLUMN_LABELS,
   formatVbacCrossTabAnnotation,
@@ -14,23 +15,9 @@ import {
 } from "./vbacCrossTabFormatters";
 import { VBAC_JSON_DATA_YEAR } from "./vbacDataYear";
 
-const DATA_FILE = "vbac/attendant_at_birth_cross_tab.json";
+const DATA_FILE = "vbac/induction_of_labor_cross_tab.json";
 
-/**
- * Labels for attendant-at-birth codes (NCHS), matching
- * `02_visualizations.ipynb` yticklabels for the attendant crosstab heatmap.
- */
-export const ATTENDANT_AT_BIRTH_ROW_KEYS = ["1", "2", "3", "4", "5"] as const;
-
-export const ATTENDANT_AT_BIRTH_ROW_LABELS: Record<string, string> = {
-  "1": "Doctor (MD)",
-  "2": "Doctor (DO)",
-  "3": "Midwife (CNM)",
-  "4": "Midwife (Other)",
-  "5": "Other",
-};
-
-export default function AttendantAtBirthCrossTabHeatmap() {
+export default function InductionOfLaborCrossTabHeatmap() {
   const { data, loading, error } = useChartJsonCrossTab(DATA_FILE, {
     dataYear: VBAC_JSON_DATA_YEAR,
   });
@@ -45,14 +32,14 @@ export default function AttendantAtBirthCrossTabHeatmap() {
     <ChartDataBoundary loading={loading} error={error}>
       {data && rowKeysInOrder.length > 0 && (
         <ResponsiveHeatmap
-          title="Attendant at Birth and Successful VBAC"
+          title="Labor Induction and Successful VBAC"
           columnMajor={data}
           columnKeysInOrder={[...VBAC_OUTCOME_COLUMN_KEYS]}
           rowKeysInOrder={rowKeysInOrder}
           columnLabels={VBAC_OUTCOME_COLUMN_LABELS}
-          rowLabels={ATTENDANT_AT_BIRTH_ROW_LABELS}
+          rowLabels={LABOR_BINARY_ROW_LABELS}
           xAxisLabel="Successful VBAC"
-          yAxisLabel="Birth Attendant"
+          yAxisLabel="Was Labor Induced?"
           formatAnnotation={formatVbacCrossTabAnnotation}
           formatTooltipBody={formatVbacCrossTabTooltipBody}
         />
