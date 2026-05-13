@@ -15,6 +15,11 @@ import TimeOfBirthCrossTabHeatmap from "@/charts/vbac/TimeOfBirthCrossTabHeatmap
 import PriorBirthsNowLivingCrossTabHeatmap from "@/charts/vbac/PriorBirthsNowLivingCrossTabHeatmap";
 import NumberOfPreviousCesareanCrossTabHeatmap from "@/charts/vbac/NumberOfPreviousCesareanCrossTabHeatmap";
 import BMICrossTabHeatmap from "@/charts/vbac/BMICrossTabHeatmap";
+import BirthWeightInGramsCrossTabHeatmap from "@/charts/vbac/BirthWeightInGramsCrossTabHeatmap";
+import CombinedGestationDetailCrossTabHeatmap from "@/charts/vbac/CombinedGestationDetailCrossTabHeatmap";
+import WeightGainCrossTabHeatmap from "@/charts/vbac/WeightGainCrossTabHeatmap";
+import IntervalSinceLastLiveBirthCrossTabHeatmap from "@/charts/vbac/IntervalSinceLastLiveBirthCrossTabHeatmap";
+import NumberOfPrenatalVisitsCrossTabHeatmap from "@/charts/vbac/NumberOfPrenatalVisitsCrossTabHeatmap";
 
 export function VBACCharts() {
   const features = [
@@ -273,6 +278,64 @@ export function VBACCharts() {
         >
           The higher a mother's BMI, the less likely she is to have a successful
           VBAC.
+        </Typography>
+        <BirthWeightInGramsCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Of healthy birth weights (above 2500 grams), successful VBACS appear
+          to be approximately proportional to the number of c-sections.
+          Important to note, infants with birth weights below 2500 grams are
+          likely to be premature or miscarried, and infants with birth weights
+          above 5000 grams are uncommon enough that we may discount them as
+          outliers.
+        </Typography>
+        <CombinedGestationDetailCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Preterm deliveries are most likely to result in a VBAC; however, we
+          would not consider these to be "successful", as deliveries prior to 28
+          weeks gestation have a near-100% chance of mortality. Of term or
+          near-term deliveries, those at 40-41 weeks are most likely to have
+          successful VBACs.
+        </Typography>
+        <WeightGainCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The more weight a mother gains during pregnancy, the less likely she
+          is to have a successful VBAC.
+        </Typography>
+        <IntervalSinceLastLiveBirthCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The more time since the last live birth, the less likely the mother is
+          to have a successful VBAC.
+        </Typography>
+        <NumberOfPrenatalVisitsCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Fewer prenatal visits appear to result in greater chances of
+          successful VBACs. However, this is likely due to low medical provider
+          involvement, and it would likely be preferable for those mothers to
+          have received more prenatal care. It would be interesting to know how
+          well these mothers recovered after vaginal birth, and if a c-section
+          would have been preferable for medical reasons. At the higher end of
+          the spectrum, more prenatal visits likely correlate to higher-risk
+          pregnancies, which are more likely to require a c-section.
         </Typography>
       </Card>
     </Box>
