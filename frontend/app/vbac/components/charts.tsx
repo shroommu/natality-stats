@@ -20,6 +20,8 @@ import CombinedGestationDetailCrossTabHeatmap from "@/charts/vbac/CombinedGestat
 import WeightGainCrossTabHeatmap from "@/charts/vbac/WeightGainCrossTabHeatmap";
 import IntervalSinceLastLiveBirthCrossTabHeatmap from "@/charts/vbac/IntervalSinceLastLiveBirthCrossTabHeatmap";
 import NumberOfPrenatalVisitsCrossTabHeatmap from "@/charts/vbac/NumberOfPrenatalVisitsCrossTabHeatmap";
+import MothersSingleYearAgeCrossTabHeatmap from "@/charts/vbac/MothersSingleYearAgeCrossTabHeatmap";
+import FathersCombinedAgeCrossTabHeatmap from "@/charts/vbac/FathersCombinedAgeCrossTabHeatmap";
 
 export function VBACCharts() {
   const features = [
@@ -336,6 +338,24 @@ export function VBACCharts() {
           would have been preferable for medical reasons. At the higher end of
           the spectrum, more prenatal visits likely correlate to higher-risk
           pregnancies, which are more likely to require a c-section.
+        </Typography>
+        <MothersSingleYearAgeCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Mothers around the age of 27 are most likely to have a successful
+          VBAC, with the rate decreasing at higher and lower ages.
+        </Typography>
+        <FathersCombinedAgeCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Fathers around the age of 32 are most likely to have a successful
+          VBAC, with the rate decreasing at higher and lower ages.
         </Typography>
       </Card>
     </Box>
