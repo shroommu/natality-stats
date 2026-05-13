@@ -18,14 +18,14 @@ export default function VBAC() {
 function VBACContent() {
   const tabItems: TabsItem[] = [
     {
-      label: "Data Analysis",
-      value: "data-analysis",
-      content: <VBACCharts />,
-    },
-    {
       label: "Model",
       value: "model",
       content: <VBACModel />,
+    },
+    {
+      label: "Data Analysis",
+      value: "data-analysis",
+      content: <VBACCharts />,
     },
     {
       label: "Technical Details",
@@ -42,27 +42,23 @@ function VBACContent() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-              Notes
-            </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="h5">Notes</Typography>
+            <Typography variant="body1">
               The prediction provided by this tool is based on a machine
               learning model trained on historical data. It takes into account
               various factors that have been shown to influence VBAC success
               rates, such as maternal age, previous birth history, and labor
               characteristics.
             </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body1">
               While this tool provides an estimate of VBAC success probability
               based on various parameters, it&apos;s important to remember that
               it is not a definitive predictor. Other factors not listed can
               influence the outcome of a VBAC, and individual circumstances may
               vary.
             </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-              Dataset
-            </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="h5">Dataset</Typography>
+            <Typography variant="body1">
               This model was trained on the 2021 CDC Natality dataset, which can
               be located{" "}
               <Link
@@ -76,9 +72,7 @@ function VBACContent() {
               United States occurring in the 2021 calendar year, including
               maternal characteristics, pregnancy history, and birth outcomes.
             </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 600 }} gutterBottom>
-              Model Details
-            </Typography>
+            <Typography variant="h5">Model Details</Typography>
             <Typography variant="body1">
               The model used for predicting VBAC success is a Random Forest
               Classifier implemented in Python using the scikit-learn library.
