@@ -4,15 +4,14 @@ import { describe, expect, it, vi } from "vitest";
 
 import VBAC from "@/app/vbac/page";
 
-import attendantAtBirthCrossTab from "../../../public/data/2021/vbac/attendant_at_birth_cross_tab.json";
-import { setupChartJsonFetch } from "../../charts/chartTestSetup";
+import { setupChartJsonFetchFromPublicData } from "../../charts/chartTestSetup";
 
 vi.mock("@/app/vbac/components/model", () => ({
   VBACModel: () => <div>VBACModelStub</div>,
 }));
 
 describe("VBAC page", () => {
-  setupChartJsonFetch(attendantAtBirthCrossTab);
+  setupChartJsonFetchFromPublicData();
 
   it("renders heading and intro text", () => {
     render(<VBAC />);

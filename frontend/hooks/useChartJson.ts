@@ -15,36 +15,54 @@ export function publicDataUrl(year: number, filename: string) {
 /** JSON from `DataFrame.to_json()` with default orient=columns: outer key = column, inner = row index. */
 export type CrossTabColumnMajor = Record<string, Record<string, number>>;
 
-function isCrossTabColumnMajor(value: unknown): value is CrossTabColumnMajor {
+/**
+ * Parses column-major cross-tab JSON, coercing null cells to 0 (pandas may emit
+ * nulls for empty crosstab cells).
+ */
+export function parseCrossTabColumnMajor(
+  value: unknown,
+): CrossTabColumnMajor | null {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
-    return false;
+    return null;
   }
   const outer = value as Record<string, unknown>;
   const outerKeys = Object.keys(outer);
-  if (outerKeys.length === 0) return false;
+  if (outerKeys.length === 0) return null;
+  const out: CrossTabColumnMajor = {};
   for (const col of outerKeys) {
     const inner = outer[col];
     if (inner === null || typeof inner !== "object" || Array.isArray(inner)) {
-      return false;
+      return null;
     }
-    const rowMap = inner as Record<string, unknown>;
-    const rowKeys = Object.keys(rowMap);
-    if (rowKeys.length === 0) return false;
+    const rowMap: Record<string, number> = {};
+    const innerObj = inner as Record<string, unknown>;
+    const rowKeys = Object.keys(innerObj);
+    if (rowKeys.length === 0) return null;
     for (const rk of rowKeys) {
-      if (typeof rowMap[rk] !== "number" || Number.isNaN(rowMap[rk] as number)) {
-        return false;
+      const v = innerObj[rk];
+      if (v === null || v === undefined) {
+        rowMap[rk] = 0;
+      } else if (typeof v === "number" && !Number.isNaN(v)) {
+        rowMap[rk] = v;
+      } else {
+        return null;
       }
     }
+    out[col] = rowMap;
   }
-  return true;
+  return out;
 }
 
-export function useChartJsonRecord(filename: string): {
+export function useChartJsonRecord(
+  filename: string,
+  options?: { dataYear?: DataYear },
+): {
   record: Record<string, number> | null;
   loading: boolean;
   error: string | null;
 } {
   const { year } = useSelectedYear();
+  const effectiveYear = options?.dataYear ?? year;
   const [record, setRecord] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,13 +73,13 @@ export function useChartJsonRecord(filename: string): {
     setError(null);
     setRecord(null);
 
-    const url = publicDataUrl(year, filename);
+    const url = publicDataUrl(effectiveYear, filename);
 
     fetch(url)
       .then((res) => {
         if (!res.ok) {
           throw new Error(
-            `Could not load chart data for ${year} (${res.status})`,
+            `Could not load chart data for ${effectiveYear} (${res.status})`,
           );
         }
         return res.json() as Promise<Record<string, number>>;
@@ -81,7 +99,7 @@ export function useChartJsonRecord(filename: string): {
     return () => {
       cancelled = true;
     };
-  }, [year, filename]);
+  }, [effectiveYear, filename]);
 
   return { record, loading, error };
 }
@@ -118,10 +136,11 @@ export function useChartJsonCrossTab(
         return res.json() as Promise<unknown>;
       })
       .then((parsed) => {
-        if (!isCrossTabColumnMajor(parsed)) {
+        const normalized = parseCrossTabColumnMajor(parsed);
+        if (normalized === null) {
           throw new Error("Invalid cross-tab chart data shape");
         }
-        if (!cancelled) setData(parsed);
+        if (!cancelled) setData(normalized);
       })
       .catch((e: unknown) => {
         if (!cancelled) {
