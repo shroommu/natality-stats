@@ -8,8 +8,8 @@ import {
   Link,
 } from "@mui/material";
 
-import AttendantAtBirthCrossTabHeatmap from "@/charts/vbac/AttendantAtBirthCrossTabHeatmap";
 import AugmentationOfLaborCrossTabHeatmap from "@/charts/vbac/AugmentationOfLaborCrossTabHeatmap";
+import AttendantAtBirthCrossTabHeatmap from "@/charts/vbac/AttendantAtBirthCrossTabHeatmap";
 import InductionOfLaborCrossTabHeatmap from "@/charts/vbac/InductionOfLaborCrossTabHeatmap";
 import TimeOfBirthCrossTabHeatmap from "@/charts/vbac/TimeOfBirthCrossTabHeatmap";
 import PriorBirthsNowLivingCrossTabHeatmap from "@/charts/vbac/PriorBirthsNowLivingCrossTabHeatmap";
@@ -17,43 +17,36 @@ import NumberOfPreviousCesareanCrossTabHeatmap from "@/charts/vbac/NumberOfPrevi
 import BMICrossTabHeatmap from "@/charts/vbac/BMICrossTabHeatmap";
 import BirthWeightInGramsCrossTabHeatmap from "@/charts/vbac/BirthWeightInGramsCrossTabHeatmap";
 import CombinedGestationDetailCrossTabHeatmap from "@/charts/vbac/CombinedGestationDetailCrossTabHeatmap";
-import WeightGainCrossTabHeatmap from "@/charts/vbac/WeightGainCrossTabHeatmap";
-import IntervalSinceLastLiveBirthCrossTabHeatmap from "@/charts/vbac/IntervalSinceLastLiveBirthCrossTabHeatmap";
-import NumberOfPrenatalVisitsCrossTabHeatmap from "@/charts/vbac/NumberOfPrenatalVisitsCrossTabHeatmap";
-import MothersSingleYearAgeCrossTabHeatmap from "@/charts/vbac/MothersSingleYearAgeCrossTabHeatmap";
-import FathersCombinedAgeCrossTabHeatmap from "@/charts/vbac/FathersCombinedAgeCrossTabHeatmap";
 import PriorBirthsPreviousCesareanCrossTabHeatmap from "@/charts/vbac/PriorBirthsPreviousCesareanCrossTabHeatmap";
+import BirthPlaceCrossTabHeatmap from "@/charts/vbac/BirthPlaceCrossTabHeatmap";
+import FetalPresentationAtDeliveryCrossTabHeatmap from "@/charts/vbac/FetalPresentationAtDeliveryCrossTabHeatmap";
+import BirthDayOfWeekCrossTabHeatmap from "@/charts/vbac/BirthDayOfWeekCrossTabHeatmap";
 
 export function VBACCharts() {
   const features = [
     "Augmentation of Labor",
-    "Induction of Labor",
     "Attendant at Birth",
+    "Induction of Labor",
     "Time of Birth",
-    "Prior Births Now Living",
     "Number of Previous Cesarean",
+    "Birth Place",
+    "Combined Gestation Detail (Gestational Age) in Weeks",
+    "Prior Births Now Living",
+    "Birth Day of Week",
+    "Fetal Presentation at Delivery",
     "BMI",
+    "Delivery Weight",
     "Birth Weight in Grams",
-    "Gestational Age in Weeks",
-    "Weight Gain",
-    "Interval Since Last Live Birth",
-    "Number of Prenatal Visits",
-    "Mother's Height in Inches",
-    "Mother's Age",
-    "Father's Age",
   ];
 
   const selectedFeatures = [
     "Augmentation of Labor",
     "Induction of Labor",
-    "Prior Births Now Living * Number of Previous Cesarean",
+    "Number of Previous Cesarean",
+    "Combined Gestation Detail (Gestational Age) in Weeks",
+    "Prior Births Now Living",
+    "Fetal Presentation at Delivery",
     "BMI",
-    "Birth Weight in Grams",
-    "Gestational Age in Weeks",
-    "Weight Gain",
-    "Interval Since Last Live Birth",
-    "Mother's Age",
-    "Father's Age",
   ];
 
   return (
@@ -169,7 +162,7 @@ export function VBACCharts() {
           }}
         >
           <Grid container spacing={0.5}>
-            {features.map((index, feature) => (
+            {features.map((feature, index) => (
               <Grid size={{ xs: 12, sm: 6 }} key={index}>
                 <List
                   dense
@@ -195,8 +188,10 @@ export function VBACCharts() {
         </Box>
 
         <Typography variant="body1">
-          Note: We decided not to investigate the Mother's Height feature, as
-          height is factored into BMI.
+          Note: We decided not to investigate delivery weight, as it is directly
+          factored into BMI. Instead, we chose to investigate Birth Weight in
+          Grams, which was not included in the feature importances but may still
+          provide valuable insights.
         </Typography>
       </Card>
       <Card
@@ -229,18 +224,6 @@ export function VBACCharts() {
           </Link>{" "}
           results in a significant increase in VBAC success.
         </Typography>
-        <InductionOfLaborCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          <Link href="https://my.clevelandclinic.org/health/treatments/17698-labor-induction">
-            Labor Induction
-          </Link>{" "}
-          also results in a significant increase in VBAC success, though not as
-          significant as labor augmentation.
-        </Typography>
         <AttendantAtBirthCrossTabHeatmap />
         <Typography
           variant="body1"
@@ -256,6 +239,18 @@ export function VBACCharts() {
           less likely to oversee the care of high-risk pregnancies, which are
           more likely to require a c-section for the safety of mother and baby.
         </Typography>
+        <InductionOfLaborCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          <Link href="https://my.clevelandclinic.org/health/treatments/17698-labor-induction">
+            Labor Induction
+          </Link>{" "}
+          also results in a significant increase in VBAC success, though not as
+          significant as labor augmentation.
+        </Typography>
         <TimeOfBirthCrossTabHeatmap />
         <Typography
           variant="body1"
@@ -265,6 +260,39 @@ export function VBACCharts() {
           There is no particular time of day that is more likely to result in a
           successful VBAC. However, a c-section is more likely to occur during
           business hours. This is likely the result of pre-scheduled c-sections.
+        </Typography>
+        <NumberOfPreviousCesareanCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The more c-sections a mother has had, the less likely she is to have a
+          successful VBAC.
+        </Typography>
+        <BirthPlaceCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          A VBAC is most likely to occur at home when the mother has planned
+          ahead for it. However, we do not find these data points to be useful,
+          as it's expected that a hospital would be the primary location for a
+          c-section, and that other locations would have low rates of
+          c-sections.
+        </Typography>
+        <CombinedGestationDetailCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Preterm deliveries are most likely to result in a VBAC; however, we
+          would not consider these to be "successful", as deliveries prior to 28
+          weeks gestation have a near-100% chance of mortality. Of term or
+          near-term deliveries, those at 40-41 weeks are most likely to have
+          successful VBACs.
         </Typography>
         <PriorBirthsNowLivingCrossTabHeatmap />
         <Typography
@@ -277,14 +305,23 @@ export function VBACCharts() {
           this may be better explored in conjunction with number of previous
           c-sections.
         </Typography>
-        <NumberOfPreviousCesareanCrossTabHeatmap />
+        <BirthDayOfWeekCrossTabHeatmap />
         <Typography
           variant="body1"
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          The more c-sections a mother has had, the less likely she is to have a
-          successful VBAC.
+          Weekdays have a higher rate of c-sections, which is expected due to
+          scheduled c-sections.
+        </Typography>
+        <FetalPresentationAtDeliveryCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Cephalic presentation has the highest VBAC success rate, which is
+          expected.
         </Typography>
         <BMICrossTabHeatmap />
         <Typography
@@ -308,68 +345,9 @@ export function VBACCharts() {
           above 5000 grams are uncommon enough that we may discount them as
           outliers.
         </Typography>
-        <CombinedGestationDetailCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          Preterm deliveries are most likely to result in a VBAC; however, we
-          would not consider these to be "successful", as deliveries prior to 28
-          weeks gestation have a near-100% chance of mortality. Of term or
-          near-term deliveries, those at 40-41 weeks are most likely to have
-          successful VBACs.
-        </Typography>
-        <WeightGainCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          The more weight a mother gains during pregnancy, the less likely she
-          is to have a successful VBAC.
-        </Typography>
-        <IntervalSinceLastLiveBirthCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          The more time since the last live birth, the less likely the mother is
-          to have a successful VBAC.
-        </Typography>
-        <NumberOfPrenatalVisitsCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          Fewer prenatal visits appear to result in greater chances of
-          successful VBACs. However, this is likely due to low medical provider
-          involvement, and it would likely be preferable for those mothers to
-          have received more prenatal care. It would be interesting to know how
-          well these mothers recovered after vaginal birth, and if a c-section
-          would have been preferable for medical reasons. At the higher end of
-          the spectrum, more prenatal visits likely correlate to higher-risk
-          pregnancies, which are more likely to require a c-section.
-        </Typography>
-        <MothersSingleYearAgeCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          Mothers around the age of 27 are most likely to have a successful
-          VBAC, with the rate decreasing at higher and lower ages.
-        </Typography>
-        <FathersCombinedAgeCrossTabHeatmap />
-        <Typography
-          variant="body1"
-          sx={{ fontStyle: "italic", fontSize: 14 }}
-          align="center"
-        >
-          Fathers around the age of 32 are most likely to have a successful
-          VBAC, with the rate decreasing at higher and lower ages.
+        <Typography variant="body1">
+          We were also interested in exploring the relationship between prior
+          births and previous cesarean sections.
         </Typography>
         <PriorBirthsPreviousCesareanCrossTabHeatmap />
         <Typography
@@ -404,7 +382,7 @@ export function VBACCharts() {
           }}
         >
           <Grid container spacing={0.5}>
-            {selectedFeatures.map((index, feature) => (
+            {selectedFeatures.map((feature, index) => (
               <Grid size={{ xs: 12, sm: 6 }} key={index}>
                 <List
                   dense
@@ -427,6 +405,9 @@ export function VBACCharts() {
               </Grid>
             ))}
           </Grid>
+          <Typography variant="body1">
+            These features were then used to train our prediction model.
+          </Typography>
         </Box>
       </Card>
     </Box>
