@@ -27,6 +27,16 @@ export default function BirthPlaceCrossTabHeatmap() {
     return col ? Object.keys(col) : [];
   }, [data]);
 
+  const BIRTH_PLACE_ROW_LABELS: Record<string, string> = {
+    "1.0": "Hospital",
+    "2.0": "Freestanding Birth Center",
+    "3.0": "Home (Intended)",
+    "4.0": "Home (Not Intended)",
+    "5.0": "Home (Unknown if Intended)",
+    "6.0": "Clinic / Doctor's Office",
+    "7.0": "Other",
+  };
+
   return (
     <ChartDataBoundary loading={loading} error={error}>
       {data && rowKeysInOrder.length > 0 && (
@@ -36,7 +46,7 @@ export default function BirthPlaceCrossTabHeatmap() {
           columnKeysInOrder={[...VBAC_OUTCOME_COLUMN_KEYS]}
           rowKeysInOrder={rowKeysInOrder}
           columnLabels={VBAC_OUTCOME_COLUMN_LABELS}
-          rowLabels={{}}
+          rowLabels={BIRTH_PLACE_ROW_LABELS}
           xAxisLabel="Successful VBAC"
           yAxisLabel="Birth Place"
           formatAnnotation={formatVbacCrossTabAnnotation}

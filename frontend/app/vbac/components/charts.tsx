@@ -405,10 +405,12 @@ export function VBACCharts() {
               </Grid>
             ))}
           </Grid>
-          <Typography variant="body1">
-            These features were then used to train our prediction model.
-          </Typography>
         </Box>
+        <Typography variant="body1">
+          We chose to eliminate the other features due to a lack of correlation
+          with the target, or because they were not actionable (e.g. time of
+          birth).
+        </Typography>
       </Card>
     </Box>
   );

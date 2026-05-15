@@ -27,6 +27,18 @@ export default function BMICrossTabHeatmap() {
     return col ? Object.keys(col) : [];
   }, [data]);
 
+  const BMI_ROW_LABELS: Record<string, string> = rowKeysInOrder.reduce(
+    (acc, key) => {
+      const formattedKey = key
+        .replace("(", "")
+        .replace("]", "")
+        .replace(",", " - ");
+      acc[key] = formattedKey;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
   return (
     <ChartDataBoundary loading={loading} error={error}>
       {data && rowKeysInOrder.length > 0 && (
@@ -36,7 +48,7 @@ export default function BMICrossTabHeatmap() {
           columnKeysInOrder={[...VBAC_OUTCOME_COLUMN_KEYS]}
           rowKeysInOrder={rowKeysInOrder}
           columnLabels={VBAC_OUTCOME_COLUMN_LABELS}
-          rowLabels={{}}
+          rowLabels={BMI_ROW_LABELS}
           xAxisLabel="Successful VBAC"
           yAxisLabel="Mother's BMI"
           formatAnnotation={formatVbacCrossTabAnnotation}

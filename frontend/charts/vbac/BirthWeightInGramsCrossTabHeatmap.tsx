@@ -27,6 +27,18 @@ export default function BirthWeightInGramsCrossTabHeatmap() {
     return col ? Object.keys(col) : [];
   }, [data]);
 
+  const BIRTH_WEIGHT_ROW_LABELS: Record<string, string> = rowKeysInOrder.reduce(
+    (acc, key) => {
+      const formattedKey = key
+        .replace("(", "")
+        .replace("]", "")
+        .replace(",", " - ");
+      acc[key] = formattedKey;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
   return (
     <ChartDataBoundary loading={loading} error={error}>
       {data && rowKeysInOrder.length > 0 && (
@@ -36,7 +48,7 @@ export default function BirthWeightInGramsCrossTabHeatmap() {
           columnKeysInOrder={[...VBAC_OUTCOME_COLUMN_KEYS]}
           rowKeysInOrder={rowKeysInOrder}
           columnLabels={VBAC_OUTCOME_COLUMN_LABELS}
-          rowLabels={{}}
+          rowLabels={BIRTH_WEIGHT_ROW_LABELS}
           xAxisLabel="Successful VBAC"
           yAxisLabel="Birth Weight (grams)"
           formatAnnotation={formatVbacCrossTabAnnotation}

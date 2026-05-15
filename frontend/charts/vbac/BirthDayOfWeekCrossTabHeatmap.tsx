@@ -27,6 +27,16 @@ export default function BirthDayOfWeekCrossTabHeatmap() {
     return col ? Object.keys(col) : [];
   }, [data]);
 
+  const DAY_OF_WEEK_ROW_LABELS: Record<string, string> = {
+    "1": "Sunday",
+    "2": "Monday",
+    "3": "Tuesday",
+    "4": "Wednesday",
+    "5": "Thursday",
+    "6": "Friday",
+    "7": "Saturday",
+  };
+
   return (
     <ChartDataBoundary loading={loading} error={error}>
       {data && rowKeysInOrder.length > 0 && (
@@ -36,7 +46,7 @@ export default function BirthDayOfWeekCrossTabHeatmap() {
           columnKeysInOrder={[...VBAC_OUTCOME_COLUMN_KEYS]}
           rowKeysInOrder={rowKeysInOrder}
           columnLabels={VBAC_OUTCOME_COLUMN_LABELS}
-          rowLabels={{}}
+          rowLabels={DAY_OF_WEEK_ROW_LABELS}
           xAxisLabel="Successful VBAC"
           yAxisLabel="Birth Day of Week"
           formatAnnotation={formatVbacCrossTabAnnotation}

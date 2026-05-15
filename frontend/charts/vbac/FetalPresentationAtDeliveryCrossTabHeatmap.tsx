@@ -27,6 +27,12 @@ export default function FetalPresentationAtDeliveryCrossTabHeatmap() {
     return col ? Object.keys(col) : [];
   }, [data]);
 
+  const FETAL_PRESENTATION_AT_DELIVERY_ROW_LABELS: Record<string, string> = {
+    "1.0": "Cephalic",
+    "2.0": "Breech",
+    "3.0": "Other",
+  };
+
   return (
     <ChartDataBoundary loading={loading} error={error}>
       {data && rowKeysInOrder.length > 0 && (
@@ -36,7 +42,7 @@ export default function FetalPresentationAtDeliveryCrossTabHeatmap() {
           columnKeysInOrder={[...VBAC_OUTCOME_COLUMN_KEYS]}
           rowKeysInOrder={rowKeysInOrder}
           columnLabels={VBAC_OUTCOME_COLUMN_LABELS}
-          rowLabels={{}}
+          rowLabels={FETAL_PRESENTATION_AT_DELIVERY_ROW_LABELS}
           xAxisLabel="Successful VBAC"
           yAxisLabel="Fetal Presentation at Delivery"
           formatAnnotation={formatVbacCrossTabAnnotation}
