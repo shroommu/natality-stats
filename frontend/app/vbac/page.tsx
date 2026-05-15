@@ -78,9 +78,9 @@ function VBACContent() {
               Classifier implemented in Python using the scikit-learn library.
               The model was trained on a subset of features from the CDC
               Natality dataset that were found to be most predictive of VBAC
-              success. The model&apos;s performance was evaluated using the F1
-              metric, and it achieved an F1 score of 0.57, indicating moderate
-              predictive ability.
+              success. The model&apos;s performance was evaluated using the F1.
+              It achieved an F1 score of 0.56, indicating moderate predictive
+              ability.
             </Typography>
           </Card>
         </Box>

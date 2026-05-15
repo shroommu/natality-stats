@@ -15,12 +15,11 @@ export function VBACModel() {
   const [vbacPredictionParameters, setVbacPredictionParameters] = useState({
     laborInduced: false,
     laborAugmented: false,
-    attendantAtBirth: 1,
     priorBirthsNowLiving: 1,
     numberOfPreviousCSections: 1,
-    bmi: 20,
-    intervalSinceLastLiveBirth: 24,
+    fetalPresentationAtDelivery: 1,
     gestationalAgeInWeeks: 40,
+    bmi: 20,
   });
   const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
 
@@ -109,24 +108,6 @@ export function VBACModel() {
           </TextField>
           <TextField
             select
-            label="Attendant at birth"
-            name="attendantAtBirth"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.attendantAtBirth}
-            onChange={(event) =>
-              updateParameter("attendantAtBirth", event.target.value)
-            }
-          >
-            <MenuItem value={1}>Doctor (MD)</MenuItem>
-            <MenuItem value={2}>Doctor (DO)</MenuItem>
-            <MenuItem value={3}>Midwife (Certified)</MenuItem>
-            <MenuItem value={4}>Midwife (Other)</MenuItem>
-            <MenuItem value={5}>Other</MenuItem>
-          </TextField>
-          <TextField
-            select
             label="Number of previous live births"
             name="priorBirthsNowLiving"
             fullWidth
@@ -162,25 +143,21 @@ export function VBACModel() {
             ))}
           </TextField>
           <TextField
-            label="Mother's BMI"
-            name="mothersBMI"
+            select
+            label="Fetal presentation at delivery"
+            name="fetalPresentationAtDelivery"
             fullWidth
             size="small"
             variant="outlined"
-            value={vbacPredictionParameters.bmi}
-            onChange={(event) => updateParameter("bmi", event.target.value)}
-          />
-          <TextField
-            label="Months since last live birth"
-            name="monthsSinceLastLiveBirth"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.intervalSinceLastLiveBirth}
+            value={vbacPredictionParameters.fetalPresentationAtDelivery}
             onChange={(event) =>
-              updateParameter("intervalSinceLastLiveBirth", event.target.value)
+              updateParameter("fetalPresentationAtDelivery", event.target.value)
             }
-          />
+          >
+            <MenuItem value={1}>Cephalic</MenuItem>
+            <MenuItem value={2}>Breech</MenuItem>
+            <MenuItem value={3}>Other</MenuItem>
+          </TextField>
           <TextField
             select
             label="Gestational age in weeks"
@@ -201,6 +178,15 @@ export function VBACModel() {
               ),
             )}
           </TextField>
+          <TextField
+            label="Mother's BMI"
+            name="bmi"
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={vbacPredictionParameters.bmi}
+            onChange={(event) => updateParameter("bmi", event.target.value)}
+          />
         </Box>
         <Button variant="contained" onClick={() => predict()}>
           Predict

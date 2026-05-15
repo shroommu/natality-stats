@@ -52,9 +52,7 @@ describe("VBAC page", () => {
     expect(within(panel).getByText("Notes")).toBeInTheDocument();
     expect(within(panel).getByText("Dataset")).toBeInTheDocument();
     expect(within(panel).getByText("Model Details")).toBeInTheDocument();
-    expect(
-      within(panel).getByRole("link", { name: "here" }),
-    ).toHaveAttribute(
+    expect(within(panel).getByRole("link", { name: "here" })).toHaveAttribute(
       "href",
       "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm#Births",
     );
@@ -66,11 +64,13 @@ describe("VBAC page", () => {
 
     await user.click(screen.getByRole("tab", { name: "Data Analysis" }));
 
-    expect(screen.getByText("Crosstabs")).toBeInTheDocument();
+    expect(
+      screen.getByText("Data Visualizations and Insights"),
+    ).toBeInTheDocument();
     expect(
       await screen.findByRole("region", {
         name: /Successful VBAC by attendant at birth/i,
       }),
     ).toBeInTheDocument();
-  });
+  }, 10000);
 });

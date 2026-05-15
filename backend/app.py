@@ -6,7 +6,7 @@ from pandas import DataFrame
 app = Flask(__name__)
 CORS(app)
 
-preprocessing = cpkl.load(open("models/vbac/preprocessing_pipeline.pkl", "rb"))
+preprocessing = cpkl.load(open("models/vbac/preprocessor.pkl", "rb"))
 vbac_model = cpkl.load(open("models/vbac/rfc_model.pkl", "rb"))
 
 
@@ -24,16 +24,15 @@ def predict_vbac():
             {
                 "augmentation_of_labor": 1.0 if body["laborAugmented"] else 0.0,
                 "induction_of_labor": 1.0 if body["laborInduced"] else 0.0,
-                "attendant_at_birth": float(body["attendantAtBirth"]),
+                "prior_births_now_living": float(body["priorBirthsNowLiving"]),
+                "number_of_previous_cesarean": float(body["numberOfPreviousCSections"]),
+                "fetal_presentation_at_delivery": float(
+                    body["fetalPresentationAtDelivery"]
+                ),
                 "combined_gestation_detail_in_weeks": float(
                     body["gestationalAgeInWeeks"]
                 ),
-                "prior_births_now_living": float(body["priorBirthsNowLiving"]),
-                "number_of_previous_cesarean": float(body["numberOfPreviousCSections"]),
                 "BMI": float(body["bmi"]),
-                "interval_since_last_live_birth": float(
-                    body["intervalSinceLastLiveBirth"]
-                ),
             }
         ]
     )

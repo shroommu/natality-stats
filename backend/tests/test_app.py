@@ -43,7 +43,7 @@ class AppRoutesTestCase(unittest.TestCase):
         self.client = self.app_module.app.test_client()
 
     def test_health_returns_healthy_status(self):
-        response = self.client.get("/health")
+        response = self.client.get("/api/health")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), {"status": "healthy"})
@@ -52,15 +52,14 @@ class AppRoutesTestCase(unittest.TestCase):
         payload = {
             "laborAugmented": True,
             "laborInduced": False,
-            "attendantAtBirth": 1,
             "gestationalAgeInWeeks": 39,
             "priorBirthsNowLiving": 2,
             "numberOfPreviousCSections": 1,
+            "fetalPresentationAtDelivery": 1,
             "bmi": 31,
-            "intervalSinceLastLiveBirth": 24,
         }
 
-        response = self.client.post("/predict-vbac", json=payload)
+        response = self.client.post("/api/predict-vbac", json=payload)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), {"vbac_prediction": 87.7})
@@ -70,12 +69,11 @@ class AppRoutesTestCase(unittest.TestCase):
                 {
                     "augmentation_of_labor": 1.0,
                     "induction_of_labor": 0.0,
-                    "attendant_at_birth": 1.0,
-                    "combined_gestation_detail_in_weeks": 39.0,
                     "prior_births_now_living": 2.0,
                     "number_of_previous_cesarean": 1.0,
+                    "fetal_presentation_at_delivery": 1.0,
+                    "combined_gestation_detail_in_weeks": 39.0,
                     "BMI": 31.0,
-                    "interval_since_last_live_birth": 24.0,
                 }
             ]
         )
