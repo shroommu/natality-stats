@@ -1,120 +1,76 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import VBAC from "@/app/vbac/page";
 
-describe("VBAC page", () => {
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
+import { setupChartJsonFetchFromPublicData } from "../../charts/chartTestSetup";
 
-  it("renders form sections and default probability", () => {
+vi.mock("@/app/vbac/components/model", () => ({
+  VBACModel: () => <div>VBACModelStub</div>,
+}));
+
+describe("VBAC page", () => {
+  setupChartJsonFetchFromPublicData();
+
+  it("renders heading and intro text", () => {
     render(<VBAC />);
 
     expect(
       screen.getByRole("heading", { name: "Predicting VBAC Success" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("VBAC Success Probability")).toBeInTheDocument();
-    expect(screen.getByText("--%")).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "Parameters" }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Predict" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: "Technical Details" }),
+      screen.getByText(/Vaginal Birth After Cesarean/),
     ).toBeInTheDocument();
   });
 
-  it("submits payload and renders prediction result", async () => {
-    const user = userEvent.setup();
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      json: vi.fn().mockResolvedValue({ vbac_prediction: 77 }),
-    });
-    vi.stubGlobal("fetch", fetchMock);
-
+  it("renders three tabs", () => {
     render(<VBAC />);
 
-    await user.click(screen.getByRole("button", { name: "Predict" }));
-
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    const [url, options] = fetchMock.mock.calls[0];
-    expect(url).toBe("/api/predict-vbac");
-    expect(options.method).toBe("POST");
-    expect(options.headers).toEqual({ "Content-Type": "application/json" });
-
-    const payload = JSON.parse(options.body as string);
-    expect(payload).toEqual({
-      laborInduced: false,
-      laborAugmented: false,
-      attendantAtBirth: 1,
-      priorBirthsNowLiving: 1,
-      numberOfPreviousCSections: 1,
-      bmi: 15,
-      intervalSinceLastLiveBirth: 24,
-      gestationalAgeInWeeks: 40,
-    });
-
-    expect(await screen.findByText("77%")).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Data Analysis" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Model" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Technical Details" }),
+    ).toBeInTheDocument();
   });
 
-  it("updates editable form fields before predicting", async () => {
-    const user = userEvent.setup();
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      json: vi.fn().mockResolvedValue({ vbac_prediction: 55 }),
-    });
-    vi.stubGlobal("fetch", fetchMock);
-
+  it("shows the Model tab content by default", () => {
     render(<VBAC />);
 
-    await user.click(screen.getByLabelText("Was labor induced?"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "Yes" }),
+    expect(screen.getByText("VBACModelStub")).toBeInTheDocument();
+  });
+
+  it("switching to Technical Details shows technical content", async () => {
+    const user = userEvent.setup();
+    render(<VBAC />);
+
+    await user.click(screen.getByRole("tab", { name: "Technical Details" }));
+
+    const panel = screen.getByRole("tabpanel");
+    expect(within(panel).getByText("Notes")).toBeInTheDocument();
+    expect(within(panel).getByText("Dataset")).toBeInTheDocument();
+    expect(within(panel).getByText("Model Details")).toBeInTheDocument();
+    expect(within(panel).getByRole("link", { name: "here" })).toHaveAttribute(
+      "href",
+      "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm#Births",
     );
-    await user.click(screen.getByLabelText("Was labor augmented?"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "Yes" }),
-    );
-    await user.click(screen.getByLabelText("Attendant at birth"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", {
-        name: "Doctor (DO)",
+  });
+
+  it("switching to Data Analysis shows crosstab heatmap", async () => {
+    const user = userEvent.setup();
+    render(<VBAC />);
+
+    await user.click(screen.getByRole("tab", { name: "Data Analysis" }));
+
+    expect(
+      screen.getByText("Data Visualizations and Insights"),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole("region", {
+        name: /Successful VBAC by attendant at birth/i,
       }),
-    );
-    await user.click(screen.getByLabelText("Number of previous live births"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "2" }),
-    );
-    await user.click(screen.getByLabelText("Number of previous C-sections"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "3" }),
-    );
-    fireEvent.change(screen.getByLabelText("Mother's BMI"), {
-      target: { value: "22" },
-    });
-    fireEvent.change(screen.getByLabelText("Months since last live birth"), {
-      target: { value: "30" },
-    });
-    await user.click(screen.getByLabelText("Gestational age in weeks"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "39" }),
-    );
-
-    await user.click(screen.getByRole("button", { name: "Predict" }));
-
-    const [, options] = fetchMock.mock.calls[0];
-    const payload = JSON.parse(options.body as string);
-    expect(payload.laborInduced).toBe(true);
-    expect(payload.laborAugmented).toBe(true);
-    expect(payload.attendantAtBirth).toBe(2);
-    expect(payload.priorBirthsNowLiving).toBe(2);
-    expect(payload.numberOfPreviousCSections).toBe(3);
-    expect(payload.bmi).toBe("22");
-    expect(payload.intervalSinceLastLiveBirth).toBe("30");
-    expect(payload.gestationalAgeInWeeks).toBe(39);
-
-    expect(await screen.findByText("55%")).toBeInTheDocument();
-  }, 20000);
+    ).toBeInTheDocument();
+  }, 10000);
 });
