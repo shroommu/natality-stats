@@ -66,13 +66,13 @@ function DownSyndromeContent() {
             </Typography>
             <Typography variant="h5">Model Details</Typography>
             <Typography variant="body1">
-              The model used for predicting Down Syndrome is a Random Forest
-              Classifier implemented in Python using the scikit-learn library.
-              The model was trained on a subset of features from the CDC
-              Natality dataset that were found to be most predictive of Down
-              Syndrome. The model&apos;s performance was evaluated using the F1.
-              It achieved an F1 score of 0.56, indicating moderate predictive
-              ability.
+              The model used for predicting Down Syndrome is the XGBoost
+              algorithm, implemented in Python using the xgboost library. The
+              model was trained on a subset of features from the CDC Natality
+              dataset that were found to be most predictive of Down Syndrome.
+              The model&apos;s performance was evaluated using F1 and accuracy
+              scores. It achieved an F1 score of 0.0057 and an accuracy score of
+              0.9957, indicating moderate predictive ability.
             </Typography>
           </Card>
         </Box>
