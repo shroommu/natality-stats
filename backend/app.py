@@ -6,8 +6,13 @@ from pandas import DataFrame
 app = Flask(__name__)
 CORS(app)
 
-preprocessing = cpkl.load(open("models/vbac/preprocessor.pkl", "rb"))
+vbac_preprocessing = cpkl.load(open("models/vbac/preprocessor.pkl", "rb"))
 vbac_model = cpkl.load(open("models/vbac/rfc_model.pkl", "rb"))
+
+down_syndrome_preprocessing = cpkl.load(
+    open("models/down_syndrome/preprocessor.pkl", "rb")
+)
+down_syndrome_model = cpkl.load(open("models/down_syndrome/xgb_model.pkl", "rb"))
 
 
 @app.route("/api/health")
@@ -37,6 +42,26 @@ def predict_vbac():
         ]
     )
 
-    processed_data = preprocessing.transform(raw)
+    processed_data = vbac_preprocessing.transform(raw)
     prediction = vbac_model.predict_proba(processed_data)
     return jsonify({"vbac_prediction": round(float(prediction[0][1]) * 100, 1)})
+
+
+@app.route("/api/predict-down-syndrome", methods=["POST"])
+def predict_down_syndrome():
+    body = request.json
+
+    raw = DataFrame(
+        [
+            {
+                "mothers_single_year_age": float(body["mothersAge"]),
+                "fathers_combined_age": float(body["fathersAge"]),
+            }
+        ]
+    )
+
+    processed_data = down_syndrome_preprocessing.transform(raw)
+    prediction = down_syndrome_model.predict_proba(processed_data)
+    return jsonify(
+        {"down_syndrome_prediction": round(float(prediction[0][1]) * 100, 1)}
+    )
