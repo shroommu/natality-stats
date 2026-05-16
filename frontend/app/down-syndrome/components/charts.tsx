@@ -1,12 +1,18 @@
-import {
-  Box,
-  Typography,
-  Card,
-  Grid,
-  List,
-  ListItem,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Card, Grid, List, ListItem } from "@mui/material";
+
+import MothersAgeCrossTabHeatmap from "@/charts/down_syndrome/MothersAgeCrossTabHeatmap";
+import BMICrossTabHeatmap from "@/charts/down_syndrome/BMICrossTabHeatmap";
+import MothersRaceCrossTabHeatmap from "@/charts/down_syndrome/MothersRaceCrossTabHeatmap";
+import MothersHispanicOriginCrossTabHeatmap from "@/charts/down_syndrome/MothersHispanicOriginCrossTabHeatmap";
+import CigarettesBeforePregnancyCrossTabHeatmap from "@/charts/down_syndrome/CigarettesBeforePregnancyCrossTabHeatmap";
+import PrePregnancyWeightCrossTabHeatmap from "@/charts/down_syndrome/PrePregnancyWeightCrossTabHeatmap";
+import PriorBirthsNowLivingCrossTabHeatmap from "@/charts/down_syndrome/PriorBirthsNowLivingCrossTabHeatmap";
+import IntervalSinceLastLiveBirthCrossTabHeatmap from "@/charts/down_syndrome/IntervalSinceLastLiveBirthCrossTabHeatmap";
+import IntervalSinceLastPregnancyCrossTabHeatmap from "@/charts/down_syndrome/IntervalSinceLastPregnancyCrossTabHeatmap";
+import PriorOtherTerminationsCrossTabHeatmap from "@/charts/down_syndrome/PriorOtherTerminationsCrossTabHeatmap";
+import FathersAgeCrossTabHeatmap from "@/charts/down_syndrome/FathersAgeCrossTabHeatmap";
+import FathersRaceCrossTabHeatmap from "@/charts/down_syndrome/FathersRaceCrossTabHeatmap";
+import FathersHispanicOriginCrossTabHeatmap from "@/charts/down_syndrome/FathersHispanicOriginCrossTabHeatmap";
 
 export function DownSyndromeCharts() {
   const features = [
@@ -24,22 +30,8 @@ export function DownSyndromeCharts() {
     "Father's Hispanic Origin",
   ];
 
-  const selectedFeatures = ["Mother's Age", "Father's Age"];
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <Card
-        variant="elevation"
-        sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}
-      >
-        <Typography variant="h5" align="center">
-          Data Exploration
-        </Typography>
-        <Typography variant="body1">
-          In creating a prediction model, our first step was to analyze the
-          dataset to identify the top predictors of a baby with Down Syndrome.
-        </Typography>
-      </Card>
       <Card
         variant="elevation"
         sx={{ p: 2, flex: 1, display: "flex", flexDirection: "column", gap: 2 }}
@@ -71,7 +63,7 @@ export function DownSyndromeCharts() {
           further.
         </Typography>
         <Typography variant="body1">
-          That narrowed down our feature set to 25. Of those, we selected the
+          That narrowed down our feature set to 23. Of those, we selected the
           following to investigate further:
         </Typography>
         <Box
@@ -128,6 +120,131 @@ export function DownSyndromeCharts() {
           target, we created a cross-tabulation chart for each. Using the
           Proportion column, we were able to determine the rate at which a baby
           was born with Down Syndrome.
+        </Typography>
+        <MothersAgeCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          As the mother's age increases, so does the likelihood of Down
+          syndrome.
+        </Typography>
+        <FathersAgeCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Similarly, the likelihood of Down syndrome increases with the father's
+          age.
+        </Typography>
+        <IntervalSinceLastLiveBirthCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The longer a couple waits between having one child and the next, the
+          higher the likelihood of Down syndrome. However, this likely has a
+          high correlation with parental age, so we will not include it in the
+          final model.
+        </Typography>
+        <IntervalSinceLastPregnancyCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Similarly, the longer a couple waits between pregnancies, the higher
+          the likelihood of Down syndrome. However, this likely has a high
+          correlation with parental age, so we will not include it in the final
+          model.
+        </Typography>
+        <PriorOtherTerminationsCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Number of prior terminations appears to have some bearing on Down
+          syndrome rates, but the data does not distinguish between miscarriages
+          and voluntary terminations. This feature would be more relevant to our
+          model if it only encompassed voluntary terminations. As it is, we will
+          not include it.
+        </Typography>
+        <PriorBirthsNowLivingCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Similarly to our "interval between" features, number of prior births
+          appears to have a positive relationship with Down syndrome rates.
+          However, this is likely due to increased parental age with higher
+          numbers of births.
+        </Typography>
+        <BMICrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Largely, BMI does not appear to have any bearing on Down syndrome
+          rates.
+        </Typography>
+        <PrePregnancyWeightCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          The same can be said of pre-pregnancy weight.
+        </Typography>
+        <CigarettesBeforePregnancyCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Cigarette use before pregnancy does not appear to have a strong
+          relationship with Down syndrome rates.
+        </Typography>
+        <MothersRaceCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Down syndrome rates appear highest among the AIAN population, though
+          research indicates that this is due to cultural factors rather than
+          genetic. The same can be said of the lower rate amoung the Asian
+          population.
+        </Typography>
+        <MothersHispanicOriginCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          Similarly, Down sydrome rates are higher in the Hispanic population
+          due to cultural factors.
+        </Typography>
+        <FathersRaceCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          We see the same trends with the father's race as with the mother's.
+        </Typography>
+        <FathersHispanicOriginCrossTabHeatmap />
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: 14 }}
+          align="center"
+        >
+          And the same with the father's Hispanic origin.
         </Typography>
       </Card>
       <Card
@@ -197,26 +314,15 @@ export function DownSyndromeCharts() {
             }}
             component="div"
           >
-            AIAH race also has a higher rate of Down syndrome, for similar
-            reasons as parents of Hispanic origin.
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{
-              display: "list-item",
-              py: 0.25,
-              minHeight: 0,
-            }}
-            component="div"
-          >
-            Cigarettes prior to pregnancy indicates a slight increase in Down
-            syndrome rates, but not enough to indicate a strong correlation.
+            Those of American Indian or Alaska Native descent also have a higher
+            rate of Down syndrome, for similar reasons as parents of Hispanic
+            origin.
           </ListItem>
         </List>
         <Typography variant="body1">
           Of our other features available, none indicate a strong increase in
-          Down syndrome rates. Therefore, our final model will be trained only
-          on the parents' ages.
+          Down syndrome rates. Therefore, our final model was trained only on
+          the parents' ages.
         </Typography>
       </Card>
     </Box>
