@@ -46,7 +46,7 @@ function DownSyndromeContent() {
             <Typography variant="body1">
               The prediction provided by this tool is based on a machine
               learning model trained on historical data. It takes into account
-              the top predictors of Down Syndrome: mother's age, and father's
+              the top predictors of Down syndrome: mother's age, and father's
               age.
             </Typography>
             <Typography variant="h5">Dataset</Typography>
@@ -66,10 +66,10 @@ function DownSyndromeContent() {
             </Typography>
             <Typography variant="h5">Model Details</Typography>
             <Typography variant="body1">
-              The model used for predicting Down Syndrome is the XGBoost
+              The model used for predicting Down syndrome is the XGBoost
               algorithm, implemented in Python using the xgboost library. The
               model was trained on a subset of features from the CDC Natality
-              dataset that were found to be most predictive of Down Syndrome.
+              dataset that were found to be most predictive of Down syndrome.
               The model&apos;s performance was evaluated using F1 and accuracy
               scores. It achieved an F1 score of 0.0057 and an accuracy score of
               0.9957, indicating moderate predictive ability.
