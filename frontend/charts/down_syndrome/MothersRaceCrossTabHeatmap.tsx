@@ -23,7 +23,10 @@ export default function MothersRaceCrossTabHeatmap() {
   });
 
   const rowKeysInOrder = getDownSyndromeRowKeysInOrder(data);
-  const rowLabels = buildDownSyndromeRowLabels(rowKeysInOrder, RACE_6_ROW_LABELS);
+  const rowLabels = buildDownSyndromeRowLabels(
+    rowKeysInOrder,
+    RACE_6_ROW_LABELS,
+  );
 
   return (
     <ChartDataBoundary loading={loading} error={error}>
