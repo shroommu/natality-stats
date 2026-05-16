@@ -56,7 +56,7 @@ export function DownSyndromeModel() {
         }}
       >
         <Typography variant="h5" gutterBottom>
-          Down Syndrome Prediction
+          Down Syndrome Probability
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
           {downSyndromePrediction !== null
