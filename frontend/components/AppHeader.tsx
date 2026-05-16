@@ -13,11 +13,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { ThemeContext } from "@emotion/react";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
-  { label: "VBAC Predictor", href: "/vbac" },
+  { label: "VBAC", href: "/vbac" },
+  { label: "Down Syndrome", href: "/down-syndrome" },
 ] as const;
 
 export function AppHeader() {
