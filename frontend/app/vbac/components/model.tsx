@@ -10,6 +10,7 @@ import {
   Button,
   Card,
   CircularProgress,
+  Slider,
 } from "@mui/material";
 
 export function VBACModel() {
@@ -222,20 +223,44 @@ export function VBACModel() {
               ),
             )}
           </TextField>
-          <TextField
-            label="Mother's BMI"
-            name="bmi"
-            fullWidth
-            size="small"
-            variant="outlined"
-            type="number"
-            slotProps={{ htmlInput: { min: 10, max: 80, step: "0.1", inputMode: "decimal" } }}
-            disabled={loading}
-            error={Boolean(bmiError)}
-            helperText={bmiError}
-            value={vbacPredictionParameters.bmi}
-            onChange={(event) => handleBmiChange(event.target.value)}
-          />
+          <Box
+            sx={{
+              gridColumn: { xs: "span 1", md: "span 2" },
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              mt: 1,
+            }}
+          >
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Mother&apos;s BMI
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <Slider
+                value={typeof vbacPredictionParameters.bmi === "number" ? vbacPredictionParameters.bmi : (parseFloat(vbacPredictionParameters.bmi) || 20)}
+                aria-label="Mother's BMI Slider"
+                min={10}
+                max={80}
+                step={0.1}
+                disabled={loading}
+                onChange={(event, newValue) => handleBmiChange(String(newValue))}
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                name="bmi"
+                type="number"
+                size="small"
+                variant="outlined"
+                disabled={loading}
+                error={Boolean(bmiError)}
+                helperText={bmiError}
+                value={vbacPredictionParameters.bmi}
+                onChange={(event) => handleBmiChange(event.target.value)}
+                slotProps={{ htmlInput: { min: 10, max: 80, step: "0.1", style: { textAlign: "center" }, "aria-label": "Mother's BMI" } }}
+                sx={{ width: 90 }}
+              />
+            </Box>
+          </Box>
         </Box>
         <Button
           variant="contained"

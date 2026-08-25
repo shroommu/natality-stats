@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   CircularProgress,
+  Slider,
 } from "@mui/material";
 
 export function DownSyndromeModel() {
@@ -142,41 +143,66 @@ export function DownSyndromeModel() {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-            gap: 2,
+            gap: 4,
           }}
         >
-          <TextField
-            label="Mother's Age"
-            name="mothersAge"
-            fullWidth
-            size="small"
-            variant="outlined"
-            type="number"
-            slotProps={{ htmlInput: { min: 10, max: 80, step: "1", inputMode: "numeric" } }}
-            disabled={loading}
-            error={Boolean(mothersAgeError)}
-            helperText={mothersAgeError}
-            value={downSyndromePredictionParameters.mothersAge}
-            onChange={(event) =>
-              handleMothersAgeChange(event.target.value)
-            }
-          />
-          <TextField
-            label="Father's Age"
-            name="fathersAge"
-            fullWidth
-            size="small"
-            variant="outlined"
-            type="number"
-            slotProps={{ htmlInput: { min: 10, max: 80, step: "1", inputMode: "numeric" } }}
-            disabled={loading}
-            error={Boolean(fathersAgeError)}
-            helperText={fathersAgeError}
-            value={downSyndromePredictionParameters.fathersAge}
-            onChange={(event) =>
-              handleFathersAgeChange(event.target.value)
-            }
-          />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Mother&apos;s Age
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <Slider
+                value={typeof downSyndromePredictionParameters.mothersAge === "number" ? downSyndromePredictionParameters.mothersAge : (Number(downSyndromePredictionParameters.mothersAge) || 25)}
+                min={10}
+                max={80}
+                disabled={loading}
+                onChange={(event, newValue) => handleMothersAgeChange(String(newValue))}
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                name="mothersAge"
+                type="number"
+                size="small"
+                variant="outlined"
+                disabled={loading}
+                error={Boolean(mothersAgeError)}
+                helperText={mothersAgeError}
+                value={downSyndromePredictionParameters.mothersAge}
+                onChange={(event) => handleMothersAgeChange(event.target.value)}
+                slotProps={{ htmlInput: { min: 10, max: 80, style: { textAlign: "center" }, "aria-label": "Mother's Age" } }}
+                sx={{ width: 90 }}
+              />
+            </Box>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Father&apos;s Age
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <Slider
+                value={typeof downSyndromePredictionParameters.fathersAge === "number" ? downSyndromePredictionParameters.fathersAge : (Number(downSyndromePredictionParameters.fathersAge) || 30)}
+                min={10}
+                max={80}
+                disabled={loading}
+                onChange={(event, newValue) => handleFathersAgeChange(String(newValue))}
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                name="fathersAge"
+                type="number"
+                size="small"
+                variant="outlined"
+                disabled={loading}
+                error={Boolean(fathersAgeError)}
+                helperText={fathersAgeError}
+                value={downSyndromePredictionParameters.fathersAge}
+                onChange={(event) => handleFathersAgeChange(event.target.value)}
+                slotProps={{ htmlInput: { min: 10, max: 80, style: { textAlign: "center" }, "aria-label": "Father's Age" } }}
+                sx={{ width: 90 }}
+              />
+            </Box>
+          </Box>
         </Box>
         <Button
           variant="contained"
