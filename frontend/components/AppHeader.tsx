@@ -65,6 +65,11 @@ export function AppHeader() {
             xs: (theme) => theme.palette.primary.main,
             sm: "rgba(255, 255, 255, 0.92)",
           },
+          ...theme => theme.applyStyles("dark", {
+            "@media (min-width: 600px)": {
+              backgroundColor: "rgba(20, 20, 30, 0.92)",
+            }
+          }),
           borderBottom: "1px solid",
           borderColor: "divider",
           backdropFilter: "blur(6px)",
@@ -82,7 +87,7 @@ export function AppHeader() {
           component={NextLink}
           href="/"
           sx={{
-            color: "black",
+            color: "text.primary",
             textDecoration: "none",
             minWidth: 0,
             flexGrow: { xs: 1, sm: 0 },
@@ -93,7 +98,7 @@ export function AppHeader() {
             sx={{
               fontWeight: 600,
               fontSize: { xs: "1rem", sm: "1.5rem" },
-              color: { xs: "white", sm: "black" },
+              color: { xs: "white", sm: "text.primary" },
               letterSpacing: { xs: "0.01em", sm: 0 },
               whiteSpace: "nowrap",
               overflow: "hidden",
