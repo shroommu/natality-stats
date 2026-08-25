@@ -55,23 +55,25 @@ export function AppHeader() {
       }}
     >
       <Toolbar
-        sx={{
-          gap: { xs: 1.25, sm: 2 },
-          display: "flex",
-          justifyContent: { xs: "space-between", sm: "flex-start" },
-          px: { xs: 1.5, sm: 4 },
-          py: { xs: 1.25, sm: 2 },
-          backgroundColor: {
-            xs: (theme) => theme.palette.primary.main,
-            sm: "rgba(255, 255, 255, 0.92)",
+        sx={[
+          {
+            gap: { xs: 1.25, sm: 2 },
+            display: "flex",
+            justifyContent: { xs: "space-between", sm: "flex-start" },
+            px: { xs: 1.5, sm: 4 },
+            py: { xs: 1.25, sm: 2 },
+            backgroundColor: {
+              xs: (theme) => theme.palette.primary.main,
+              sm: "rgba(255, 255, 255, 0.92)",
+            },
+            borderBottom: "1px solid",
+            borderColor: "divider",
+            backdropFilter: "blur(6px)",
           },
-          ...theme => theme.applyStyles("dark", {
+          theme => theme.applyStyles("dark", {
             backgroundColor: "rgba(20, 20, 30, 0.92)",
           }),
-          borderBottom: "1px solid",
-          borderColor: "divider",
-          backdropFilter: "blur(6px)",
-        }}
+        ]}
       >
         <IconButton
           aria-label="Open navigation menu"

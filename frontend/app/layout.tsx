@@ -4,7 +4,10 @@ import { Box } from "@mui/material";
 import { AppThemeProvider } from "@/components/AppThemeProvider";
 import { AppHeader } from "@/components/AppHeader";
 import { AppFooter } from "@/components/AppFooter";
-import { APP_BACKGROUND_GRADIENT } from "@/theme/colorTokens";
+import {
+  APP_BACKGROUND_GRADIENT,
+  APP_BACKGROUND_GRADIENT_DARK,
+} from "@/theme/colorTokens";
 import { YearProvider } from "@/lib/yearContext";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
@@ -42,12 +45,16 @@ export default function RootLayout({
                 zIndex: -1,
                 pointerEvents: "none",
                 transition: "background 0.3s ease",
+                "@media (prefers-reduced-motion: reduce)": {
+                  transition: "none",
+                },
               },
-              ...theme => theme.applyStyles("dark", {
+              ".dark &": {
+                background: APP_BACKGROUND_GRADIENT_DARK,
                 "&::before": {
-                  background: "rgba(10, 10, 20, 0.85)",
+                  background: "rgba(10, 10, 20, 0.55)",
                 }
-              }),
+              },
             }}
           >
             <AppHeader />
@@ -69,10 +76,10 @@ export default function RootLayout({
                 backdropFilter: "blur(16px)",
                 border: "1px solid rgba(255, 255, 255, 0.4)",
                 boxShadow: "0 10px 32px 0 rgba(31, 38, 135, 0.06)",
-                ...theme => theme.applyStyles("dark", {
-                  backgroundColor: "rgba(20, 20, 30, 0.65)",
-                  borderColor: "rgba(255, 255, 255, 0.08)",
-                }),
+                ".dark &": {
+                  backgroundColor: "rgba(20, 20, 30, 0.85)",
+                  borderColor: "rgba(255, 255, 255, 0.12)",
+                },
               }}
             >
               {children}

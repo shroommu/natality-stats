@@ -197,7 +197,9 @@ function HomeContent() {
                       fontWeight: 700,
                       fontSize: { xs: "2rem", sm: "2.5rem" },
                       fontVariantNumeric: "tabular-nums",
-                      background: theme => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                      background: theme => theme.palette.mode === "dark"
+                        ? `linear-gradient(45deg, ${theme.palette.primary.light}, ${theme.palette.secondary.light})`
+                        : `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                     }}
@@ -230,7 +232,9 @@ function HomeContent() {
                   fontWeight: 700,
                   fontSize: { xs: "2rem", sm: "2.5rem" },
                   fontVariantNumeric: "tabular-nums",
-                  background: theme => `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.info.main})`,
+                    background: theme => theme.palette.mode === "dark"
+                      ? `linear-gradient(45deg, ${theme.palette.secondary.light}, ${theme.palette.info.main})`
+                      : `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.info.main})`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}

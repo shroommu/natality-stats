@@ -70,17 +70,19 @@ export function DownSyndromeCharts() {
           following to investigate further:
         </Typography>
         <Box
-          sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.3)",
-            border: "1px solid rgba(255, 255, 255, 0.4)",
-            borderRadius: 1,
-            boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
-            p: { xs: 1.5, sm: 2 },
-            ...theme => theme.applyStyles("dark", {
+          sx={[
+            {
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              border: "1px solid rgba(255, 255, 255, 0.4)",
+              borderRadius: 1,
+              boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
+              p: { xs: 1.5, sm: 2 },
+            },
+            theme => theme.applyStyles("dark", {
               backgroundColor: "rgba(0, 0, 0, 0.15)",
               borderColor: "rgba(255, 255, 255, 0.05)",
             }),
-          }}
+          ]}
         >
           <Grid container spacing={0.5}>
             {features.map((feature, index) => (
