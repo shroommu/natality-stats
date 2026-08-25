@@ -8,19 +8,33 @@ const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: "class",
   },
-  palette: {
-    primary: {
-      main: COLOR_TOKENS.lightPurple,
-    },
-    secondary: {
-      main: COLOR_TOKENS.lightPink,
-    },
-    info: {
-      main: COLOR_TOKENS.lightBlue,
-    },
-  },
   colorSchemes: {
-    dark: true,
+    light: {
+      palette: {
+        primary: {
+          main: COLOR_TOKENS.lightPurple,
+        },
+        secondary: {
+          main: COLOR_TOKENS.lightPink,
+        },
+        info: {
+          main: COLOR_TOKENS.lightBlue,
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          main: "#9e8cfc",
+        },
+        secondary: {
+          main: "#f582c3",
+        },
+        info: {
+          main: "#7cb6ff",
+        },
+      },
+    },
   },
   components: {
     MuiCard: {
