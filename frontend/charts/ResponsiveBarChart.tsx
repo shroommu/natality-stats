@@ -17,6 +17,33 @@ export default function ResponsiveBarChart({
   mobileHeight = 320,
   desktopHeight = 420,
 }: ResponsiveBarChartProps) {
+  const enhancedOptions = {
+    ...options,
+    responsive: true,
+    maintainAspectRatio: false,
+    datasets: {
+      bar: {
+        borderRadius: 6,
+      },
+    },
+    scales: {
+      ...options?.scales,
+      x: {
+        ...options?.scales?.x,
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        ...options?.scales?.y,
+        grid: {
+          color: "rgba(150, 150, 150, 0.15)",
+          borderDash: [5, 5],
+        },
+      },
+    },
+  };
+
   return (
     <Box sx={{ width: "100%", overflowX: "auto", pb: 1 }}>
       <Box
@@ -27,11 +54,7 @@ export default function ResponsiveBarChart({
       >
         <Bar
           data={data}
-          options={{
-            ...options,
-            responsive: true,
-            maintainAspectRatio: false,
-          }}
+          options={enhancedOptions}
         />
       </Box>
     </Box>
