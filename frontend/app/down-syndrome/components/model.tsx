@@ -124,13 +124,20 @@ export function DownSyndromeModel() {
         }}
       >
         <Typography variant="h5" gutterBottom>
-          Down Syndrome Probability
+          Down Syndrome Risk
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 600 }} gutterBottom>
           {downSyndromePrediction !== null
-            ? `${downSyndromePrediction}%`
-            : "--%"}
+            ? downSyndromePrediction > 0
+              ? `1 in ${Math.round(100 / downSyndromePrediction).toLocaleString()}`
+              : "0 (No risk)"
+            : "--"}
         </Typography>
+        {downSyndromePrediction !== null && (
+          <Typography variant="body2" color="text.secondary">
+            Estimated probability: {downSyndromePrediction}%
+          </Typography>
+        )}
       </Card>
       <Card
         variant="elevation"
@@ -147,16 +154,27 @@ export function DownSyndromeModel() {
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontWeight: 500 }}
+            >
               Mother&apos;s Age
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
               <Slider
-                value={typeof downSyndromePredictionParameters.mothersAge === "number" ? downSyndromePredictionParameters.mothersAge : (Number(downSyndromePredictionParameters.mothersAge) || 25)}
+                value={
+                  typeof downSyndromePredictionParameters.mothersAge ===
+                  "number"
+                    ? downSyndromePredictionParameters.mothersAge
+                    : Number(downSyndromePredictionParameters.mothersAge) || 25
+                }
                 min={10}
                 max={80}
                 disabled={loading}
-                onChange={(event, newValue) => handleMothersAgeChange(String(newValue))}
+                onChange={(event, newValue) =>
+                  handleMothersAgeChange(String(newValue))
+                }
                 sx={{ flex: 1 }}
               />
               <TextField
@@ -169,23 +187,41 @@ export function DownSyndromeModel() {
                 helperText={mothersAgeError}
                 value={downSyndromePredictionParameters.mothersAge}
                 onChange={(event) => handleMothersAgeChange(event.target.value)}
-                slotProps={{ htmlInput: { min: 10, max: 80, style: { textAlign: "center" }, "aria-label": "Mother's Age" } }}
+                slotProps={{
+                  htmlInput: {
+                    min: 10,
+                    max: 80,
+                    style: { textAlign: "center" },
+                    "aria-label": "Mother's Age",
+                  },
+                }}
                 sx={{ width: 90 }}
               />
             </Box>
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ fontWeight: 500 }}
+            >
               Father&apos;s Age
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
               <Slider
-                value={typeof downSyndromePredictionParameters.fathersAge === "number" ? downSyndromePredictionParameters.fathersAge : (Number(downSyndromePredictionParameters.fathersAge) || 30)}
+                value={
+                  typeof downSyndromePredictionParameters.fathersAge ===
+                  "number"
+                    ? downSyndromePredictionParameters.fathersAge
+                    : Number(downSyndromePredictionParameters.fathersAge) || 30
+                }
                 min={10}
                 max={80}
                 disabled={loading}
-                onChange={(event, newValue) => handleFathersAgeChange(String(newValue))}
+                onChange={(event, newValue) =>
+                  handleFathersAgeChange(String(newValue))
+                }
                 sx={{ flex: 1 }}
               />
               <TextField
@@ -198,7 +234,14 @@ export function DownSyndromeModel() {
                 helperText={fathersAgeError}
                 value={downSyndromePredictionParameters.fathersAge}
                 onChange={(event) => handleFathersAgeChange(event.target.value)}
-                slotProps={{ htmlInput: { min: 10, max: 80, style: { textAlign: "center" }, "aria-label": "Father's Age" } }}
+                slotProps={{
+                  htmlInput: {
+                    min: 10,
+                    max: 80,
+                    style: { textAlign: "center" },
+                    "aria-label": "Father's Age",
+                  },
+                }}
                 sx={{ width: 90 }}
               />
             </Box>
@@ -207,8 +250,12 @@ export function DownSyndromeModel() {
         <Button
           variant="contained"
           onClick={() => predict()}
-          disabled={loading || Boolean(mothersAgeError) || Boolean(fathersAgeError)}
-          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+          disabled={
+            loading || Boolean(mothersAgeError) || Boolean(fathersAgeError)
+          }
+          startIcon={
+            loading ? <CircularProgress size={16} color="inherit" /> : null
+          }
           sx={{ textTransform: "none", minWidth: 120 }}
         >
           {loading ? "Predicting…" : "Predict"}

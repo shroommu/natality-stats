@@ -73,7 +73,7 @@ function DownSyndromeContent() {
               Since only two features (Mother&apos;s Age and Father&apos;s Age)
               were determined to have a non-confounded predictive relationship
               with Down syndrome, we trained an XGBoost model on the data, then
-              generated a lookup table from the model's predictions for all
+              generated a lookup table from the model&apos;s predictions for all
               combinations of maternal and paternal ages. The resulting table
               provides quick and accurate risk estimates without the need for
               real-time model inference.
