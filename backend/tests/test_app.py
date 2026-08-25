@@ -30,9 +30,11 @@ class AppRoutesTestCase(unittest.TestCase):
         cls.stub_preprocessing = StubPreprocessing()
         cls.stub_model = StubModel()
 
-        # The app loads model artifacts at import time; mock file and pickle IO.
+        # The app loads model artifacts at import time; mock file, pickle, and json IO.
         with patch("builtins.open", mock_open(read_data=b"stub")), patch(
             "pickle.load", side_effect=[cls.stub_preprocessing, cls.stub_model]
+        ), patch(
+            "json.load", return_value={"35_32": 0.0269}
         ):
             sys.modules.pop("app", None)
             cls.app_module = importlib.import_module("app")
@@ -80,6 +82,27 @@ class AppRoutesTestCase(unittest.TestCase):
 
         pd.testing.assert_frame_equal(self.stub_preprocessing.last_raw, expected_raw)
         self.assertEqual(self.stub_model.last_processed_data, "processed-data")
+
+    def test_predict_down_syndrome_returns_calibrated_percentage(self):
+        payload = {
+            "mothersAge": 35,
+            "fathersAge": 32
+        }
+        response = self.client.post("/api/predict-down-syndrome", json=payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {"down_syndrome_prediction": 0.0269})
+
+    def test_predict_down_syndrome_clips_out_of_bounds_ages(self):
+        # Clip mother's age 5 (clips to 12) and father's age 105 (clips to 98)
+        payload = {
+            "mothersAge": 5,
+            "fathersAge": 105
+        }
+        response = self.client.post("/api/predict-down-syndrome", json=payload)
+        self.assertEqual(response.status_code, 200)
+        # 12_98 is not in our stub_lookup_table (which only has 35_32),
+        # so it should default to the baseline rate of 0.0235
+        self.assertEqual(response.get_json(), {"down_syndrome_prediction": 0.0235})
 
 
 if __name__ == "__main__":
