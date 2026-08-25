@@ -27,6 +27,21 @@ export default function RootLayout({
           flexDirection: "column",
           background: APP_BACKGROUND_GRADIENT,
           backgroundAttachment: "fixed",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "fixed",
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: "rgba(0, 0, 0, 0)",
+            zIndex: -1,
+            pointerEvents: "none",
+            transition: "background 0.3s ease",
+          },
+          ...theme => theme.applyStyles("dark", {
+            "&::before": {
+              background: "rgba(10, 10, 20, 0.72)",
+            }
+          }),
         }}
       >
         <AppThemeProvider>
@@ -46,7 +61,14 @@ export default function RootLayout({
                 py: 4,
                 px: 3,
                 borderRadius: { sm: 0, md: 2 },
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                backgroundColor: "rgba(255, 255, 255, 0.65)",
+                backdropFilter: "blur(16px)",
+                border: "1px solid rgba(255, 255, 255, 0.4)",
+                boxShadow: "0 10px 32px 0 rgba(31, 38, 135, 0.06)",
+                ...theme => theme.applyStyles("dark", {
+                  backgroundColor: "rgba(20, 20, 30, 0.65)",
+                  borderColor: "rgba(255, 255, 255, 0.08)",
+                }),
               }}
             >
               {children}
