@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <InitColorSchemeScript />
+        <InitColorSchemeScript attribute="class" />
       </head>
       <AppThemeProvider>
         <YearProvider>

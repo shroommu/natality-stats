@@ -5,6 +5,9 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { COLOR_TOKENS } from "@/theme/colorTokens";
 
 const theme = createTheme({
+  cssVariables: {
+    colorSchemeSelector: "class",
+  },
   palette: {
     primary: {
       main: COLOR_TOKENS.lightPurple,

@@ -36,8 +36,11 @@ export function AppHeader() {
   }, []);
 
   const toggleMode = () => {
-    setMode(mode === "light" ? "dark" : "light");
+    const isDark = mode === "dark" || (mode === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    setMode(isDark ? "light" : "dark");
   };
+
+  const isDarkActive = mounted && (mode === "dark" || (mode === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches));
 
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
@@ -137,9 +140,7 @@ export function AppHeader() {
             color: { xs: "white", sm: "text.primary" },
           }}
         >
-          {!mounted ? (
-            <DarkModeIcon />
-          ) : mode === "dark" ? (
+          {isDarkActive ? (
             <LightModeIcon />
           ) : (
             <DarkModeIcon />
