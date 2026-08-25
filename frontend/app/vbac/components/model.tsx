@@ -24,6 +24,7 @@ export function VBACModel() {
   });
   const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [bmiError, setBmiError] = useState("");
 
   const updateParameter = (name: string, value: unknown) => {
     setVbacPredictionParameters((prev) => ({
@@ -32,7 +33,31 @@ export function VBACModel() {
     }));
   };
 
+  const handleBmiChange = (val: string) => {
+    updateParameter("bmi", val);
+    const num = parseFloat(val);
+    if (!val) {
+      setBmiError("BMI is required");
+    } else if (isNaN(num) || num < 10 || num > 80) {
+      setBmiError("BMI must be a number between 10 and 80");
+    } else {
+      setBmiError("");
+    }
+  };
+
   const predict = async () => {
+    const val = String(vbacPredictionParameters.bmi);
+    const num = parseFloat(val);
+    if (!val) {
+      setBmiError("BMI is required");
+      return;
+    }
+    if (isNaN(num) || num < 10 || num > 80) {
+      setBmiError("BMI must be a number between 10 and 80");
+      return;
+    }
+    setBmiError("");
+
     setLoading(true);
     try {
       const response = await fetch("/api/predict-vbac", {
@@ -203,15 +228,19 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            type="number"
+            slotProps={{ htmlInput: { min: 10, max: 80, step: "0.1", inputMode: "decimal" } }}
             disabled={loading}
+            error={Boolean(bmiError)}
+            helperText={bmiError}
             value={vbacPredictionParameters.bmi}
-            onChange={(event) => updateParameter("bmi", event.target.value)}
+            onChange={(event) => handleBmiChange(event.target.value)}
           />
         </Box>
         <Button
           variant="contained"
           onClick={() => predict()}
-          disabled={loading}
+          disabled={loading || Boolean(bmiError)}
           startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
           sx={{ textTransform: "none", minWidth: 120 }}
         >

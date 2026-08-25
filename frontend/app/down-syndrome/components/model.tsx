@@ -24,6 +24,9 @@ export function DownSyndromeModel() {
   >(null);
   const [loading, setLoading] = useState(false);
 
+  const [mothersAgeError, setMothersAgeError] = useState("");
+  const [fathersAgeError, setFathersAgeError] = useState("");
+
   const updateParameter = (name: string, value: unknown) => {
     setDownSyndromePredictionParameters((prev) => ({
       ...prev,
@@ -31,7 +34,59 @@ export function DownSyndromeModel() {
     }));
   };
 
+  const handleMothersAgeChange = (val: string) => {
+    updateParameter("mothersAge", val);
+    const num = parseInt(val, 10);
+    if (!val) {
+      setMothersAgeError("Mother's age is required");
+    } else if (isNaN(num) || num < 10 || num > 80) {
+      setMothersAgeError("Age must be between 10 and 80");
+    } else {
+      setMothersAgeError("");
+    }
+  };
+
+  const handleFathersAgeChange = (val: string) => {
+    updateParameter("fathersAge", val);
+    const num = parseInt(val, 10);
+    if (!val) {
+      setFathersAgeError("Father's age is required");
+    } else if (isNaN(num) || num < 10 || num > 80) {
+      setFathersAgeError("Age must be between 10 and 80");
+    } else {
+      setFathersAgeError("");
+    }
+  };
+
   const predict = async () => {
+    const mAgeStr = String(downSyndromePredictionParameters.mothersAge);
+    const fAgeStr = String(downSyndromePredictionParameters.fathersAge);
+    const mAge = parseInt(mAgeStr, 10);
+    const fAge = parseInt(fAgeStr, 10);
+
+    let hasError = false;
+    if (!mAgeStr) {
+      setMothersAgeError("Mother's age is required");
+      hasError = true;
+    } else if (isNaN(mAge) || mAge < 10 || mAge > 80) {
+      setMothersAgeError("Age must be between 10 and 80");
+      hasError = true;
+    } else {
+      setMothersAgeError("");
+    }
+
+    if (!fAgeStr) {
+      setFathersAgeError("Father's age is required");
+      hasError = true;
+    } else if (isNaN(fAge) || fAge < 10 || fAge > 80) {
+      setFathersAgeError("Age must be between 10 and 80");
+      hasError = true;
+    } else {
+      setFathersAgeError("");
+    }
+
+    if (hasError) return;
+
     setLoading(true);
     try {
       const response = await fetch("/api/predict-down-syndrome", {
@@ -96,10 +151,14 @@ export function DownSyndromeModel() {
             fullWidth
             size="small"
             variant="outlined"
+            type="number"
+            slotProps={{ htmlInput: { min: 10, max: 80, step: "1", inputMode: "numeric" } }}
             disabled={loading}
+            error={Boolean(mothersAgeError)}
+            helperText={mothersAgeError}
             value={downSyndromePredictionParameters.mothersAge}
             onChange={(event) =>
-              updateParameter("mothersAge", event.target.value)
+              handleMothersAgeChange(event.target.value)
             }
           />
           <TextField
@@ -108,17 +167,21 @@ export function DownSyndromeModel() {
             fullWidth
             size="small"
             variant="outlined"
+            type="number"
+            slotProps={{ htmlInput: { min: 10, max: 80, step: "1", inputMode: "numeric" } }}
             disabled={loading}
+            error={Boolean(fathersAgeError)}
+            helperText={fathersAgeError}
             value={downSyndromePredictionParameters.fathersAge}
             onChange={(event) =>
-              updateParameter("fathersAge", event.target.value)
+              handleFathersAgeChange(event.target.value)
             }
           />
         </Box>
         <Button
           variant="contained"
           onClick={() => predict()}
-          disabled={loading}
+          disabled={loading || Boolean(mothersAgeError) || Boolean(fathersAgeError)}
           startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
           sx={{ textTransform: "none", minWidth: 120 }}
         >
