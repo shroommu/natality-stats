@@ -165,13 +165,24 @@ function HomeContent() {
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
-            gap: 2,
-            justifyContent: "space-between",
+            gap: 3,
           }}
         >
-          <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
+          <Card
+            variant="elevation"
+            sx={{
+              p: { xs: 2, sm: 3 },
+              flex: { xs: 1, md: 1.8 },
+              borderLeft: "6px solid",
+              borderColor: "primary.main",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              overflow: "hidden",
+            }}
+          >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 Total Births
               </Typography>
               <Box
@@ -181,13 +192,15 @@ function HomeContent() {
                   <CircularProgress size={28} aria-label="Loading summary" />
                 ) : (
                   <Typography
-                    variant="h4"
+                    variant="h3"
                     sx={{
-                      fontWeight: 600,
-                      fontSize: { xs: "1.65rem", sm: "2rem" },
+                      fontWeight: 700,
+                      fontSize: { xs: "2rem", sm: "2.5rem" },
                       fontVariantNumeric: "tabular-nums",
+                      background: theme => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
                     }}
-                    gutterBottom
                   >
                     {totalBirthsDisplay}
                   </Typography>
@@ -195,22 +208,36 @@ function HomeContent() {
               </Box>
             </Box>
           </Card>
-          <Card variant="elevation" sx={{ p: { xs: 1.5, sm: 2 }, flex: 1 }}>
+          <Card
+            variant="elevation"
+            sx={{
+              p: { xs: 2, sm: 3 },
+              flex: { xs: 1, md: 1 },
+              borderLeft: "6px solid",
+              borderColor: "secondary.main",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 Fertility Rate
               </Typography>
               <Typography
-                variant="h4"
+                variant="h3"
                 sx={{
-                  fontWeight: 600,
-                  fontSize: { xs: "1.65rem", sm: "2rem" },
+                  fontWeight: 700,
+                  fontSize: { xs: "2rem", sm: "2.5rem" },
                   fontVariantNumeric: "tabular-nums",
+                  background: theme => `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.info.main})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
                 {summaryLoading ? "…" : fertilityDisplay}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ mt: -0.5 }}>
                 per 1,000 women ages 15–44
               </Typography>
             </Box>
