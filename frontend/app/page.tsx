@@ -185,6 +185,7 @@ function HomeContent() {
                     sx={{
                       fontWeight: 600,
                       fontSize: { xs: "1.65rem", sm: "2rem" },
+                      fontVariantNumeric: "tabular-nums",
                     }}
                     gutterBottom
                   >
@@ -204,6 +205,7 @@ function HomeContent() {
                 sx={{
                   fontWeight: 600,
                   fontSize: { xs: "1.65rem", sm: "2rem" },
+                  fontVariantNumeric: "tabular-nums",
                 }}
               >
                 {summaryLoading ? "…" : fertilityDisplay}
@@ -225,7 +227,7 @@ function HomeContent() {
         <AccordionDetails sx={{ px: { xs: 1, sm: 2 }, py: { xs: 1.5, sm: 2 } }}>
           <Suspense
             fallback={
-              <Typography variant="body2">Loading sections...</Typography>
+              <Typography variant="body2">Loading sections…</Typography>
             }
           >
             <Tabs

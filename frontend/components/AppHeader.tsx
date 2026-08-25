@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -10,9 +10,12 @@ import {
   Link,
   Toolbar,
   Typography,
+  useColorScheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -25,6 +28,16 @@ const NAV_ITEMS = [
 export function AppHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
+  const { mode, setMode } = useColorScheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleMode = () => {
+    setMode(mode === "light" ? "dark" : "light");
+  };
 
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
@@ -115,6 +128,23 @@ export function AppHeader() {
             );
           })}
         </Box>
+
+        <Box sx={{ flexGrow: { xs: 0, sm: 1 } }} />
+        <IconButton
+          onClick={toggleMode}
+          aria-label="Toggle light or dark theme"
+          sx={{
+            color: { xs: "white", sm: "text.primary" },
+          }}
+        >
+          {!mounted ? (
+            <DarkModeIcon />
+          ) : mode === "dark" ? (
+            <LightModeIcon />
+          ) : (
+            <DarkModeIcon />
+          )}
+        </IconButton>
       </Toolbar>
 
       <Drawer anchor="left" open={drawerOpen} onClose={closeDrawer}>
