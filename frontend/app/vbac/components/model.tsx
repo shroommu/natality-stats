@@ -11,6 +11,8 @@ import {
   Card,
   CircularProgress,
   Slider,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 
 export function VBACModel() {
@@ -115,38 +117,59 @@ export function VBACModel() {
             gap: 2,
           }}
         >
-          <TextField
-            select
-            label="Was labor induced?"
-            name="laborInduced"
-            fullWidth
-            size="small"
-            variant="outlined"
-            disabled={loading}
-            value={vbacPredictionParameters.laborInduced}
-            onChange={(event) =>
-              updateParameter("laborInduced", event.target.value)
-            }
-          >
-            <MenuItem value={true as never}>Yes</MenuItem>
-            <MenuItem value={false as never}>No</MenuItem>
-          </TextField>
-          <TextField
-            select
-            label="Was labor augmented?"
-            name="laborAugmented"
-            fullWidth
-            size="small"
-            variant="outlined"
-            disabled={loading}
-            value={vbacPredictionParameters.laborAugmented}
-            onChange={(event) =>
-              updateParameter("laborAugmented", event.target.value)
-            }
-          >
-            <MenuItem value={true as never}>Yes</MenuItem>
-            <MenuItem value={false as never}>No</MenuItem>
-          </TextField>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Was labor induced?
+            </Typography>
+            <ToggleButtonGroup
+              value={vbacPredictionParameters.laborInduced}
+              exclusive
+              disabled={loading}
+              onChange={(event, value) => {
+                if (value !== null) {
+                  updateParameter("laborInduced", value);
+                }
+              }}
+              size="small"
+              fullWidth
+              aria-label="Was labor induced?"
+              sx={{ height: 40 }}
+            >
+              <ToggleButton value={true} sx={{ textTransform: "none", fontWeight: 500 }}>
+                Yes
+              </ToggleButton>
+              <ToggleButton value={false} sx={{ textTransform: "none", fontWeight: 500 }}>
+                No
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Was labor augmented?
+            </Typography>
+            <ToggleButtonGroup
+              value={vbacPredictionParameters.laborAugmented}
+              exclusive
+              disabled={loading}
+              onChange={(event, value) => {
+                if (value !== null) {
+                  updateParameter("laborAugmented", value);
+                }
+              }}
+              size="small"
+              fullWidth
+              aria-label="Was labor augmented?"
+              sx={{ height: 40 }}
+            >
+              <ToggleButton value={true} sx={{ textTransform: "none", fontWeight: 500 }}>
+                Yes
+              </ToggleButton>
+              <ToggleButton value={false} sx={{ textTransform: "none", fontWeight: 500 }}>
+                No
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
           <TextField
             select
             label="Number of previous live births"
