@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { AppFooter } from "@/components/AppFooter";
 import { APP_BACKGROUND_GRADIENT } from "@/theme/colorTokens";
 import { YearProvider } from "@/lib/yearContext";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
 export const metadata: Metadata = {
   title: "Natality Stats",
@@ -17,35 +18,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <Box
-        component="body"
-        sx={{
-          m: 0,
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          background: APP_BACKGROUND_GRADIENT,
-          backgroundAttachment: "fixed",
-          position: "relative",
-          "&::before": {
-            content: '""',
-            position: "fixed",
-            top: 0, left: 0, right: 0, bottom: 0,
-            background: "rgba(0, 0, 0, 0)",
-            zIndex: -1,
-            pointerEvents: "none",
-            transition: "background 0.3s ease",
-          },
-          ...theme => theme.applyStyles("dark", {
-            "&::before": {
-              background: "rgba(10, 10, 20, 0.72)",
-            }
-          }),
-        }}
-      >
-        <AppThemeProvider>
-          <YearProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <InitColorSchemeScript />
+      </head>
+      <AppThemeProvider>
+        <YearProvider>
+          <Box
+            component="body"
+            sx={{
+              m: 0,
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              background: APP_BACKGROUND_GRADIENT,
+              backgroundAttachment: "fixed",
+              position: "relative",
+              "&::before": {
+                content: '""',
+                position: "fixed",
+                top: 0, left: 0, right: 0, bottom: 0,
+                background: "rgba(0, 0, 0, 0)",
+                zIndex: -1,
+                pointerEvents: "none",
+                transition: "background 0.3s ease",
+              },
+              ...theme => theme.applyStyles("dark", {
+                "&::before": {
+                  background: "rgba(10, 10, 20, 0.72)",
+                }
+              }),
+            }}
+          >
             <AppHeader />
             <Box
               component="main"
@@ -74,9 +78,9 @@ export default function RootLayout({
               {children}
             </Box>
             <AppFooter />
-          </YearProvider>
-        </AppThemeProvider>
-      </Box>
+          </Box>
+        </YearProvider>
+      </AppThemeProvider>
     </html>
   );
 }
