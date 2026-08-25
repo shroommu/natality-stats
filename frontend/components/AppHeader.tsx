@@ -66,9 +66,7 @@ export function AppHeader() {
             sm: "rgba(255, 255, 255, 0.92)",
           },
           ...theme => theme.applyStyles("dark", {
-            "@media (min-width: 600px)": {
-              backgroundColor: "rgba(20, 20, 30, 0.92)",
-            }
+            backgroundColor: "rgba(20, 20, 30, 0.92)",
           }),
           borderBottom: "1px solid",
           borderColor: "divider",
@@ -78,7 +76,10 @@ export function AppHeader() {
         <IconButton
           aria-label="Open navigation menu"
           onClick={drawerOpen ? closeDrawer : openDrawer}
-          sx={{ display: { xs: "inline-flex", sm: "none" } }}
+          sx={{
+            display: { xs: "inline-flex", sm: "none" },
+            color: { xs: "white", sm: "text.primary" },
+          }}
         >
           {drawerOpen ? <CloseIcon /> : <MenuIcon />}
         </IconButton>
