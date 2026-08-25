@@ -51,9 +51,12 @@ export function DownSyndromeCharts() {
           <Box
             sx={{
               fontFamily: "monospace",
-              background: "grey",
-              color: "white",
-              px: 0.5,
+              bgcolor: "action.selected",
+              color: "text.primary",
+              px: 0.75,
+              py: 0.25,
+              borderRadius: 0.5,
+              fontSize: "0.9em",
             }}
             component="span"
           >
@@ -68,12 +71,15 @@ export function DownSyndromeCharts() {
         </Typography>
         <Box
           sx={{
-            bgcolor: "background.paper",
-            border: 1,
-            borderColor: "divider",
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            border: "1px solid rgba(255, 255, 255, 0.4)",
             borderRadius: 1,
-            boxShadow: 1,
+            boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
             p: { xs: 1.5, sm: 2 },
+            ...theme => theme.applyStyles("dark", {
+              backgroundColor: "rgba(0, 0, 0, 0.15)",
+              borderColor: "rgba(255, 255, 255, 0.05)",
+            }),
           }}
         >
           <Grid container spacing={0.5}>
@@ -127,7 +133,7 @@ export function DownSyndromeCharts() {
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          As the mother's age increases, so does the likelihood of Down
+          As the mother&apos;s age increases, so does the likelihood of Down
           syndrome.
         </Typography>
         <FathersAgeCrossTabHeatmap />
@@ -136,7 +142,7 @@ export function DownSyndromeCharts() {
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          Similarly, the likelihood of Down syndrome increases with the father's
+          Similarly, the likelihood of Down syndrome increases with the father&apos;s
           age.
         </Typography>
         <IntervalSinceLastLiveBirthCrossTabHeatmap />
@@ -179,7 +185,7 @@ export function DownSyndromeCharts() {
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          Similarly to our "interval between" features, number of prior births
+          Similarly to our &quot;interval between&quot; features, number of prior births
           appears to have a positive relationship with Down syndrome rates.
           However, this is likely due to increased parental age with higher
           numbers of births.
@@ -236,7 +242,7 @@ export function DownSyndromeCharts() {
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          We see the same trends with the father's race as with the mother's.
+          We see the same trends with the father&apos;s race as with the mother&apos;s.
         </Typography>
         <FathersHispanicOriginCrossTabHeatmap />
         <Typography
@@ -244,7 +250,7 @@ export function DownSyndromeCharts() {
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          And the same with the father's Hispanic origin.
+          And the same with the father&apos;s Hispanic origin.
         </Typography>
       </Card>
       <Card
@@ -274,7 +280,7 @@ export function DownSyndromeCharts() {
             }}
             component="div"
           >
-            Mother's age appears to be the top predictor, with increased age
+            Mother&apos;s age appears to be the top predictor, with increased age
             resulting in increased probability of Down syndrome in the infant.
           </ListItem>
           <ListItem
@@ -286,7 +292,7 @@ export function DownSyndromeCharts() {
             }}
             component="div"
           >
-            Father's age is a close second for top predictor, with the same
+            Father&apos;s age is a close second for top predictor, with the same
             indication.
           </ListItem>
           <ListItem
@@ -322,7 +328,7 @@ export function DownSyndromeCharts() {
         <Typography variant="body1">
           Of our other features available, none indicate a strong increase in
           Down syndrome rates. Therefore, our final model was trained only on
-          the parents' ages.
+          the parents&apos; ages.
         </Typography>
       </Card>
     </Box>
