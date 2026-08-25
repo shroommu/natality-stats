@@ -127,7 +127,7 @@ export function AppHeader() {
                 size="small"
                 href={item.href}
                 sx={{
-                  color: isActive ? "white" : "text.secondary",
+                  color: isActive ? "primary.contrastText" : "text.secondary",
                   fontWeight: isActive ? 600 : 500,
                   textTransform: "none",
                 }}
@@ -201,7 +201,7 @@ export function AppHeader() {
                     justifyContent: "flex-start",
                     minHeight: 42,
                     borderRadius: 2,
-                    color: isActive ? "white" : "text.primary",
+                    color: isActive ? "primary.contrastText" : "text.primary",
                     fontWeight: isActive ? 600 : 500,
                     textTransform: "none",
                   }}

@@ -13,12 +13,15 @@ const theme = createTheme({
       palette: {
         primary: {
           main: COLOR_TOKENS.lightPurple,
+          contrastText: "#ffffff",
         },
         secondary: {
           main: COLOR_TOKENS.lightPink,
+          contrastText: "#ffffff",
         },
         info: {
           main: COLOR_TOKENS.lightBlue,
+          contrastText: "#ffffff",
         },
       },
     },
@@ -26,12 +29,15 @@ const theme = createTheme({
       palette: {
         primary: {
           main: "#9e8cfc",
+          contrastText: "#121212",
         },
         secondary: {
           main: "#f582c3",
+          contrastText: "#121212",
         },
         info: {
           main: "#7cb6ff",
+          contrastText: "#121212",
         },
       },
     },

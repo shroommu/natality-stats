@@ -45,7 +45,7 @@ export default function RootLayout({
               },
               ...theme => theme.applyStyles("dark", {
                 "&::before": {
-                  background: "rgba(10, 10, 20, 0.72)",
+                  background: "rgba(10, 10, 20, 0.85)",
                 }
               }),
             }}
