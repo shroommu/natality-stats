@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 import {
-  MenuItem,
   TextField,
   Box,
   Typography,
   Button,
   Card,
+  CircularProgress,
 } from "@mui/material";
 
 export function DownSyndromeModel() {
@@ -22,6 +22,7 @@ export function DownSyndromeModel() {
   const [downSyndromePrediction, setDownSyndromePrediction] = useState<
     number | null
   >(null);
+  const [loading, setLoading] = useState(false);
 
   const updateParameter = (name: string, value: unknown) => {
     setDownSyndromePredictionParameters((prev) => ({
@@ -31,16 +32,27 @@ export function DownSyndromeModel() {
   };
 
   const predict = async () => {
-    const response = await fetch("/api/predict-down-syndrome", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(downSyndromePredictionParameters),
-    });
+    setLoading(true);
+    try {
+      const response = await fetch("/api/predict-down-syndrome", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(downSyndromePredictionParameters),
+      });
 
-    const data = await response.json();
-    setDownSyndromePrediction(data.down_syndrome_prediction);
+      if (response.ok !== undefined && !response.ok) {
+        throw new Error("Failed to fetch prediction");
+      }
+
+      const data = await response.json();
+      setDownSyndromePrediction(data.down_syndrome_prediction);
+    } catch (err) {
+      console.error("Prediction error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,6 +96,7 @@ export function DownSyndromeModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={downSyndromePredictionParameters.mothersAge}
             onChange={(event) =>
               updateParameter("mothersAge", event.target.value)
@@ -95,14 +108,21 @@ export function DownSyndromeModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={downSyndromePredictionParameters.fathersAge}
             onChange={(event) =>
               updateParameter("fathersAge", event.target.value)
             }
           />
         </Box>
-        <Button variant="contained" onClick={() => predict()}>
-          Predict
+        <Button
+          variant="contained"
+          onClick={() => predict()}
+          disabled={loading}
+          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+          sx={{ textTransform: "none", minWidth: 120 }}
+        >
+          {loading ? "Predicting…" : "Predict"}
         </Button>
       </Card>
     </Box>

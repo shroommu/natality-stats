@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   Card,
+  CircularProgress,
 } from "@mui/material";
 
 export function VBACModel() {
@@ -22,6 +23,7 @@ export function VBACModel() {
     bmi: 20,
   });
   const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const updateParameter = (name: string, value: unknown) => {
     setVbacPredictionParameters((prev) => ({
@@ -31,16 +33,27 @@ export function VBACModel() {
   };
 
   const predict = async () => {
-    const response = await fetch("/api/predict-vbac", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(vbacPredictionParameters),
-    });
+    setLoading(true);
+    try {
+      const response = await fetch("/api/predict-vbac", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(vbacPredictionParameters),
+      });
 
-    const data = await response.json();
-    setVbacPrediction(data.vbac_prediction);
+      if (response.ok !== undefined && !response.ok) {
+        throw new Error("Failed to fetch prediction");
+      }
+
+      const data = await response.json();
+      setVbacPrediction(data.vbac_prediction);
+    } catch (err) {
+      console.error("Prediction error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -83,6 +96,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.laborInduced}
             onChange={(event) =>
               updateParameter("laborInduced", event.target.value)
@@ -98,6 +112,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.laborAugmented}
             onChange={(event) =>
               updateParameter("laborAugmented", event.target.value)
@@ -113,6 +128,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.priorBirthsNowLiving}
             onChange={(event) =>
               updateParameter("priorBirthsNowLiving", event.target.value)
@@ -131,6 +147,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.numberOfPreviousCSections}
             onChange={(event) =>
               updateParameter("numberOfPreviousCSections", event.target.value)
@@ -149,6 +166,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.fetalPresentationAtDelivery}
             onChange={(event) =>
               updateParameter("fetalPresentationAtDelivery", event.target.value)
@@ -165,6 +183,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.gestationalAgeInWeeks}
             onChange={(event) =>
               updateParameter("gestationalAgeInWeeks", event.target.value)
@@ -184,12 +203,19 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.bmi}
             onChange={(event) => updateParameter("bmi", event.target.value)}
           />
         </Box>
-        <Button variant="contained" onClick={() => predict()}>
-          Predict
+        <Button
+          variant="contained"
+          onClick={() => predict()}
+          disabled={loading}
+          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+          sx={{ textTransform: "none", minWidth: 120 }}
+        >
+          {loading ? "Predicting…" : "Predict"}
         </Button>
       </Card>
     </Box>
