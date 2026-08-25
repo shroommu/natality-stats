@@ -3,16 +3,11 @@
 import { Box, Typography, Link, Card } from "@mui/material";
 
 import { Tabs, type TabsItem } from "@/components";
-import { YearProvider } from "@/lib/yearContext";
 import { DownSyndromeModel } from "./components/model";
 import { DownSyndromeCharts } from "./components/charts";
 
 export default function DownSyndrome() {
-  return (
-    <YearProvider>
-      <DownSyndromeContent />
-    </YearProvider>
-  );
+  return <DownSyndromeContent />;
 }
 
 function DownSyndromeContent() {

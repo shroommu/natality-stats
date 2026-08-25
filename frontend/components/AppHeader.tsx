@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import NextLink from "next/link";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -60,6 +61,7 @@ export function AppHeader() {
         </IconButton>
 
         <Link
+          component={NextLink}
           href="/"
           sx={{
             color: "black",
@@ -94,6 +96,7 @@ export function AppHeader() {
           {NAV_ITEMS.map((item) => (
             <Button
               key={item.href}
+              component={NextLink}
               variant="contained"
               size="small"
               href={item.href}
@@ -141,6 +144,7 @@ export function AppHeader() {
             {NAV_ITEMS.map((item) => (
               <Button
                 key={item.href}
+                component={NextLink}
                 variant="contained"
                 href={item.href}
                 onClick={closeDrawer}

@@ -20,7 +20,7 @@ import Typography from "@mui/material/Typography";
 import { Tabs, type TabsItem } from "@/components";
 import { YearToggle } from "@/components/YearToggle";
 import { useSummaryStats } from "@/hooks/useSummaryStats";
-import { YearProvider, useSelectedYear } from "@/lib/yearContext";
+import { useSelectedYear } from "@/lib/yearContext";
 
 import MothersRace from "@/charts/MothersRace";
 import MothersAge from "@/charts/MothersAge";
@@ -64,11 +64,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 }));
 
 export default function Home() {
-  return (
-    <YearProvider>
-      <HomeContent />
-    </YearProvider>
-  );
+  return <HomeContent />;
 }
 
 function HomeContent() {

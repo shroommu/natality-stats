@@ -3,16 +3,11 @@
 import { Box, Typography, Link, Card } from "@mui/material";
 
 import { Tabs, type TabsItem } from "@/components";
-import { YearProvider } from "@/lib/yearContext";
 import { VBACModel } from "./components/model";
 import { VBACCharts } from "./components/charts";
 
 export default function VBAC() {
-  return (
-    <YearProvider>
-      <VBACContent />
-    </YearProvider>
-  );
+  return <VBACContent />;
 }
 
 function VBACContent() {
