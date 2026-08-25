@@ -14,6 +14,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import NextLink from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
 
 export function AppHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const pathname = usePathname();
 
   const openDrawer = () => setDrawerOpen(true);
   const closeDrawer = () => setDrawerOpen(false);
@@ -93,17 +95,25 @@ export function AppHeader() {
             gap: 1.25,
           }}
         >
-          {NAV_ITEMS.map((item) => (
-            <Button
-              key={item.href}
-              component={NextLink}
-              variant="contained"
-              size="small"
-              href={item.href}
-            >
-              {item.label}
-            </Button>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Button
+                key={item.href}
+                component={NextLink}
+                variant={isActive ? "contained" : "text"}
+                size="small"
+                href={item.href}
+                sx={{
+                  color: isActive ? "white" : "text.secondary",
+                  fontWeight: isActive ? 600 : 500,
+                  textTransform: "none",
+                }}
+              >
+                {item.label}
+              </Button>
+            );
+          })}
         </Box>
       </Toolbar>
 
@@ -141,22 +151,28 @@ export function AppHeader() {
             component="nav"
             sx={{ display: "flex", flexDirection: "column", gap: 1 }}
           >
-            {NAV_ITEMS.map((item) => (
-              <Button
-                key={item.href}
-                component={NextLink}
-                variant="contained"
-                href={item.href}
-                onClick={closeDrawer}
-                sx={{
-                  justifyContent: "flex-start",
-                  minHeight: 42,
-                  borderRadius: 2,
-                }}
-              >
-                {item.label}
-              </Button>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Button
+                  key={item.href}
+                  component={NextLink}
+                  variant={isActive ? "contained" : "text"}
+                  href={item.href}
+                  onClick={closeDrawer}
+                  sx={{
+                    justifyContent: "flex-start",
+                    minHeight: 42,
+                    borderRadius: 2,
+                    color: isActive ? "white" : "text.primary",
+                    fontWeight: isActive ? 600 : 500,
+                    textTransform: "none",
+                  }}
+                >
+                  {item.label}
+                </Button>
+              );
+            })}
           </Box>
         </Box>
       </Drawer>

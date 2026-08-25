@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
+import { YearProvider } from "@/lib/yearContext";
 
 beforeEach(() => {
   vi.stubGlobal(
@@ -79,7 +80,11 @@ vi.mock("@/charts/DeliveryWeight", () => ({
 
 describe("Home page", () => {
   it("renders heading and tab controls", () => {
-    render(<Home />);
+    render(
+      <YearProvider>
+        <Home />
+      </YearProvider>,
+    );
     const demographicsRegion = screen.getAllByRole("region")[0];
 
     expect(
@@ -113,7 +118,11 @@ describe("Home page", () => {
 
   it("switches tab panels", async () => {
     const user = userEvent.setup();
-    render(<Home />);
+    render(
+      <YearProvider>
+        <Home />
+      </YearProvider>,
+    );
     const demographicsRegion = screen.getAllByRole("region")[0];
 
     await user.click(
