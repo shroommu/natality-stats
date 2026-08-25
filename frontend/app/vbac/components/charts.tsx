@@ -83,12 +83,15 @@ export function VBACCharts() {
         >
           <Box
             sx={{
-              bgcolor: "background.paper",
-              border: 1,
-              borderColor: "divider",
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              border: "1px solid rgba(255, 255, 255, 0.4)",
               borderRadius: 1,
-              boxShadow: 1,
+              boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
               p: { xs: 1.5, sm: 2 },
+              ...theme => theme.applyStyles("dark", {
+                backgroundColor: "rgba(0, 0, 0, 0.15)",
+                borderColor: "rgba(255, 255, 255, 0.05)",
+              }),
             }}
           >
             <Typography variant="h6" gutterBottom>
@@ -100,12 +103,15 @@ export function VBACCharts() {
           </Box>
           <Box
             sx={{
-              bgcolor: "background.paper",
-              border: 1,
-              borderColor: "divider",
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              border: "1px solid rgba(255, 255, 255, 0.4)",
               borderRadius: 1,
-              boxShadow: 1,
+              boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
               p: { xs: 1.5, sm: 2 },
+              ...theme => theme.applyStyles("dark", {
+                backgroundColor: "rgba(0, 0, 0, 0.15)",
+                borderColor: "rgba(255, 255, 255, 0.05)",
+              }),
             }}
           >
             <Typography variant="h6" gutterBottom>
@@ -136,9 +142,12 @@ export function VBACCharts() {
           <Box
             sx={{
               fontFamily: "monospace",
-              background: "grey",
-              color: "white",
-              px: 0.5,
+              bgcolor: "action.selected",
+              color: "text.primary",
+              px: 0.75,
+              py: 0.25,
+              borderRadius: 0.5,
+              fontSize: "0.9em",
             }}
             component="span"
           >
@@ -153,12 +162,15 @@ export function VBACCharts() {
         </Typography>
         <Box
           sx={{
-            bgcolor: "background.paper",
-            border: 1,
-            borderColor: "divider",
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            border: "1px solid rgba(255, 255, 255, 0.4)",
             borderRadius: 1,
-            boxShadow: 1,
+            boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
             p: { xs: 1.5, sm: 2 },
+            ...theme => theme.applyStyles("dark", {
+              backgroundColor: "rgba(0, 0, 0, 0.15)",
+              borderColor: "rgba(255, 255, 255, 0.05)",
+            }),
           }}
         >
           <Grid container spacing={0.5}>
@@ -232,7 +244,7 @@ export function VBACCharts() {
         >
           At first glance, it appears that when a midwife is the birth
           attendant, the expectant mother is more likely to have a successful
-          VBAC. However, it's important to note that most midwives are unable to
+          VBAC. However, it&apos;s important to note that most midwives are unable to
           perform c-sections, so it may be the case that the birthing mother may
           attempt a vaginal delivery for longer than she might under the
           supervision of an attendant who can perform surgery. Midwives are also
@@ -278,7 +290,7 @@ export function VBACCharts() {
         >
           A VBAC is most likely to occur at home when the mother has planned
           ahead for it. However, we do not find these data points to be useful,
-          as it's expected that a hospital would be the primary location for a
+          as it&apos;s expected that a hospital would be the primary location for a
           c-section, and that other locations would have low rates of
           c-sections.
         </Typography>
@@ -289,7 +301,7 @@ export function VBACCharts() {
           align="center"
         >
           Preterm deliveries are most likely to result in a VBAC; however, we
-          would not consider these to be "successful", as deliveries prior to 28
+          would not consider these to be &quot;successful&quot;, as deliveries prior to 28
           weeks gestation have a near-100% chance of mortality. Of term or
           near-term deliveries, those at 40-41 weeks are most likely to have
           successful VBACs.
@@ -329,7 +341,7 @@ export function VBACCharts() {
           sx={{ fontStyle: "italic", fontSize: 14 }}
           align="center"
         >
-          The higher a mother's BMI, the less likely she is to have a successful
+          The higher a mother&apos;s BMI, the less likely she is to have a successful
           VBAC.
         </Typography>
         <BirthWeightInGramsCrossTabHeatmap />
@@ -373,12 +385,15 @@ export function VBACCharts() {
         </Typography>
         <Box
           sx={{
-            bgcolor: "background.paper",
-            border: 1,
-            borderColor: "divider",
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            border: "1px solid rgba(255, 255, 255, 0.4)",
             borderRadius: 1,
-            boxShadow: 1,
+            boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
             p: { xs: 1.5, sm: 2 },
+            ...theme => theme.applyStyles("dark", {
+              backgroundColor: "rgba(0, 0, 0, 0.15)",
+              borderColor: "rgba(255, 255, 255, 0.05)",
+            }),
           }}
         >
           <Grid container spacing={0.5}>
