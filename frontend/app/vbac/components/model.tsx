@@ -9,6 +9,10 @@ import {
   Typography,
   Button,
   Card,
+  CircularProgress,
+  Slider,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 
 export function VBACModel() {
@@ -22,6 +26,8 @@ export function VBACModel() {
     bmi: 20,
   });
   const [vbacPrediction, setVbacPrediction] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [bmiError, setBmiError] = useState("");
 
   const updateParameter = (name: string, value: unknown) => {
     setVbacPredictionParameters((prev) => ({
@@ -30,17 +36,52 @@ export function VBACModel() {
     }));
   };
 
-  const predict = async () => {
-    const response = await fetch("/api/predict-vbac", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(vbacPredictionParameters),
-    });
+  const handleBmiChange = (val: string) => {
+    updateParameter("bmi", val);
+    const num = parseFloat(val);
+    if (!val) {
+      setBmiError("BMI is required");
+    } else if (isNaN(num) || num < 10 || num > 80) {
+      setBmiError("BMI must be a number between 10 and 80");
+    } else {
+      setBmiError("");
+    }
+  };
 
-    const data = await response.json();
-    setVbacPrediction(data.vbac_prediction);
+  const predict = async () => {
+    const val = String(vbacPredictionParameters.bmi);
+    const num = parseFloat(val);
+    if (!val) {
+      setBmiError("BMI is required");
+      return;
+    }
+    if (isNaN(num) || num < 10 || num > 80) {
+      setBmiError("BMI must be a number between 10 and 80");
+      return;
+    }
+    setBmiError("");
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/predict-vbac", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(vbacPredictionParameters),
+      });
+
+      if (response.ok !== undefined && !response.ok) {
+        throw new Error("Failed to fetch prediction");
+      }
+
+      const data = await response.json();
+      setVbacPrediction(data.vbac_prediction);
+    } catch (err) {
+      console.error("Prediction error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,36 +117,59 @@ export function VBACModel() {
             gap: 2,
           }}
         >
-          <TextField
-            select
-            label="Was labor induced?"
-            name="laborInduced"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.laborInduced}
-            onChange={(event) =>
-              updateParameter("laborInduced", event.target.value)
-            }
-          >
-            <MenuItem value={true as never}>Yes</MenuItem>
-            <MenuItem value={false as never}>No</MenuItem>
-          </TextField>
-          <TextField
-            select
-            label="Was labor augmented?"
-            name="laborAugmented"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.laborAugmented}
-            onChange={(event) =>
-              updateParameter("laborAugmented", event.target.value)
-            }
-          >
-            <MenuItem value={true as never}>Yes</MenuItem>
-            <MenuItem value={false as never}>No</MenuItem>
-          </TextField>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Was labor induced?
+            </Typography>
+            <ToggleButtonGroup
+              value={vbacPredictionParameters.laborInduced}
+              exclusive
+              disabled={loading}
+              onChange={(event, value) => {
+                if (value !== null) {
+                  updateParameter("laborInduced", value);
+                }
+              }}
+              size="small"
+              fullWidth
+              aria-label="Was labor induced?"
+              sx={{ height: 40 }}
+            >
+              <ToggleButton value={true} sx={{ textTransform: "none", fontWeight: 500 }}>
+                Yes
+              </ToggleButton>
+              <ToggleButton value={false} sx={{ textTransform: "none", fontWeight: 500 }}>
+                No
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Was labor augmented?
+            </Typography>
+            <ToggleButtonGroup
+              value={vbacPredictionParameters.laborAugmented}
+              exclusive
+              disabled={loading}
+              onChange={(event, value) => {
+                if (value !== null) {
+                  updateParameter("laborAugmented", value);
+                }
+              }}
+              size="small"
+              fullWidth
+              aria-label="Was labor augmented?"
+              sx={{ height: 40 }}
+            >
+              <ToggleButton value={true} sx={{ textTransform: "none", fontWeight: 500 }}>
+                Yes
+              </ToggleButton>
+              <ToggleButton value={false} sx={{ textTransform: "none", fontWeight: 500 }}>
+                No
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
           <TextField
             select
             label="Number of previous live births"
@@ -113,6 +177,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.priorBirthsNowLiving}
             onChange={(event) =>
               updateParameter("priorBirthsNowLiving", event.target.value)
@@ -131,6 +196,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.numberOfPreviousCSections}
             onChange={(event) =>
               updateParameter("numberOfPreviousCSections", event.target.value)
@@ -149,6 +215,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.fetalPresentationAtDelivery}
             onChange={(event) =>
               updateParameter("fetalPresentationAtDelivery", event.target.value)
@@ -165,6 +232,7 @@ export function VBACModel() {
             fullWidth
             size="small"
             variant="outlined"
+            disabled={loading}
             value={vbacPredictionParameters.gestationalAgeInWeeks}
             onChange={(event) =>
               updateParameter("gestationalAgeInWeeks", event.target.value)
@@ -178,18 +246,53 @@ export function VBACModel() {
               ),
             )}
           </TextField>
-          <TextField
-            label="Mother's BMI"
-            name="bmi"
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={vbacPredictionParameters.bmi}
-            onChange={(event) => updateParameter("bmi", event.target.value)}
-          />
+          <Box
+            sx={{
+              gridColumn: { xs: "span 1", md: "span 2" },
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              mt: 1,
+            }}
+          >
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Mother&apos;s BMI
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <Slider
+                value={typeof vbacPredictionParameters.bmi === "number" ? vbacPredictionParameters.bmi : (parseFloat(vbacPredictionParameters.bmi) || 20)}
+                aria-label="Mother's BMI Slider"
+                min={10}
+                max={80}
+                step={0.1}
+                disabled={loading}
+                onChange={(event, newValue) => handleBmiChange(String(newValue))}
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                name="bmi"
+                type="number"
+                size="small"
+                variant="outlined"
+                disabled={loading}
+                error={Boolean(bmiError)}
+                helperText={bmiError}
+                value={vbacPredictionParameters.bmi}
+                onChange={(event) => handleBmiChange(event.target.value)}
+                slotProps={{ htmlInput: { min: 10, max: 80, step: "0.1", style: { textAlign: "center" }, "aria-label": "Mother's BMI" } }}
+                sx={{ width: 90 }}
+              />
+            </Box>
+          </Box>
         </Box>
-        <Button variant="contained" onClick={() => predict()}>
-          Predict
+        <Button
+          variant="contained"
+          onClick={() => predict()}
+          disabled={loading || Boolean(bmiError)}
+          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+          sx={{ textTransform: "none", minWidth: 120 }}
+        >
+          {loading ? "Predicting…" : "Predict"}
         </Button>
       </Card>
     </Box>

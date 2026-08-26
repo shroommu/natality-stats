@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import cloudpickle as cpkl
+import json
 from pandas import DataFrame
 
 app = Flask(__name__)
@@ -9,10 +10,8 @@ CORS(app)
 vbac_preprocessing = cpkl.load(open("models/vbac/preprocessor.pkl", "rb"))
 vbac_model = cpkl.load(open("models/vbac/rfc_model.pkl", "rb"))
 
-down_syndrome_preprocessing = cpkl.load(
-    open("models/down_syndrome/preprocessor.pkl", "rb")
-)
-down_syndrome_model = cpkl.load(open("models/down_syndrome/xgb_model.pkl", "rb"))
+with open("models/down_syndrome/lookup_table.json", "r") as f:
+    down_syndrome_lookup = json.load(f)
 
 
 @app.route("/api/health")
@@ -50,18 +49,16 @@ def predict_vbac():
 @app.route("/api/predict-down-syndrome", methods=["POST"])
 def predict_down_syndrome():
     body = request.json
+    try:
+        m_age = int(body["mothersAge"])
+        f_age = int(body["fathersAge"])
+    except (KeyError, ValueError, TypeError):
+        return jsonify({"error": "Invalid input parameters"}), 400
 
-    raw = DataFrame(
-        [
-            {
-                "mothers_single_year_age": float(body["mothersAge"]),
-                "fathers_combined_age": float(body["fathersAge"]),
-            }
-        ]
-    )
+    # Clip age parameters to lookup boundaries (Mother: 12-50, Father: 9-98)
+    m_age_clipped = max(12, min(50, m_age))
+    f_age_clipped = max(9, min(98, f_age))
 
-    processed_data = down_syndrome_preprocessing.transform(raw)
-    prediction = down_syndrome_model.predict_proba(processed_data)
-    return jsonify(
-        {"down_syndrome_prediction": round(float(prediction[0][1]) * 100, 1)}
-    )
+    key = f"{m_age_clipped}_{f_age_clipped}"
+    prediction = down_syndrome_lookup.get(key, 0.0235)  # default to baseline rate
+    return jsonify({"down_syndrome_prediction": prediction})

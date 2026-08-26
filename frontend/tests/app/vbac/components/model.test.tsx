@@ -82,14 +82,11 @@ describe("VBACModel", () => {
 
     render(<VBACModel />);
 
-    await user.click(screen.getByLabelText("Was labor induced?"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "Yes" }),
-    );
-    await user.click(screen.getByLabelText("Was labor augmented?"));
-    await user.click(
-      within(screen.getByRole("listbox")).getByRole("option", { name: "Yes" }),
-    );
+    const inducedGroup = screen.getByLabelText("Was labor induced?");
+    await user.click(within(inducedGroup).getByRole("button", { name: "Yes" }));
+
+    const augmentedGroup = screen.getByLabelText("Was labor augmented?");
+    await user.click(within(augmentedGroup).getByRole("button", { name: "Yes" }));
     await user.click(screen.getByLabelText("Number of previous live births"));
     await user.click(
       within(screen.getByRole("listbox")).getByRole("option", { name: "2" }),

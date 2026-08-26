@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import VBAC from "@/app/vbac/page";
+import { YearProvider } from "@/lib/yearContext";
 
 import { setupChartJsonFetchFromPublicData } from "../../charts/chartTestSetup";
 
@@ -14,7 +15,11 @@ describe("VBAC page", () => {
   setupChartJsonFetchFromPublicData();
 
   it("renders heading and intro text", () => {
-    render(<VBAC />);
+    render(
+      <YearProvider>
+        <VBAC />
+      </YearProvider>,
+    );
 
     expect(
       screen.getByRole("heading", { name: "Predicting VBAC Success" }),
@@ -25,7 +30,11 @@ describe("VBAC page", () => {
   });
 
   it("renders three tabs", () => {
-    render(<VBAC />);
+    render(
+      <YearProvider>
+        <VBAC />
+      </YearProvider>,
+    );
 
     expect(
       screen.getByRole("tab", { name: "Data Analysis" }),
@@ -37,14 +46,22 @@ describe("VBAC page", () => {
   });
 
   it("shows the Model tab content by default", () => {
-    render(<VBAC />);
+    render(
+      <YearProvider>
+        <VBAC />
+      </YearProvider>,
+    );
 
     expect(screen.getByText("VBACModelStub")).toBeInTheDocument();
   });
 
   it("switching to Technical Details shows technical content", async () => {
     const user = userEvent.setup();
-    render(<VBAC />);
+    render(
+      <YearProvider>
+        <VBAC />
+      </YearProvider>,
+    );
 
     await user.click(screen.getByRole("tab", { name: "Technical Details" }));
 
@@ -60,7 +77,11 @@ describe("VBAC page", () => {
 
   it("switching to Data Analysis shows crosstab heatmap", async () => {
     const user = userEvent.setup();
-    render(<VBAC />);
+    render(
+      <YearProvider>
+        <VBAC />
+      </YearProvider>,
+    );
 
     await user.click(screen.getByRole("tab", { name: "Data Analysis" }));
 

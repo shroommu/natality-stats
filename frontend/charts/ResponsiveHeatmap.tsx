@@ -84,14 +84,19 @@ export default function ResponsiveHeatmap({
 
   return (
     <Box
-      sx={{
-        bgcolor: "background.paper",
-        border: 1,
-        borderColor: "divider",
-        borderRadius: 1,
-        boxShadow: 1,
-        p: { xs: 1.5, sm: 2 },
-      }}
+      sx={[
+        {
+          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          border: "1px solid rgba(255, 255, 255, 0.4)",
+          borderRadius: 1,
+          boxShadow: "0 4px 20px 0 rgba(0, 0, 0, 0.02)",
+          p: { xs: 1.5, sm: 2 },
+        },
+        theme => theme.applyStyles("dark", {
+          backgroundColor: "rgba(0, 0, 0, 0.15)",
+          borderColor: "rgba(255, 255, 255, 0.05)",
+        }),
+      ]}
     >
       <Box sx={{ width: "100%", overflowX: "auto", pb: 0.5 }}>
         <Box
